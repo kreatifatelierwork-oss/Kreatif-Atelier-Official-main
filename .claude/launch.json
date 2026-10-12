@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["next", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "static-out",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["scripts/serve-out.mjs", "4173"],
+      "port": 4173
+    }
+  ]
+}

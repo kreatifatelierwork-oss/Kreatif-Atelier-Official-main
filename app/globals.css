@@ -1,0 +1,1387 @@
+@import "tailwindcss";
+
+/* Pinned-section layout (Services, Process). Keep in sync with config.pin.query in lib/config.ts.
+   `pin-short` tightens the pinned layout for short laptop screens (e.g. 1366×768 → ~620–700px visible). */
+@custom-variant pin (@media (min-width: 1024px) and (min-height: 620px) and (prefers-reduced-motion: no-preference));
+@custom-variant pin-short (@media (min-width: 1024px) and (min-height: 620px) and (max-height: 759.98px) and (prefers-reduced-motion: no-preference));
+
+/* ── Brand tokens ─────────────────────────────────────────── */
+:root {
+  /* Black and deep charcoal surfaces, warm ivory type, champagne-gold lines.
+     (`--navy` and `--cream` keep their first-palette names; they now hold charcoal and ivory.) */
+  /* Blueprint palette: Obsidian, Porcelain, Champagne, Forest, Vermilion, Deep Teal. */
+  --ink: #111210;
+  --navy: #1b1c19;
+  --gold: #cdb98a;
+  --gold-bright: #eadcb9;
+  --bronze: #8c7a52;
+  /* Bronze dark enough for small text on cream. */
+  --bronze-deep: #6b4f2c;
+  --cream: #f3f0e9;
+  --forest: #24483a;
+  --vermilion: #c9513d;
+  --teal: #28565b;
+  --crimson: #7a1e2b;
+  --mahogany: #440000;
+  --emerald: #1d4a37;
+
+  --cream-muted: rgb(243 240 233 / 0.72);
+  --cream-faint: rgb(243 240 233 / 0.5);
+  --line: rgb(205 184 138 / 0.22);
+  --panel: rgb(22 22 22 / 0.5);
+  /* Per-page accent (vertical pages override it). */
+  --accent: var(--gold);
+
+  --gutter: clamp(1rem, 4vw, 3.5rem);
+  --nav-h: 4.5rem;
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-navy: var(--navy);
+  --color-gold: var(--gold);
+  --color-gold-bright: var(--gold-bright);
+  --color-bronze: var(--bronze);
+  --color-bronze-deep: var(--bronze-deep);
+  --color-cream: var(--cream);
+  --color-cream-muted: var(--cream-muted);
+  --color-cream-faint: var(--cream-faint);
+  --color-crimson: var(--crimson);
+  --color-forest: var(--forest);
+  --color-vermilion: var(--vermilion);
+  --color-teal: var(--teal);
+  --color-mahogany: var(--mahogany);
+  --color-emerald: var(--emerald);
+  --color-accent: var(--accent);
+  --color-line: var(--line);
+  --color-panel: var(--panel);
+
+  --font-display: var(--font-cormorant);
+  --font-price: var(--font-rupee), var(--font-cormorant);
+  --font-sans: var(--font-manrope);
+}
+
+/* ── Base ─────────────────────────────────────────────────── */
+@layer base {
+html {
+  background: var(--ink);
+  scroll-padding-top: var(--nav-h);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+/* Anchor targets get focus programmatically (tabindex="-1"); no ring on whole sections. */
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* Visible focus for every interactive element */
+:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+}
+
+/* ── Atmosphere (static backdrop; the WebGL canvas sits above this later) ── */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(70vmax 60vmax at 85% 100%, rgb(22 22 22 / 0.8), transparent 70%),
+    radial-gradient(60vmax 50vmax at 0% 60%, rgb(22 22 22 / 0.6), transparent 70%),
+    var(--ink);
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@layer components {
+/* ── Type helpers ─────────────────────────────────────────── */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.02;
+  font-variant-numeric: lining-nums;
+}
+
+.emph {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold-bright);
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.gold-text {
+  background: linear-gradient(100deg, var(--bronze) 0%, var(--gold) 28%, var(--gold-bright) 50%, var(--gold) 72%, var(--bronze) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── Panels ───────────────────────────────────────────────── */
+.panel {
+  background: linear-gradient(160deg, rgb(26 26 26 / 0.7), rgb(8 8 8 / 0.7));
+  border: 1px solid var(--line);
+  border-radius: 2px;
+}
+
+/* SplitText line masks (headline reveals): room for italic overhangs and descenders, layout unchanged. */
+.reveal-line-mask {
+  padding: 0.06em 0.12em 0.18em;
+  margin: -0.06em -0.12em -0.18em;
+}
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Front page ───────────────────────────────────────────── */
+/* Hero stage: `--hero-stage` viewport heights tall (config.front.hero.stageVh); the extra is the sticky hold. */
+.hero-stage {
+  height: calc(var(--hero-stage, 100) * 1svh);
+}
+
+/* Full-bleed hero: the picture's foot and top sink into the mahogany, under the title and the header. */
+.hero-full {
+  will-change: auto;
+}
+
+.hero-full__shade {
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgb(40 0 0 / 0.55), transparent 22%),
+    linear-gradient(to top, #2c0000 2%, rgb(52 0 0 / 0.82) 24%, rgb(68 0 0 / 0) 58%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-stage {
+    height: 100svh;
+  }
+}
+
+/* The light block: the canvas paints the page colour (and the dark that rises at its end) once it
+   is running; until then, and without WebGL, the block carries its own colour and a plain fade-out. */
+.light-block {
+  position: relative;
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.light-block::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 46vh;
+  pointer-events: none;
+  background: linear-gradient(to top, var(--ink), #5e1322 22%, #c2551a 45%, #eda02f 66%, #f6d488 84%, var(--cream));
+}
+
+html[data-scene-ready] .light-block {
+  background: transparent;
+}
+
+html[data-scene-ready] .light-block::after {
+  display: none;
+}
+
+/* Header over the light page: dark type on a cream wash. */
+.site-header[data-tone="light"] {
+  background-color: rgb(244 239 228 / 0.78);
+  border-color: rgb(5 5 5 / 0.08);
+}
+
+.site-header[data-tone="light"] a {
+  color: var(--ink);
+}
+
+.site-header[data-tone="light"] a:hover,
+.site-header[data-tone="light"] a[aria-current="true"] {
+  color: var(--bronze-deep);
+}
+
+.site-header[data-tone="light"] button span span {
+  background-color: var(--ink);
+}
+
+/* Outlined numeral behind a vertical's typographic hero. */
+.outline-numeral {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--line);
+}
+
+
+/* ── Shared pieces ────────────────────────────────────────── */
+/* One button for every action: softly raised, a little higher on hover, pressed in when active. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.95rem 1.5rem;
+  border-radius: 0.6rem;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--btn-ink, var(--cream));
+  background: var(--btn-face, linear-gradient(180deg, rgb(255 255 255 / 0.1), rgb(255 255 255 / 0.03)));
+  box-shadow:
+    inset 0 1px 0 var(--btn-edge, rgb(255 255 255 / 0.16)),
+    0 1px 2px rgb(0 0 0 / 0.35),
+    0 8px 18px -8px var(--btn-shadow, rgb(0 0 0 / 0.7));
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease,
+    filter 200ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 var(--btn-edge, rgb(255 255 255 / 0.16)),
+    0 2px 3px rgb(0 0 0 / 0.35),
+    0 14px 24px -10px var(--btn-shadow, rgb(0 0 0 / 0.7));
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow:
+    inset 0 2px 5px rgb(0 0 0 / 0.35),
+    0 0 0 rgb(0 0 0 / 0);
+}
+
+.btn > .btn-arrow {
+  transition: transform 200ms ease;
+}
+
+.btn:hover > .btn-arrow {
+  transform: translateX(4px);
+}
+
+.btn-primary {
+  --btn-ink: var(--ink);
+  --btn-face: linear-gradient(180deg, #f8f5ee, #dcd6c8);
+  --btn-edge: rgb(255 255 255 / 0.9);
+}
+
+/* On light surfaces the same button is cut from the dark colour, with cooler, softer shadows. */
+.light-block .btn,
+.on-light .btn {
+  --btn-ink: var(--ink);
+  --btn-face: linear-gradient(180deg, #fbf9f4, #e9e5db);
+  --btn-edge: rgb(255 255 255 / 0.95);
+  --btn-shadow: rgb(60 66 78 / 0.45);
+}
+
+.light-block .btn-primary,
+.on-light .btn-primary {
+  --btn-ink: var(--cream);
+  --btn-face: linear-gradient(180deg, #2a2b27, #111210);
+  --btn-edge: rgb(255 255 255 / 0.14);
+}
+
+/* Neutral stand-in for artwork the owner will supply. */
+.placeholder {
+  display: grid;
+  place-items: center;
+  border: 1px dashed var(--line);
+  background: repeating-linear-gradient(135deg, rgb(205 185 138 / 0.05) 0 14px, transparent 14px 28px);
+  color: var(--cream-faint);
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 1rem;
+}
+
+.light-block .placeholder,
+.on-light .placeholder {
+  border-color: rgb(17 18 16 / 0.25);
+  background: repeating-linear-gradient(135deg, rgb(17 18 16 / 0.04) 0 14px, transparent 14px 28px);
+  color: rgb(17 18 16 / 0.55);
+}
+
+/* Light header: menu buttons follow the links; the dropdown panels stay dark. */
+.site-header[data-tone="light"] nav button {
+  color: var(--ink);
+}
+
+.site-header[data-tone="light"] .nav-menu a {
+  color: var(--cream-muted);
+}
+
+.site-header[data-tone="light"] .nav-menu a:hover,
+.site-header[data-tone="light"] .nav-menu a[aria-current="true"] {
+  color: var(--gold-bright);
+}
+
+/* ── Aurelius page system ─────────────────────────────────── */
+/* One accent for labels, numerals and rules: vermilion, from the blueprint palette. Flip it here. */
+:root {
+  --ember: #c9513d;
+}
+
+@theme inline {
+  --color-ember: var(--ember);
+}
+
+/* The arc sits in the light section only where the dome is wired to the scene (home). */
+.light-block[data-dome]::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 46vh;
+  pointer-events: none;
+  background: linear-gradient(to top, var(--ink), #5e1322 22%, #c2551a 45%, #eda02f 66%, #f6d488 84%, var(--cream));
+}
+
+html[data-scene-ready] .light-block[data-dome]::after {
+  display: none;
+}
+
+/* ── /aurelius/history: the timeline infographic ─────────────── */
+/* A strip of torn pictures down the middle of a paper page, an era's story on one side and its dates
+   on the other, swapping sides each time. Type, labels and buttons are the site's own. */
+.hist {
+  --hist-paper: #f4f1e9;
+  --hist-rule: rgb(17 18 16 / 0.2);
+  --hist-soft: rgb(17 18 16 / 0.74);
+  --hist-red: #8a1c22;
+  position: relative;
+  overflow: hidden;
+  background: var(--hist-paper);
+  color: var(--ink);
+  padding-inline: var(--gutter);
+}
+
+.hist__eras {
+  margin-inline: auto;
+  max-width: 1280px;
+}
+
+/* The dials: half a clock at the head of the strip and half at its foot. */
+.hist-dial {
+  display: flex;
+  height: clamp(6.5rem, 15vw, 12rem);
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hist-dial svg {
+  width: clamp(13rem, 30vw, 24rem);
+  height: clamp(13rem, 30vw, 24rem);
+  flex: none;
+  filter: drop-shadow(0 10px 18px rgb(40 25 10 / 0.35));
+}
+
+.hist-dial--top svg {
+  margin-top: calc(-1 * clamp(6.5rem, 15vw, 12rem));
+}
+
+.hist-dial__numeral {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  fill: #2a1c10;
+}
+
+.hist-era {
+  display: grid;
+  gap: 1.75rem;
+  padding-block: clamp(2.5rem, 7vh, 4.5rem);
+  scroll-margin-top: var(--nav-h);
+}
+
+.hist-era + .hist-era {
+  border-top: 1px solid var(--hist-rule);
+}
+
+.hist-era__dates {
+  font-size: 0.64rem;
+  color: var(--hist-soft);
+}
+
+.hist-era__dates span {
+  margin-inline-end: 0.75rem;
+  color: var(--hist-red);
+}
+
+.hist-era__name {
+  margin-top: 0.9rem;
+  font-size: clamp(2.5rem, 5vw, 4.4rem);
+  font-weight: 600;
+  line-height: 0.98;
+}
+
+/* The line that ties a heading to the strip, with a dot at its outer end, as on a printed timeline. */
+.hist-era__rule {
+  position: relative;
+  z-index: 2;
+  margin-top: 1.1rem;
+  height: 2px;
+  background: var(--ink);
+}
+
+.hist-era__rule::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0.7rem;
+  height: 0.7rem;
+  translate: 0 -50%;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.hist-era__medium {
+  margin-top: 1.1rem;
+  font-size: 0.62rem;
+  color: var(--hist-red);
+}
+
+.hist-era__kicker {
+  margin-top: 0.9rem;
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  line-height: 1.22;
+  font-style: italic;
+}
+
+/* Narrow screens: the strip is a row to swipe through. */
+.hist-era__strip {
+  display: flex;
+  gap: 0.9rem;
+  margin-inline: calc(-1 * var(--gutter));
+  overflow-x: auto;
+  padding: 0.75rem var(--gutter) 1.25rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.hist-era__strip::-webkit-scrollbar {
+  display: none;
+}
+
+.hist-shot {
+  position: relative;
+  display: block;
+  flex: none;
+  width: min(72vw, 20rem);
+  aspect-ratio: 4 / 5;
+  rotate: var(--tilt);
+  scroll-snap-align: center;
+  filter: drop-shadow(0 10px 14px rgb(40 30 15 / 0.3));
+  transition:
+    rotate 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hist-shot:hover,
+.hist-shot:focus-visible {
+  z-index: 3;
+  rotate: 0deg;
+  scale: 1.03;
+}
+
+.hist-shot__paper {
+  display: block;
+  height: 100%;
+  background: #fbfaf6;
+  padding: 0.4rem 0.55rem;
+}
+
+.hist-shot__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* A paper label stuck to the picture's corner. */
+.hist-shot__tag {
+  position: absolute;
+  bottom: 1rem;
+  left: -0.35rem;
+  max-width: 88%;
+  background: #fbfaf6;
+  padding: 0.5rem 0.7rem;
+  text-align: start;
+  font-size: 0.52rem;
+  line-height: 1.5;
+  letter-spacing: 0.2em;
+  color: var(--ink);
+  box-shadow: 0 2px 6px rgb(40 30 15 / 0.25);
+}
+
+.hist-era__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  font-size: 1rem;
+  line-height: 1.78;
+  color: var(--hist-soft);
+}
+
+.hist-era__lead {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+.hist-era__side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.hist-era__sidehead,
+.hist-era__legacy h3 {
+  font-size: 0.62rem;
+  color: var(--hist-red);
+}
+
+.hist-dates {
+  display: flex;
+  flex-direction: column;
+  margin-top: -0.75rem;
+}
+
+.hist-dates > div {
+  display: grid;
+  grid-template-columns: 5.6rem minmax(0, 1fr);
+  gap: 1rem;
+  border-top: 1px solid var(--hist-rule);
+  padding-block: 0.85rem;
+}
+
+.hist-dates dt {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.hist-dates dd {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--hist-soft);
+}
+
+.hist-era__legacy {
+  border-top: 2px solid var(--ink);
+  padding-top: 1.1rem;
+}
+
+.hist-era__legacy p {
+  margin-top: 0.7rem;
+  font-size: clamp(1.3rem, 1.9vw, 1.65rem);
+  line-height: 1.25;
+}
+
+.hist-era__count {
+  opacity: 0.7;
+}
+
+/* Wide screens: story | strip | dates, swapping sides on every other era. */
+@media (min-width: 1024px) {
+  .hist-era {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) minmax(0, 5fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "head strip side"
+      "body strip side";
+    column-gap: clamp(2rem, 4vw, 4rem);
+    row-gap: 2rem;
+    padding-block: 0;
+  }
+
+  .hist-era + .hist-era {
+    border-top: 0;
+  }
+
+  .hist-era[data-flip] {
+    grid-template-areas:
+      "side strip head"
+      "side strip body";
+  }
+
+  .hist-era__head {
+    grid-area: head;
+    padding-top: clamp(3rem, 8vh, 5rem);
+    text-align: end;
+  }
+
+  .hist-era[data-flip] .hist-era__head {
+    text-align: start;
+  }
+
+  /* The rule runs on into the strip; the dot sits at the far end from it. */
+  .hist-era__rule {
+    margin-inline-end: calc(-1 * clamp(2rem, 4vw, 4rem) - 2.5rem);
+  }
+
+  .hist-era[data-flip] .hist-era__rule {
+    margin-inline: calc(-1 * clamp(2rem, 4vw, 4rem) - 2.5rem) 0;
+  }
+
+  .hist-era[data-flip] .hist-era__rule::before {
+    right: 0;
+    left: auto;
+  }
+
+  .hist-era__body {
+    grid-area: body;
+    padding-bottom: clamp(3rem, 8vh, 5rem);
+  }
+
+  .hist-era__side {
+    grid-area: side;
+    padding-block: clamp(3rem, 8vh, 5rem);
+  }
+
+  .hist-era__strip {
+    grid-area: strip;
+    flex-direction: column;
+    gap: 0;
+    margin-inline: 0;
+    overflow: visible;
+    padding: 0;
+  }
+
+  .hist-shot {
+    flex: 1 1 0;
+    width: auto;
+    min-height: 15rem;
+    aspect-ratio: auto;
+    margin-top: -0.8rem;
+  }
+
+  .hist-shot:first-child {
+    margin-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hist-shot {
+    transition: none;
+  }
+}
+
+/* The era's gallery: one picture at a time, each with its note. */
+.hist-gallery {
+  border: 1px solid var(--line);
+}
+
+.hist-gallery__head {
+  padding: 1.5rem 4.5rem 1.25rem 1.5rem;
+}
+
+.hist-gallery__stage {
+  position: relative;
+  display: grid;
+  min-height: 14rem;
+  place-items: center;
+  background: #080807;
+}
+
+.hist-gallery__img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(58svh, 36rem);
+  object-fit: contain;
+}
+
+.hist-gallery__arrow {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  translate: 0 -50%;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgb(17 18 16 / 0.72);
+  color: var(--cream);
+  transition:
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.hist-gallery__arrow:hover {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+}
+
+.hist-gallery__arrow--prev {
+  left: 0.75rem;
+}
+
+.hist-gallery__arrow--next {
+  right: 0.75rem;
+}
+
+.hist-gallery__caption {
+  padding: 1.5rem;
+}
+
+.hist-gallery__thumbs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  border-top: 1px solid var(--line);
+  padding: 1rem 1.5rem 1.25rem;
+}
+
+.hist-gallery__thumbs button {
+  display: block;
+  width: 4.5rem;
+  height: 3.5rem;
+  flex: none;
+  overflow: hidden;
+  border: 1px solid transparent;
+  opacity: 0.55;
+  transition:
+    opacity 0.2s,
+    border-color 0.2s;
+}
+
+.hist-gallery__thumbs button:hover,
+.hist-gallery__thumbs button[aria-current] {
+  border-color: var(--gold);
+  opacity: 1;
+}
+
+.hist-gallery__thumbs img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .hist-gallery__head {
+    padding: 2rem 5rem 1.5rem 2.25rem;
+  }
+
+  .hist-gallery__caption {
+    padding: 1.75rem 2.25rem 2rem;
+  }
+
+  .hist-gallery__thumbs {
+    padding-inline: 2.25rem;
+  }
+}
+
+/* ── The footer's hidden door: the crest, and the verticals stitched beneath it ── */
+.crest-egg {
+  --thread-red: #8a1c22;
+  --thread-green: #2f4a2c;
+  --thread-gold: #9a6d17;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* The artwork's own cloth with the crest taken out, so it runs on below it and repeats downward without a seam. */
+  background: #e9dcc3 url("/images/logos/crest-cloth.webp") top center / max(100%, 1100px) auto repeat-y;
+  color: #33240f;
+}
+
+.crest-egg__cloth {
+  position: relative;
+  display: grid;
+  min-height: 100svh;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* Narrow screens crop to the crest itself; its edges dissolve into the tiled cloth. */
+.crest-egg__crest {
+  width: 100%;
+  aspect-ratio: 1 / 1.08;
+  object-fit: cover;
+  mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 86%, transparent);
+  animation: crest-sew 1.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (min-width: 768px) {
+  .crest-egg__crest {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    aspect-ratio: auto;
+    mask-image: linear-gradient(to bottom, #000 80%, transparent);
+  }
+}
+
+@keyframes crest-sew {
+  from {
+    opacity: 0;
+    transform: scale(1.14);
+    filter: blur(16px) saturate(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+.crest-egg__cue {
+  position: absolute;
+  bottom: 1.6rem;
+  left: 50%;
+  display: flex;
+  translate: -50% 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.6rem;
+  color: var(--thread-green);
+  animation: crest-sew 1.2s 1.2s ease-out both;
+}
+
+/* Wide screens: the crest's own lettering sits at the foot of the cloth, so the cue moves to the side. */
+@media (min-width: 768px) {
+  .crest-egg__cue {
+    right: var(--gutter);
+    left: auto;
+    translate: none;
+  }
+}
+
+.crest-egg__cue span {
+  width: 1px;
+  height: 2.2rem;
+  background: linear-gradient(to bottom, var(--thread-green), transparent);
+}
+
+.crest-egg__verticals {
+  margin-inline: auto;
+  max-width: calc(1280px + 2 * var(--gutter));
+  padding: clamp(3rem, 9vh, 6rem) var(--gutter) clamp(5rem, 14vh, 9rem);
+}
+
+/* Type on the cloth is set like thread: a light edge below, a dark one above. */
+.crest-egg__title {
+  text-align: center;
+  font-size: clamp(2.6rem, 6.4vw, 5.4rem);
+  line-height: 1;
+  color: var(--thread-red);
+  text-shadow:
+    0 1px 0 rgb(255 250 235 / 0.8),
+    0 -1px 1px rgb(60 20 10 / 0.35);
+}
+
+.crest-egg__title em {
+  color: var(--thread-gold);
+}
+
+.crest-egg__grid {
+  display: grid;
+  gap: clamp(1.25rem, 2.4vw, 2rem);
+  margin-top: clamp(2.5rem, 7vh, 4.5rem);
+}
+
+@media (min-width: 640px) {
+  .crest-egg__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Five patches: three and two on a middling screen, one row on a wide one. */
+@media (min-width: 900px) {
+  .crest-egg__grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .crest-egg__grid li {
+    grid-column: span 2;
+  }
+
+  .crest-egg__grid li:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+}
+
+@media (min-width: 1240px) {
+  .crest-egg__grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .crest-egg__grid li,
+  .crest-egg__grid li:nth-child(4) {
+    grid-column: auto;
+  }
+}
+
+/* A patch sewn onto the cloth: raised a little, with a dashed line of stitching inside its edge. */
+.crest-patch {
+  --thread: var(--thread-red);
+  position: relative;
+  display: flex;
+  height: 100%;
+  min-height: 15rem;
+  flex-direction: column;
+  gap: 0.9rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(160deg, rgb(255 251 240 / 0.7), rgb(236 222 196 / 0.55));
+  padding: 2.1rem 1.75rem 1.9rem;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.75),
+    inset 0 -1px 0 rgb(90 60 20 / 0.18),
+    0 14px 26px -16px rgb(70 45 15 / 0.7);
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.crest-patch::before {
+  content: "";
+  position: absolute;
+  inset: 0.5rem;
+  border: 2px dashed var(--thread);
+  border-radius: 0.3rem;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.crest-egg__grid li:nth-child(5n + 2) .crest-patch {
+  --thread: var(--thread-green);
+}
+
+.crest-egg__grid li:nth-child(5n + 3) .crest-patch {
+  --thread: var(--thread-gold);
+}
+
+.crest-egg__grid li:nth-child(5n + 4) .crest-patch {
+  --thread: #6b1a3a;
+}
+
+.crest-egg__grid li:nth-child(5n + 5) .crest-patch {
+  --thread: #1f4a52;
+}
+
+.crest-patch:hover,
+.crest-patch:focus-visible {
+  transform: translateY(-5px) rotate(-0.6deg);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.75),
+    inset 0 -1px 0 rgb(90 60 20 / 0.18),
+    0 26px 34px -18px rgb(70 45 15 / 0.75);
+}
+
+.crest-patch__no,
+.crest-patch__line,
+.crest-patch__go {
+  font-size: 0.58rem;
+}
+
+.crest-patch__no {
+  color: var(--thread);
+}
+
+.crest-patch__name {
+  font-size: clamp(1.6rem, 2vw, 2.1rem);
+  line-height: 1.02;
+  font-weight: 600;
+  color: var(--thread);
+  text-shadow:
+    0 1px 0 rgb(255 250 235 / 0.85),
+    0 -1px 1px rgb(40 20 10 / 0.25);
+}
+
+.crest-patch__line {
+  line-height: 1.7;
+  color: rgb(51 36 15 / 0.78);
+}
+
+.crest-patch__go {
+  margin-top: auto;
+  padding-top: 0.8rem;
+  color: var(--thread);
+}
+
+/* Sewn on as they come into view. */
+.crest-egg [data-stitch] {
+  opacity: 0;
+  transform: translateY(26px) scale(0.97);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i, 0) * 110ms);
+}
+
+.crest-egg [data-stitch][data-in] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crest-egg__crest,
+  .crest-egg__cue {
+    animation: none;
+  }
+
+  .crest-egg [data-stitch] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .crest-patch {
+    transition: none;
+  }
+}
+
+/* Pre-footer: the hero's sunset arc, rising out of the footer. */
+.pre-footer-glow {
+  position: relative;
+  height: clamp(16rem, 40svh, 26rem);
+  overflow: hidden;
+  /* Page ink above, the footer's black below. */
+  background: linear-gradient(to bottom, var(--ink), #000 70%);
+}
+
+/* The arc sinks into the footer: its lower part fades out to black, so there is no edge between them. */
+.pre-footer-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent 58%, rgb(0 0 0 / 0.35) 80%, #000 99%);
+}
+
+.pre-footer-glow__arc {
+  position: absolute;
+  inset-inline: -10%;
+  bottom: 0;
+  height: 130%;
+  background: radial-gradient(62% 64% at 50% 84%, #fbe3a4 0%, #f6c659 14%, #ee9a2a 30%, #c9531a 47%, #6a1424 64%, transparent 80%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pre-footer-glow__arc {
+    transform: none !important;
+  }
+}
+
+/* ── Asraya ───────────────────────────────────────────────── */
+/* The Asraya pages take their character from the Asraya company profile — poster pages on paper,
+   slate, oxblood and kraft grounds, heavy condensed headlines, bright red for emphasis — while staying
+   inside the site's system: the same serif, body face, small-caps labels, buttons, grid and motion.
+   Everything here is scoped to .asraya. */
+.asraya {
+  --a-paper: #ece5d8;
+  --a-kraft: #d9c39d;
+  --a-slate: #38383a;
+  --a-oxblood: #5c1321;
+  --a-red: #d2301f;
+  --a-ink: #151413;
+  --a-blue: #6d92b6;
+  --a-navy: #0c0f2c;
+  background: var(--a-paper);
+}
+
+.a-poster {
+  --a-bg: var(--a-paper);
+  --a-fg: var(--a-ink);
+  --a-soft: rgb(21 20 19 / 0.74);
+  --a-accent: var(--a-red);
+  --a-rule: rgb(21 20 19 / 0.22);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(4.5rem, 11vh, 8rem) var(--gutter);
+  background: var(--a-bg);
+  color: var(--a-fg);
+}
+
+/* Paper grain, as on the printed pages. */
+.a-poster::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .25 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+}
+
+.a-poster[data-tone="kraft"] {
+  --a-bg: var(--a-kraft);
+  --a-accent: var(--a-oxblood);
+}
+
+.a-poster[data-tone="slate"] {
+  --a-bg: var(--a-slate);
+  --a-fg: #f3eee4;
+  --a-soft: rgb(243 238 228 / 0.82);
+  --a-accent: #e9c98b;
+  --a-rule: rgb(243 238 228 / 0.24);
+}
+
+.a-poster[data-tone="oxblood"] {
+  --a-bg: var(--a-oxblood);
+  --a-fg: #f6ecdf;
+  --a-soft: rgb(246 236 223 / 0.84);
+  --a-accent: #f0c9a0;
+  --a-rule: rgb(246 236 223 / 0.26);
+}
+
+.a-poster[data-tone="red"] {
+  --a-bg: var(--a-red);
+  --a-fg: #14110f;
+  --a-soft: rgb(20 17 15 / 0.86);
+  --a-accent: #f6ecdf;
+  --a-rule: rgb(20 17 15 / 0.3);
+}
+
+.a-poster[data-tone="blue"] {
+  --a-bg: var(--a-blue);
+  --a-fg: #f7f3ea;
+  --a-soft: rgb(247 243 234 / 0.92);
+  --a-accent: #f3c8a0;
+  --a-rule: rgb(247 243 234 / 0.35);
+}
+
+.a-poster[data-tone="navy"] {
+  --a-bg: var(--a-navy);
+  --a-fg: #f3eee4;
+  --a-soft: rgb(243 238 228 / 0.8);
+  --a-accent: #e9a7d8;
+  --a-rule: rgb(243 238 228 / 0.22);
+}
+
+/* The cover: the jigsaw of portraits, multiplied onto the paper so its own white ground disappears
+   into the poster. It runs past the gutter on both sides, like a print laid across the page. */
+.a-cover__collage {
+  width: calc(100% + 1.6 * var(--gutter));
+  max-width: none;
+  height: auto;
+  margin-inline: calc(-0.8 * var(--gutter));
+  mix-blend-mode: multiply;
+  /* Lifts the picture's off-white paper to pure white, so no rectangle shows after the multiply. */
+  filter: brightness(1.09) contrast(1.12);
+}
+
+@media (min-width: 1024px) {
+  .a-cover__collage {
+    width: 111%;
+    margin-inline: -5% 0;
+  }
+}
+
+/* Pictures from the profile. Blended ones lose their own ground into the poster's colour. */
+.a-art {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* The picture's off-white ground is lifted to pure white first, so the multiply leaves no rectangle. */
+.a-art--multiply {
+  mix-blend-mode: multiply;
+  filter: brightness(1.1) contrast(1.14);
+}
+
+/* And a dark ground is pushed below the poster's colour, so the lighten drops it out. */
+.a-art--lighten {
+  mix-blend-mode: lighten;
+  filter: brightness(0.8) contrast(1.3);
+}
+
+/* Fades out completely before its edges, so no frame shows: for a picture whose ground is close to
+   the poster's, or that runs off its own frame. */
+.a-art--soft {
+  mask-image: radial-gradient(closest-side, #000 56%, transparent 100%);
+}
+
+/* Fades in from the top and the sides: a picture rising out of the foot of a poster. */
+.a-art--rise {
+  mask-image: linear-gradient(to bottom, transparent, #000 30%), linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
+  mask-composite: intersect;
+}
+
+/* Sinks away at its foot and its left: the statue's plinth runs off the picture there. */
+.a-art--plinth {
+  mask-image: linear-gradient(to top, transparent 3%, #000 26%), linear-gradient(to right, transparent, #000 12%);
+  mask-composite: intersect;
+}
+
+/* A band of pictures running edge to edge between posters. */
+.a-poster--bleed {
+  /* Overlaps its neighbours by a pixel, so no hairline of the page shows between them. */
+  margin-block: -1px;
+  padding: 0;
+}
+
+.a-band {
+  display: grid;
+}
+
+.a-band--pair {
+  grid-template-columns: 1fr;
+  padding-block: clamp(1rem, 3vw, 2.5rem);
+}
+
+@media (min-width: 640px) {
+  .a-band--pair {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Each picture keeps its outer edge on the screen's edge and dissolves everywhere else. */
+.a-band__from-left {
+  mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent), linear-gradient(to right, #000 62%, transparent 98%);
+  mask-composite: intersect;
+}
+
+.a-band__from-right {
+  mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent), linear-gradient(to left, #000 62%, transparent 98%);
+  mask-composite: intersect;
+}
+
+.a-band__wide {
+  width: 100%;
+  height: clamp(11rem, 30vw, 30rem);
+  object-fit: cover;
+  mask-image: linear-gradient(to bottom, transparent, #000 26%);
+}
+
+.a-poster[data-tone="slate"]::before,
+.a-poster[data-tone="oxblood"]::before,
+.a-poster[data-tone="navy"]::before {
+  mix-blend-mode: soft-light;
+  opacity: 0.35;
+}
+
+.a-wrap {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1280px;
+}
+
+/* Heavy condensed poster headline. */
+.a-display {
+  font-family: var(--font-anton), Impact, "Arial Narrow Bold", sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.94;
+  letter-spacing: 0.005em;
+}
+
+/* The site's serif, set against the condensed face as the profile does. */
+.a-serif {
+  font-family: var(--font-price);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  font-variant-numeric: lining-nums;
+}
+
+/* The site's small-caps label, a little heavier on these pages. */
+.a-wide {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.a-body {
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--a-soft);
+}
+
+.a-body strong,
+.a-strong {
+  font-weight: 800;
+  color: var(--a-fg);
+}
+
+.a-accent {
+  color: var(--a-accent);
+}
+
+.a-rule {
+  border-color: var(--a-rule);
+}
+
+/* The site's one button, cut for light and dark grounds. */
+.a-poster .btn {
+  --btn-ink: var(--a-bg);
+  --btn-face: var(--a-fg);
+  --btn-edge: rgb(255 255 255 / 0.18);
+  --btn-shadow: rgb(0 0 0 / 0.45);
+}
+
+/* Film strip, from the film and photography pages. */
+.a-film {
+  height: 3.4rem;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 0.9rem, var(--a-bg) 0.9rem 1.7rem) top / 100% 0.5rem no-repeat,
+    repeating-linear-gradient(90deg, transparent 0 0.9rem, var(--a-bg) 0.9rem 1.7rem) bottom / 100% 0.5rem no-repeat,
+    var(--a-fg);
+  border-block: 0.35rem solid var(--a-fg);
+}
+
+.asraya :focus-visible {
+  outline-color: currentColor;
+}
+
