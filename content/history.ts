@@ -303,14 +303,6 @@ export const historyPage = {
       strip: 4,
       photos: [
         {
-          ...img("marlboro-rider-poster", 736, 1051),
-          title: "The red roof",
-          meta: "Poster · United States, 1970s",
-          description:
-            "The red chevron of the cigarette pack becomes the whole poster, and a rider at full gallop swings a rope across the brand name. No product is shown and nothing is claimed. Leo Burnett's cowboy, introduced in 1954, is one of the most studied campaigns in advertising, and later one of the main exhibits in the case for banning tobacco advertising. It is shown here as history.",
-          alt: "A poster with a red chevron at the top, the word Marlboro in black, and a cowboy on a galloping horse swinging a lasso",
-        },
-        {
           ...img("triumph-bonneville-120-brochure", 874, 688),
           title: "Triumph Bonneville 120",
           meta: "Sales brochure · Britain, late 1950s",
@@ -319,7 +311,7 @@ export const historyPage = {
           alt: "A 1950s brochure page showing a silver and red Triumph Bonneville 120 motorcycle on a pale blue background",
         },
         {
-          ...img("indian-print-ads-colour", 1379, 776),
+          ...img("indian-print-ads-colour", 1103, 776),
           title: "Indian magazine advertising",
           meta: "Collage of press advertisements · India, 1950s–1990s",
           description:
@@ -357,14 +349,6 @@ export const historyPage = {
           description:
             "Health drinks, sewing machines, washing powder, hair cream, biscuits endorsed by a film villain, instant coffee and butter. On cheap paper in black ink, advertisers relied on a strong drawing, a short headline and a face people already knew.",
           alt: "A collage of black and white Indian newspaper advertisements for health drinks, sewing machines, washing powder, biscuits and coffee",
-        },
-        {
-          ...img("marlboro-weekend", 1131, 1391),
-          title: "A world built around a pack",
-          meta: "Magazine advertisement · United States, 1970s",
-          description:
-            "A cowboy with a saddle and rope over his shoulder, and a small pack in the corner. The line beneath calls it the world's best-selling cigarette. The advertisement sells a way of life and lets the reader put the product into it, which is the method of the whole era. Tobacco advertising of this kind is now banned or restricted in most countries.",
-          alt: "A magazine advertisement showing a cowboy in a white hat carrying a rope and saddle, with a red and white cigarette pack in the corner",
         },
       ],
     },

@@ -56,8 +56,8 @@ export const config = {
       /** The figure grows to this as the title clears it. */
       figureScale: 1.05,
       /** Full-bleed hero: the picture eases from this scale and sideways offset (%) to its opposite while the stage holds. */
-      fullScale: { from: 1.14, to: 1.05 },
-      fullDriftPercent: 2.5,
+      fullScale: { from: 1.04, to: 1 },
+      fullDriftPercent: 1.4,
     },
     /** The pull between the hero and the light block. */
     magnet: { duration: 1.15, ease: (t: number) => 1 - Math.pow(1 - t, 4) },

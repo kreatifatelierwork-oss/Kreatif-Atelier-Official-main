@@ -192,15 +192,132 @@ body {
 }
 
 /* Full-bleed hero: the picture's foot and top sink into the mahogany, under the title and the header. */
-.hero-full {
-  will-change: auto;
+/* Full hero (the horse). Everything is sized from the screen's width, so the picture and the word
+   keep their places against each other on any screen: the muzzle always meets the top of the letters.
+   --k is the picture's width in vw; 0.218 / 0.374 is where the muzzle sits in the picture. */
+.hero-horse {
+  --k: 300;
+  --word: 16.2vw;
+  /* Narrow screens lift the word and the horse off the foot of the screen, so the picture fills more of it. */
+  --lift: 16svh;
+  position: absolute;
+  bottom: calc(var(--lift) + var(--word) - var(--k) * 0.5628vw * 0.626);
+  left: calc(47vw - var(--k) * 0.218vw);
+  width: calc(var(--k) * 1vw);
+  aspect-ratio: 1672 / 941;
+  transform-origin: 21.8% 37.4%;
+  /* The picture's own edges dissolve into the mahogany. */
+  mask-image: linear-gradient(to bottom, transparent, #000 26%), linear-gradient(to right, transparent, #000 13%);
+  mask-composite: intersect;
+}
+
+.hero-horse--front {
+  z-index: 3;
+  mask-image: none;
+}
+
+.hero-horse img {
+  width: 100%;
+  height: 100%;
 }
 
 .hero-full__shade {
   pointer-events: none;
-  background:
-    linear-gradient(to bottom, rgb(40 0 0 / 0.55), transparent 22%),
-    linear-gradient(to top, #2c0000 2%, rgb(52 0 0 / 0.82) 24%, rgb(68 0 0 / 0) 58%);
+  background: linear-gradient(to bottom, rgb(40 0 0 / 0.5), transparent 20%);
+}
+
+/* The word: one line, edge to edge, its feet just below the screen. */
+.hero-word {
+  position: absolute;
+  bottom: calc(16svh + 2.7vw);
+  left: 50%;
+  z-index: 2;
+  translate: -50% 0;
+  font-family: var(--font-abril), Didot, "Bodoni MT", Georgia, serif;
+  font-size: 20.5vw;
+  font-weight: 400;
+  line-height: 0.74;
+  letter-spacing: -0.012em;
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+
+.hero-words {
+  position: absolute;
+  top: calc(var(--nav-h) + 1.75rem);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding-bottom: 1.1rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.34em;
+  color: var(--cream);
+}
+
+.hero-words::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 3rem;
+  height: 1px;
+  background: rgb(243 240 233 / 0.6);
+}
+
+.hero-words li:nth-child(even) {
+  opacity: 0.5;
+}
+
+.hero-words--start {
+  left: var(--gutter);
+}
+
+.hero-words--end {
+  right: var(--gutter);
+}
+
+.hero-byline {
+  position: absolute;
+  top: calc(var(--nav-h) + 9.2rem);
+  left: var(--gutter);
+  z-index: 4;
+  font-size: 0.54rem;
+  letter-spacing: 0.3em;
+  color: rgb(243 240 233 / 0.7);
+}
+
+/* Home only: the line and the two buttons, in the open red to the horse's left. */
+.hero-copy {
+  position: absolute;
+  top: calc(var(--nav-h) + 12rem);
+  left: var(--gutter);
+  z-index: 4;
+  width: min(30rem, calc(100vw - 2 * var(--gutter)));
+}
+
+@media (min-width: 1024px) {
+  .hero-word {
+    bottom: 2.7vw;
+  }
+
+  .hero-horse {
+    --k: 128;
+    --lift: 0svh;
+  }
+
+  .hero-copy {
+    top: auto;
+    bottom: calc(18.6vw + 2.25rem);
+    width: min(30rem, 32vw);
+  }
+}
+
+@media (min-width: 1024px) and (max-height: 780px) {
+  .hero-copy__support {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

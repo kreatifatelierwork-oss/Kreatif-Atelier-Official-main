@@ -4,7 +4,7 @@ import { ExperienceLoader } from "@/components/three/ExperienceLoader";
 import { DebugHud } from "@/components/ui/DebugHud";
 import { site } from "@/content/site";
 import { ScrollSystem } from "@/lib/scroll/ScrollSystem";
-import { anton, cormorant, manrope, rupee } from "./fonts";
+import { abril, anton, cormorant, manrope, rupee } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -35,7 +35,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${manrope.variable} ${rupee.variable} ${anton.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${manrope.variable} ${rupee.variable} ${anton.variable} ${abril.variable}`}>
       <body>
         <div className="backdrop" aria-hidden="true" />
         {children}

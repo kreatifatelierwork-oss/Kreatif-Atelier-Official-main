@@ -12,19 +12,21 @@ type Props = {
 };
 
 /**
- * The shared hero for the home page and the Aurelius page: red mahogany, a figure, and AURELIUS in
- * bold. The stage holds (sticky) and the scroll choreography lives in lib/scroll/veil.ts. A `cutout`
- * figure lets the title slide out from behind it; a `full` figure is a full-bleed picture with the title
- * set large along its foot, and it drifts slowly forward while the stage holds.
+ * The shared hero for the home page and the Aurelius page: red mahogany, a figure, and AURELIUS.
+ * The stage holds (sticky) and the scroll choreography lives in lib/scroll/veil.ts.
+ *
+ * A `full` figure (the horse) is built in three layers: the picture, the word set edge to edge in a
+ * heavy serif along the foot of the screen, and the horse's head and chest again on top, so the
+ * animal runs in front of the letters. A `cutout` figure lets the title slide out from behind it.
  */
 export function AureliusHero({ figure, showCtas = false }: Props) {
   const cutout = figure.mode === "cutout";
 
   const copy = (
     <>
-      <p className="display text-[clamp(1.9rem,3.1vw,3.2rem)] leading-[1.08] text-cream">{aurelius.tagline}</p>
-      <p className="mt-5 max-w-xl text-[1.02rem] leading-relaxed text-cream/80">{aurelius.support}</p>
-      <div className="mt-8 flex flex-wrap gap-4">
+      <p className="display text-[clamp(1.7rem,2.5vw,2.7rem)] leading-[1.08] text-cream">{aurelius.tagline}</p>
+      <p className="hero-copy__support mt-4 max-w-md text-[0.98rem] leading-relaxed text-cream/80">{aurelius.support}</p>
+      <div className="mt-6 flex flex-wrap gap-3">
         <Button href={hero.primaryCta.href} variant="primary">
           {hero.primaryCta.label}
         </Button>
@@ -33,25 +35,12 @@ export function AureliusHero({ figure, showCtas = false }: Props) {
     </>
   );
 
-  const title = (
-    <div
-      data-hero-title
-      className={
-        cutout
-          ? "absolute inset-x-[var(--gutter)] top-[13svh] text-center lg:inset-x-auto lg:top-[16svh] lg:left-[41%] lg:text-left"
-          : "absolute inset-x-[var(--gutter)] bottom-[9svh] z-10 text-center lg:bottom-[8svh] lg:text-left"
-      }
-    >
-      <h1
-        id="home-heading"
-        className={`display text-[clamp(3.2rem,16.5vw,8rem)] leading-[0.82] font-bold tracking-[0.02em] text-cream uppercase ${
-          cutout ? "lg:text-[min(11vw,27svh)]" : "lg:text-[min(9.6vw,24svh)]"
-        }`}
-      >
-        {aurelius.name}
-      </h1>
-      <p className="eyebrow mt-4 text-[0.56rem] tracking-[0.34em] text-cream/75 lg:mt-5 lg:text-[0.62rem]">{aurelius.byline}</p>
-    </div>
+  const list = (items: readonly string[], side: "start" | "end") => (
+    <ul aria-hidden="true" className={`hero-words hero-words--${side} eyebrow`}>
+      {items.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
   );
 
   return (
@@ -63,69 +52,53 @@ export function AureliusHero({ figure, showCtas = false }: Props) {
         style={{ "--hero-stage": config.front.hero.stageVh } as React.CSSProperties}
       >
         <div className="sticky top-0 h-svh overflow-hidden">
-          {!cutout && (
-            <div data-hero-image className="hero-full absolute inset-0">
-              <Image
-                src={figure.src}
-                alt={figure.alt}
-                fill
-                priority
-                decoding="sync"
-                sizes="100vw"
-                className="object-cover"
-                style={{ objectPosition: figure.position ?? "center" }}
-              />
-            </div>
-          )}
+          {cutout ? (
+            <>
+              <div data-hero-title className="absolute inset-x-[var(--gutter)] top-[13svh] text-center lg:inset-x-auto lg:top-[16svh] lg:left-[41%] lg:text-left">
+                <h1 id="home-heading" className="display text-[clamp(3.2rem,16.5vw,8rem)] leading-[0.82] font-bold tracking-[0.02em] text-cream uppercase lg:text-[min(11vw,27svh)]">
+                  {aurelius.name}
+                </h1>
+                <p className="eyebrow mt-4 text-[0.56rem] tracking-[0.34em] text-cream/75 lg:mt-5 lg:text-[0.62rem]">{aurelius.byline}</p>
+              </div>
+              <div
+                data-hero-figure
+                className="pointer-events-none absolute bottom-0 left-1/2 h-[66svh] origin-bottom -translate-x-1/2 lg:left-[5%] lg:h-[92svh] lg:translate-x-0 lg:origin-bottom-left"
+              >
+                <Image src={figure.src} alt={figure.alt} width={figure.width} height={figure.height} priority decoding="sync" sizes="(min-width: 1024px) 52svh, 38svh" className="h-full w-auto max-w-none" />
+              </div>
+              {showCtas && <div className="absolute top-[46svh] right-[var(--gutter)] left-[41%] hidden lg:block">{copy}</div>}
+            </>
+          ) : (
+            <>
+              {/* 1 — the picture */}
+              <div data-hero-image className="hero-horse">
+                <Image src={figure.src} alt={figure.alt} width={figure.width} height={figure.height} priority decoding="sync" sizes="(min-width: 1024px) 128vw, 300vw" />
+              </div>
+              <div aria-hidden="true" className="hero-full__shade absolute inset-0" />
 
-          {/* Full-bleed: the foot of the picture sinks into the mahogany so the title and copy read cleanly. */}
-          {!cutout && <div aria-hidden="true" className="hero-full__shade absolute inset-0" />}
+              {list(hero.words.start, "start")}
+              {list(hero.words.end, "end")}
 
-          {title}
+              {/* 2 — the word, edge to edge */}
+              <h1 id="home-heading" className="hero-word">
+                {aurelius.name}
+              </h1>
 
-          {cutout && (
-            <div
-              data-hero-figure
-              className="pointer-events-none absolute bottom-0 left-1/2 h-[66svh] origin-bottom -translate-x-1/2 lg:left-[5%] lg:h-[92svh] lg:translate-x-0 lg:origin-bottom-left"
-            >
-              <Image
-                src={figure.src}
-                alt={figure.alt}
-                width={figure.width}
-                height={figure.height}
-                priority
-                decoding="sync"
-                sizes="(min-width: 1024px) 52svh, 38svh"
-                className="h-full w-auto max-w-none"
-              />
-            </div>
-          )}
+              {/* 3 — the horse again, head and chest only, in front of the letters */}
+              {figure.front && (
+                <div data-hero-image aria-hidden="true" className="hero-horse hero-horse--front">
+                  <Image src={figure.front} alt="" width={figure.width} height={figure.height} priority decoding="sync" sizes="(min-width: 1024px) 128vw, 300vw" />
+                </div>
+              )}
 
-          {showCtas && (
-            <div
-              className={
-                cutout
-                  ? "absolute top-[46svh] right-[var(--gutter)] left-[41%] hidden lg:block"
-                  : "absolute right-[var(--gutter)] bottom-[8svh] z-10 hidden w-[min(31rem,34vw)] lg:block"
-              }
-            >
-              {copy}
-            </div>
-          )}
-
-          {showCtas && cutout && (
-            <a
-              href="#positioning"
-              className="eyebrow absolute right-[var(--gutter)] bottom-7 hidden flex-col items-center gap-3 text-[0.62rem] text-cream/70 transition-colors hover:text-cream lg:flex"
-            >
-              {hero.scrollCue}
-              <span aria-hidden="true" className="block h-9 w-px bg-gradient-to-b from-cream/70 to-transparent" />
-            </a>
+              <p className="hero-byline eyebrow">{aurelius.byline}</p>
+              {showCtas && <div className="hero-copy">{copy}</div>}
+            </>
           )}
         </div>
       </div>
 
-      {showCtas && <div className="relative px-[var(--gutter)] pt-8 pb-16 lg:hidden">{copy}</div>}
+      {showCtas && cutout && <div className="relative px-[var(--gutter)] pt-8 pb-16 lg:hidden">{copy}</div>}
     </section>
   );
 }

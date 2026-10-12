@@ -10,11 +10,11 @@ import type { HeroFigure } from "./types";
 /** The home hero: the owner's galloping horse, full-bleed. The Aurelius page uses the same picture. */
 export const heroFigure: HeroFigure = {
   src: "/reference/aurelius-horse.webp",
-  alt: "A dark horse at full gallop, blurred by its own speed, against burning red",
+  alt: "A dark horse at full gallop, its mane streaming behind it, against burning red",
   width: 1672,
   height: 941,
   mode: "full",
-  position: "30% 45%",
+  front: "/reference/aurelius-horse-front.webp",
 };
 
 export const hero = {
@@ -22,6 +22,8 @@ export const hero = {
   primaryCta: { label: "Explore Aurelius", href: "/aurelius" },
   secondaryCta: { label: "View Selected Work", href: "/work" },
   scrollCue: "Scroll",
+  /** The two small word lists in the hero's top corners. */
+  words: { start: ["Strategy", "Creative", "Media", "Technology"], end: ["Ideas", "Brands", "Audiences", "Impact"] },
 } as const;
 
 export const positioning = {

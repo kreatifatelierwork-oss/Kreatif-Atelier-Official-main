@@ -38,6 +38,15 @@ export const rupee = localFont({
   declarations: [{ prop: "unicode-range", value: "U+20B9" }],
 });
 
+// The Aurelius hero's wordmark only: a heavy, high-contrast display serif.
+export const abril = localFont({
+  src: "../node_modules/@fontsource/abril-fatface/files/abril-fatface-latin-400-normal.woff2",
+  weight: "400",
+  variable: "--font-abril",
+  display: "swap",
+  fallback: ["Didot", "Bodoni MT", "Georgia", "serif"],
+});
+
 // Asraya pages only: the condensed poster face from the Asraya profile. Not preloaded, so other pages never fetch it.
 export const anton = localFont({
   src: "../node_modules/@fontsource/anton/files/anton-latin-400-normal.woff2",

@@ -196,11 +196,11 @@ export const aurelius = {
 /** The Aurelius hero: the owner's galloping horse, full-bleed. Home uses the same picture. */
 export const aureliusHeroFigure: HeroFigure = {
   src: "/reference/aurelius-horse.webp",
-  alt: "A dark horse at full gallop, blurred by its own speed, against burning red",
+  alt: "A dark horse at full gallop, its mane streaming behind it, against burning red",
   width: 1672,
   height: 941,
   mode: "full",
-  position: "30% 45%",
+  front: "/reference/aurelius-horse-front.webp",
 };
 
 export type PillarId = "brand" | "marketing" | "creative" | "advisory";

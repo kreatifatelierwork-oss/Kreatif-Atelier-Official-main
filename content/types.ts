@@ -25,4 +25,6 @@ export type HeroFigure = {
   mode: "cutout" | "full";
   /** CSS object-position for `full` heroes, so the subject stays in frame. */
   position?: string;
+  /** For `full` heroes: the same picture with only the subject kept (transparent elsewhere), laid over the title. */
+  front?: string;
 };

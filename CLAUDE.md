@@ -191,6 +191,13 @@ Full-spectrum creative agency, Hyderabad. Four divisions. Six service pillars.
   Canva's image generator (`made: true`, labelled as illustrations on the page). Originals of all of them are in
   `~/Developer/Aurelius History Photos/`. Left off the page: the Alamy-watermarked Triumph spread (unlicensed stock).
   Third-party advertisements are shown as historical examples; rights are not cleared.
+- Clean-up (2026-10-12): files nothing referenced (the old single-page sections and their content files, unused
+  mood and reference pictures, the two Marlboro pictures) were moved out to `~/Developer/Kreatif-Atelier-removed-files/`.
+  The two unassigned horse emblems were kept. No tobacco advertising on the history page.
+- Hero wordmark (2026-10-12): on the home page and `/aurelius`, AURELIUS is set edge to edge along the foot of the
+  hero in Abril Fatface (hero only), with the horse's head and chest laid again over the letters
+  (`aurelius-horse-front.webp`, a darkness cut-out of the same picture) so the horse runs in front of the word. Small
+  word lists sit in the top corners. Sizes are all in vw (`.hero-horse`, `.hero-word` in `app/globals.css`).
 - Page designs must stay cohesive across the site: new pages reuse the shared header, footer, type
   system, labels, `.btn` and reveal motion. A venture may add its own colour and one signature face.
 - Founder bios on `/about/kreatif-atelier` are still the old site's wording (they call it an agency).
