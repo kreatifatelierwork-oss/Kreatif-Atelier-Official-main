@@ -35,7 +35,8 @@ function Tagline() {
  * (home: Explore Aurelius; the Aurelius page: its services).
  */
 export function HeroAurelius({ primary = hero.primaryCta, secondary = hero.secondaryCta }: { primary?: { label: string; href: string }; secondary?: { label: string; href: string } | null } = {}) {
-  const live = useLiveScene();
+  // The factory runs live on phones too (owner, 2026-10-21); the floating objects stay off there.
+  const live = useLiveScene({ allowTouch: true });
   const [ready, setReady] = useState(false);
 
   return (

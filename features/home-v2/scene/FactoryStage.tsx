@@ -22,7 +22,9 @@ const PODIUM_R = 4.3;
 function cameraFor(aspect: number): [number, number, number] {
   const half = Math.tan((FOV / 2) * (Math.PI / 180));
   // Fits the factory and the whole podium (its front rim included), with a margin, so nothing is cut.
-  const d = Math.max(6.9 / (2 * half), 10.2 / (2 * half * aspect));
+  // Portrait screens (phones) fit the width more tightly, so the factory fills the screen instead of shrinking.
+  const portrait = aspect < 1;
+  const d = Math.max(6.9 / (2 * half), (portrait ? 9.3 : 10.2) / (2 * half * aspect));
   return [0, Math.sin(PITCH) * d - 0.55, Math.cos(PITCH) * d];
 }
 
@@ -81,7 +83,7 @@ function Scene({ still }: { still: boolean }) {
   const camera = useMemo(() => cameraFor(aspect), [aspect]);
   return (
     <>
-      <PerspectiveCamera makeDefault fov={FOV} position={camera} onUpdate={(c) => c.lookAt(0, -1.15, 0)} />
+      <PerspectiveCamera makeDefault fov={FOV} position={camera} onUpdate={(c) => c.lookAt(0, aspect < 1 ? -2.1 : -1.15, 0)} />
       <StudioLighting shadow={false} />
       {/* The factory: large and centred, turning slowly half way round and back. */}
       <SwingingFactory still={still} />
@@ -116,7 +118,8 @@ export default function FactoryStage({ onReady }: { onReady?: () => void }) {
     <div ref={box} aria-hidden="true" data-ready={ready || undefined} className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[var(--ds-dur-slow)] ease-[var(--ds-ease-out)] data-[ready]:opacity-100">
       <Canvas
         frameloop={!visible ? "never" : still ? "demand" : "always"}
-        dpr={[1, float.maxDpr]}
+        // Phones: a lower pixel-ratio cap keeps the live factory light (CLAUDE.md: DPR ≤ 1.5 on mobile).
+        dpr={[1, typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches ? 1.5 : float.maxDpr]}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance", preserveDrawingBuffer: poster }}
         onCreated={({ gl }) => {
           gl.toneMapping = THREE.NeutralToneMapping;
