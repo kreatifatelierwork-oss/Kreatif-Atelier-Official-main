@@ -35,6 +35,8 @@ export const aboutAureliusPage = {
 export const aboutKaPage = {
   eyebrow: ["About", "Kreatif Atelier"],
   title: "Ideas. People. Impact.",
+  ventures: "Our ventures",
+  contact: "Contact us",
   meta: { title: "About Kreatif Atelier", description: "Kreatif Atelier is a creative holding ecosystem connecting people, ideas and complementary disciplines to create meaningful opportunities and lasting impact." },
 } as const;
 
