@@ -501,13 +501,18 @@ a.neu-card:focus-visible {
   translate: var(--fa-sx, 0%) 0;
   animation: fa-shadow var(--fa-period, 6s) var(--ds-ease-in-out) var(--fa-delay, 0s) infinite alternate;
 }
+/* The idle float, very slightly in 3D (owner, 2026-10-21): a gentle rock about X and Y (±var(--fa-tilt3d)) on top of
+   the drift and roll, so the object turns a touch in depth. Transform only. */
 @keyframes fa-float {
   from {
-    transform: translate3d(0, 0, 0) rotate(calc(var(--fa-rot, 2deg) * -1));
+    transform: perspective(700px) translate3d(0, 0, 0) rotateX(calc(var(--fa-tilt3d) * -1)) rotateY(var(--fa-tilt3d)) rotate(calc(var(--fa-rot, 2deg) * -1));
   }
   to {
-    transform: translate3d(var(--fa-dx, 4px), var(--fa-dy, -12px), 0) rotate(var(--fa-rot, 2deg));
+    transform: perspective(700px) translate3d(var(--fa-dx, 4px), var(--fa-dy, -12px), 0) rotateX(var(--fa-tilt3d)) rotateY(calc(var(--fa-tilt3d) * -1)) rotate(var(--fa-rot, 2deg));
   }
+}
+.fa {
+  --fa-tilt3d: 5deg;
 }
 @keyframes fa-shadow {
   from {
@@ -629,6 +634,10 @@ a.neu-card:focus-visible {
   position: fixed;
   top: 0;
   left: 0;
+  /* A real size from the start: the canvas is created during idle warm-up, before any artifact is hovered, and a
+     0×0 canvas left the camera's projection wrong (every model then drew too small). */
+  width: 256px;
+  height: 256px;
   z-index: 20;
   pointer-events: none;
   visibility: hidden;

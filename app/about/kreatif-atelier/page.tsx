@@ -1,42 +1,30 @@
 import type { Metadata } from "next";
+import { AboutHeroNeu, FoundersNeu, ReachNeu, VisionNeu } from "@/components/about/AboutNeu";
 import { HistoryTimeline } from "@/components/aurelius/HistoryTimeline";
-import { ContactCta, Ventures } from "@/components/home/HomeSections";
-import { PageHero } from "@/components/layout/PageHero";
-import { KaCard } from "@/components/ui/Brand";
+import { ContactNeu } from "@/components/home-neu/ContactNeu";
+import { VenturesNeu } from "@/components/home-neu/VenturesNeu";
 import { PageShell } from "@/components/layout/PageShell";
-import { EcosystemReach } from "@/components/sections/EcosystemReach";
-import { Founders } from "@/components/sections/Founders";
 import { Heading, Label } from "@/components/ui/Heading";
-import { vision } from "@/content/front";
 import { historyPage } from "@/content/history";
-import { parent } from "@/content/home";
 import { aboutKaPage } from "@/content/pages";
 
 export const metadata: Metadata = { ...aboutKaPage.meta, alternates: { canonical: "/about/kreatif-atelier/" } };
 
-/** The parent ecosystem: what it is, its vision, the five ventures, who it serves, the founders — and the history of the trade it works in. */
+/**
+ * The parent ecosystem, on the site's neumorphic system (owner, 2026-10-21): the opening card, vision, the five
+ * ventures, who it serves and its impact, the founders, then the history of the trade it works in (the history
+ * blocks keep their own design, unchanged), and the call to action.
+ */
 export default function Page() {
   return (
-    <PageShell>
-      <PageHero eyebrow={[...aboutKaPage.eyebrow]} title={aboutKaPage.title} lead={parent.body} />
-      <div className="classic"><KaCard /></div>
-
-      <section aria-labelledby={`${vision.id}-heading`} className="px-[var(--gutter)] py-[clamp(3.5rem,8vh,6rem)]">
-        <div className="mx-auto w-full max-w-[1280px] border-t border-line pt-12">
-          <Label>{vision.marker}</Label>
-          <Heading id={`${vision.id}-heading`} headline={vision.headline} className="mt-6 text-cream" />
-          <p data-reveal className="mt-8 max-w-3xl text-[1.15rem] leading-[1.8] text-cream-muted">
-            {vision.body}
-          </p>
-          <p data-reveal className="eyebrow mt-8 text-[0.66rem] text-gold">
-            {vision.principles.join(" · ")}
-          </p>
-        </div>
-      </section>
-
-      <Ventures />
-      <EcosystemReach />
-      <Founders />
+    <PageShell theme="aurelius">
+      <div className="font-ds-text text-ds-text">
+        <AboutHeroNeu />
+        <VisionNeu />
+        <VenturesNeu />
+        <ReachNeu />
+        <FoundersNeu />
+      </div>
 
       {/* The history of branding, marketing and advertising */}
       <section id="history" aria-labelledby="history-heading" className="relative overflow-hidden px-[var(--gutter)] pt-[clamp(4rem,10vh,7rem)] pb-[clamp(3rem,7vh,5rem)]">
@@ -81,7 +69,7 @@ export default function Page() {
           </p>
         </div>
       </section>
-      <ContactCta />
+      <ContactNeu />
     </PageShell>
   );
 }

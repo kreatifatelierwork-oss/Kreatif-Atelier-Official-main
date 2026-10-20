@@ -7,7 +7,7 @@ export type NavItem = { label: string; href?: string; featured?: boolean; mega?:
 
 /** Header navigation (docs/website-blueprint.md §3). Service names stay out of the header: practice areas only. */
 export const mainNav: NavItem[] = [
-  { label: "Aurelius", href: "/aurelius", featured: true },
+  { label: "Aurelius", href: "/", featured: true },
   {
     label: "Services",
     href: "/aurelius/services",
