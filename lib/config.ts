@@ -25,6 +25,11 @@ export const config = {
    * slowly, never a full spin (Roo, 2026-10-20). Swing is either side of its resting angle.
    */
   factory: { swingDeg: 35, periodS: 60 },
+  /**
+   * The scroll-drawn wire through step buttons (components/design/StepWire.tsx): the curve's sag (px) and the
+   * scroll window it draws over (ScrollTrigger start/end), with scrub smoothing in seconds.
+   */
+  stepWire: { sag: 14, start: "top 78%", end: "bottom 60%", scrub: 0.6 },
   /** Services mega menu: hover must rest this long on a row before it becomes active (no flicker on diagonal moves). */
   megaMenu: { intentMs: 90 },
   /** 3D artifacts. */

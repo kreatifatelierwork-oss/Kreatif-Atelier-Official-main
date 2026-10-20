@@ -3,6 +3,8 @@ import { DisplayHeading } from "@/components/design/DisplayHeading";
 import { FloatCluster } from "@/components/design/FloatCluster";
 import { Section } from "@/components/design/Section";
 import { SectionHeader } from "@/components/design/SectionHeader";
+import { StepWire } from "@/components/design/StepWire";
+import { processSteps } from "@/content/approach";
 import { AttentionNeu } from "@/components/home-neu/AttentionNeu";
 import { ContactNeu } from "@/components/home-neu/ContactNeu";
 import { MeasurementNeu } from "@/components/home-neu/MeasurementNeu";
@@ -53,14 +55,9 @@ export default function Page() {
             <SectionHeader id="process-heading" label={approachPage.processLabel} headline={approachPage.processHeadline} className="lg:max-w-[58%]" />
             <FloatCluster slugs={sectionArtifacts.approach} seed={5} />
           </div>
-          <ol data-reveal className="neu-card neu-card--inset mt-[var(--ds-space-7)] grid gap-[var(--ds-space-4)] p-[var(--ds-space-5)] sm:grid-cols-2 lg:grid-cols-5">
-            {aurelius.process.map((step, i) => (
-              <li key={step} className="neu-card flex flex-col gap-[var(--ds-space-2)] p-[var(--ds-space-5)]">
-                <span className="ds-label">{String(i + 1).padStart(2, "0")}</span>
-                <span className="font-ds-display text-[length:var(--ds-text-xl)] leading-[var(--ds-leading-heading)] text-ds-text uppercase">{step}</span>
-              </li>
-            ))}
-          </ol>
+          <div className="mt-[var(--ds-space-7)]">
+            <StepWire steps={processSteps} layout="row" label={approachPage.processLabel} />
+          </div>
         </Section>
 
         <AttentionNeu />

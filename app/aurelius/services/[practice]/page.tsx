@@ -4,6 +4,8 @@ import { ContactNeu } from "@/components/home-neu/ContactNeu";
 import { ServiceArtifact } from "@/components/services/ServiceArtifact";
 import { PracticeArtifact } from "@/components/services/PracticeArtifact";
 import { PracticeFloaters } from "@/components/services/PracticeFloaters";
+import { StepWire } from "@/components/design/StepWire";
+import { processSteps } from "@/content/approach";
 import { serviceCategories } from "@/content/services-menu";
 import { PageHero } from "@/components/layout/PageHero";
 import { PracticeServiceList } from "@/components/aurelius/ServiceNotes";
@@ -88,14 +90,9 @@ export default async function Page({ params }: Props) {
           <h2 id="how-heading" className="ds-label">
             {labels.how}
           </h2>
-          <ol className="mt-[var(--ds-space-6)] grid gap-[var(--ds-space-5)] sm:grid-cols-2 lg:grid-cols-5">
-            {aurelius.process.map((step, i) => (
-              <li key={step} data-reveal className="neu-card p-[var(--ds-space-5)]">
-                <p className="ds-label">{String(i + 1).padStart(2, "0")}</p>
-                <p className="mt-[var(--ds-space-2)] font-ds-display text-[length:var(--ds-text-xl)] leading-[var(--ds-leading-heading)] text-ds-text uppercase">{step}</p>
-              </li>
-            ))}
-          </ol>
+          <div className="mt-[var(--ds-space-6)]">
+            <StepWire steps={processSteps} layout="row" label={labels.how} />
+          </div>
         </div>
       </section>
 

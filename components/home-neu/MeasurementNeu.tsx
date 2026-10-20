@@ -1,8 +1,10 @@
 import { NeuButton } from "@/components/design/NeuButton";
 import { Section } from "@/components/design/Section";
+import { StepWire } from "@/components/design/StepWire";
+import { loopSteps } from "@/content/approach";
 import { measurement } from "@/content/home";
 
-/** Measure → understand → redirect, and the loop as numbered steps in a pressed track. */
+/** Measure → understand → redirect, and the loop as separate steps on a wire that draws round and back to the start. */
 export function MeasurementNeu() {
   const id = `${measurement.id}-heading`;
   return (
@@ -33,14 +35,7 @@ export function MeasurementNeu() {
             <NeuButton href={measurement.cta.href}>{measurement.cta.label}</NeuButton>
           </div>
         </div>
-        <ol data-reveal className="neu-card neu-card--inset flex flex-col gap-[var(--ds-space-3)] p-[var(--ds-space-5)]">
-          {measurement.loop.map((step, i) => (
-            <li key={step} className="neu-raised-sm flex items-center gap-[var(--ds-space-4)] rounded-ds-md px-[var(--ds-space-5)] py-[var(--ds-space-4)]">
-              <span className="ds-label">{String(i + 1).padStart(2, "0")}</span>
-              <span className="font-ds-text text-[length:var(--ds-text-lg)] font-semibold text-ds-text">{step}</span>
-            </li>
-          ))}
-        </ol>
+        <StepWire steps={loopSteps} loop label={measurement.marker} />
       </div>
     </Section>
   );

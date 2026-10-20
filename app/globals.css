@@ -9,6 +9,7 @@
 @import "../styles/design/buttons.css";
 @import "../styles/design/timezones.css";
 @import "../styles/design/footer.css";
+@import "../styles/design/stepwire.css";
 
 /* Pinned-section layout (Services, Process). Keep in sync with config.pin.query in lib/config.ts.
    `pin-short` tightens the pinned layout for short laptop screens (e.g. 1366×768 → ~620–700px visible). */
