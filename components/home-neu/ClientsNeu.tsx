@@ -15,7 +15,7 @@ export function ClientsNeu() {
       <figure data-reveal className="tz-map neu-card mt-[var(--ds-space-7)]">
         <div className="tz-map__frame">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={clients.map.src} alt={clients.map.alt} width={clients.map.width} height={clients.map.height} loading="lazy" decoding="async" className="tz-map__img" />
+          <img src={clients.map.src} srcSet={`${clients.map.src} 1200w, ${clients.map.srcLarge} 2400w`} sizes="(min-width: 1280px) 1240px, 100vw" alt={clients.map.alt} width={clients.map.width} height={clients.map.height} loading="lazy" decoding="async" className="tz-map__img" />
           {clients.places.map((place) => (
             <span
               key={place.city}

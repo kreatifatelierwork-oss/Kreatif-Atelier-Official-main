@@ -803,6 +803,11 @@ a.neu-card:focus-visible {
     transform 220ms var(--ds-ease-out),
     visibility 0s;
 }
+/* The trigger stays above the bridge, so clicks land on the link itself (the bridge starts over its lower edge). */
+.mega > a {
+  position: relative;
+  z-index: 11;
+}
 .mega__bridge {
   position: absolute;
   /* Starts just below the trigger's text, never over it (it used to cover the lower half of "Services"). */

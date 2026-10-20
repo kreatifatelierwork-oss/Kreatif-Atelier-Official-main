@@ -105,7 +105,8 @@ export const clients = {
   id: "clients",
   marker: "Where our clients are",
   headline: { lead: "We work across", emphasis: "3 timezones." },
-  map: { src: "/images/graphics/world-relief.svg", width: 1000, height: 512, alt: "A relief map of the world marking Vancouver, the UAE and India" },
+  /** A still render of world-relief.svg (its 32 blur filters are too costly to draw live while scrolling). */
+  map: { src: "/images/graphics/world-relief-1200.webp", srcLarge: "/images/graphics/world-relief-2400.webp", width: 1200, height: 615, alt: "A relief map of the world marking Vancouver, the UAE and India" },
   places: [
     { country: "Canada", city: "Vancouver", utc: "UTC−8", note: "UTC−7 in summer", x: 16.76, y: 26.94, label: "right" },
     { country: "UAE", city: "Dubai", utc: "UTC+4", x: 64.92, y: 39.64, label: "left" },

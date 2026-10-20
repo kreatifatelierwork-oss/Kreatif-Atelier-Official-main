@@ -27,7 +27,8 @@ export function FilmReelNeu() {
             io?.disconnect();
           }
         },
-        { rootMargin: "200px 0px" },
+        // Far ahead of the viewport, so it is built during idle time well before a fast scroll reaches it.
+        { rootMargin: "2000px 0px" },
       );
       io.observe(el);
     };

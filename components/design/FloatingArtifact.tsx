@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
-import { liveCapable, useLive, type LiveKind } from "@/lib/artifacts/live";
+import { isScrolling, liveCapable, useLive, type LiveKind } from "@/lib/artifacts/live";
 import { config } from "@/lib/config";
 import { springs } from "@/lib/design/tokens";
 
@@ -171,6 +171,8 @@ export function FloatingArtifact({ seed, className = "", style, image, live, chi
       if (alpha && !alpha(u, v) && !canLive) return rest();
       if (canLive && img && live) {
         const store = useLive.getState();
+        // While scrolling, keep a model that is already live but start no new one.
+        if (store.target?.el !== el && isScrolling(config.artifacts.live.scrollQuietMs)) return;
         if (store.target?.el !== el || !store.hovering) store.enter({ el, img, kind: live.kind, slug: live.slug });
         store.move(u, v);
         // The live model does all the moving: the poster stays at rest, so the swap is rest to rest (no jump).
@@ -209,6 +211,7 @@ export function FloatingArtifact({ seed, className = "", style, image, live, chi
         const v = (e.clientY - b.top) / b.height;
         if (canLive && img && live) {
           const store = useLive.getState();
+          if (store.target?.el !== el && isScrolling(config.artifacts.live.scrollQuietMs)) return;
           store.enter({ el, img, kind: live.kind, slug: live.slug }, d);
           if (store.target?.el === el) store.move(u, v, d);
           near = true;

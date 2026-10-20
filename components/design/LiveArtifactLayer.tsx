@@ -59,6 +59,21 @@ export function LiveArtifactLayer() {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- one-way latch on first hover
     if (target) setUsed(true);
   }, [target]);
+  // Warm up while the browser is idle after load: fetch the 3D code and create the (empty, stopped) canvas, so
+  // the first hover never pays for them mid-scroll. Fine pointers only (no live 3D on touch).
+  useEffect(() => {
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+    let idle = 0;
+    const warm = () => {
+      idle = window.requestIdleCallback?.(() => setUsed(true), { timeout: 4000 }) ?? 0;
+    };
+    if (document.readyState === "complete") warm();
+    else window.addEventListener("load", warm, { once: true });
+    return () => {
+      window.removeEventListener("load", warm);
+      if (idle) window.cancelIdleCallback(idle);
+    };
+  }, []);
 
   // Follow the poster every frame while there is a target.
   useEffect(() => {

@@ -67,6 +67,16 @@ export const useLive = create<LiveState>()((set, get) => ({
   },
 }));
 
+/**
+ * True while the page is scrolling (and for config.artifacts.live.scrollQuietMs after). Chrome fires hover events
+ * as content slides under a still pointer; starting a live model then would load and compile 3D mid-scroll.
+ */
+let lastScroll = 0;
+if (typeof window !== "undefined") window.addEventListener("scroll", () => (lastScroll = performance.now()), { passive: true });
+export function isScrolling(quietMs: number) {
+  return performance.now() - lastScroll < quietMs;
+}
+
 /** Live 3D only with a fine pointer and motion allowed (touch keeps the CSS wobble). */
 export function liveCapable() {
   if (typeof window === "undefined") return false;

@@ -92,7 +92,7 @@ export default function FilmReelStage() {
   useEffect(() => {
     const el = box.current;
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { rootMargin: "80px" });
+    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { rootMargin: "1200px 0px" });
     io.observe(el);
     // Scroll progress through the section (0 entering, 1 leaving), sampled outside the render loop.
     const onScroll = () => {
