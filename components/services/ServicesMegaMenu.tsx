@@ -2,6 +2,7 @@
 
 import { useId, useRef, useState } from "react";
 import { serviceCategories, servicesMenuLabels as L } from "@/content/services-menu";
+import { NeuButton } from "@/components/design/NeuButton";
 import { SmartLink } from "@/components/ui/SmartLink";
 import { OtherServices } from "./OtherServices";
 import { ServiceArtifact } from "./ServiceArtifact";
@@ -33,6 +34,7 @@ export function ServicesMegaMenu({ pathname }: { pathname: string }) {
         {L.keyboardHint}
       </p>
       <section ref={panel} aria-live="polite" aria-label={active.name} className="mm-panel flex max-h-[min(36rem,72vh)] min-h-0 flex-col rounded-2xl p-4">
+        <div key={active.id} className="mm-panel__body flex min-h-0 flex-1 flex-col">
         <div className="flex flex-col items-center text-center">
           <ServiceArtifact category={active} size={160} className="h-28 w-28 shrink-0" />
           <p className="mm-panel__name mt-2">{active.name}</p>
@@ -62,13 +64,10 @@ export function ServicesMegaMenu({ pathname }: { pathname: string }) {
             </div>
           )}
         </div>
-        <SmartLink
-          href={active.href}
-          className="eyebrow mt-4 inline-flex items-center justify-between rounded-full border border-gold/60 px-4 py-2.5 text-[0.6rem] text-gold-bright transition-colors hover:bg-gold hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
-        >
+        <NeuButton href={active.href} size="sm" knob className="mt-4 self-center">
           {active.featured.length ? L.viewCategory(active.name) : L.browseAll}
-          <span aria-hidden="true">→</span>
-        </SmartLink>
+        </NeuButton>
+        </div>
       </section>
     </div>
   );

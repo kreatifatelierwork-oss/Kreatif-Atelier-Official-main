@@ -12,7 +12,7 @@ export function ServiceCard({ service, headingLevel = "h3" }: { service: Service
   return (
     <article className="neu-card svc-card h-full">
       <div className="flex items-baseline justify-between gap-[var(--ds-space-3)]">
-        <SmartLink href={practiceHref(service.domain)} className="ds-label min-w-0 truncate underline-offset-4 hover:underline focus-visible:underline">
+        <SmartLink href={practiceHref(service.domain)} className="svc-card__domain">
           {service.domainName}
         </SmartLink>
         <span className="svc-card__code">{service.id}</span>

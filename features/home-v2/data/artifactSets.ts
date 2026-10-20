@@ -28,9 +28,8 @@ export const sectionArtifacts = {
   homeTeaser: ["instagram-tile", "youtube-tile", "linkedin-tile"],
   attention: ["tiktok-tile", "x-tile", "whatsapp-tile"],
   approach: ["lightbulb", "target", "growth-runner"],
-  /** The services page: two around the All Services artifact in the header, three beside the index heading. */
+  /** The services page: two around the All Services artifact in the header (the index itself stays clean). */
   servicesHero: ["megaphone", "growth-bars"],
-  servicesIndex: ["seo-magnifier", "palette-card", "camcorder"],
 } as const;
 
 /** The slugs actually used on pages (the posters to render). */

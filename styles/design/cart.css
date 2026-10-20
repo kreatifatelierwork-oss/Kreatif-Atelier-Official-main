@@ -172,3 +172,22 @@
   color: var(--au-gold-ink);
   box-shadow: var(--neu-pressed-sm);
 }
+
+/* The domain as a small-caps chip. */
+.svc-card__domain {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.68rem;
+  font-weight: 700;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.08em;
+  color: var(--ds-text-muted);
+}
+.svc-card__domain:hover,
+.svc-card__domain:focus-visible {
+  color: var(--ds-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

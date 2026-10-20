@@ -709,16 +709,40 @@ a.neu-card:focus-visible {
 }
 .mm-row__name {
   font-family: var(--ds-font-accent);
-  font-size: 1.22rem;
+  font-size: 1.12rem;
   font-weight: 600;
   line-height: 1.15;
   color: var(--ds-text);
 }
-.mm-row__count {
-  font-size: 0.72rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
+.mm-row__name {
+  display: block;
+}
+.mm-row__line {
+  display: block;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.74rem;
+  line-height: 1.35;
+  color: var(--ds-text-muted);
+}
+.mm-row__arrow {
+  flex: none;
   color: var(--au-gold-ink);
+  transition: transform var(--ds-dur-fast) var(--ds-ease-out);
+}
+.mm-row[data-active] .mm-row__arrow {
+  transform: translateX(3px);
+}
+/* The right panel cross-fades when the active practice changes (keyed in ServicesMegaMenu). */
+.mm-panel__body {
+  animation: mm-fade var(--ds-dur-base) var(--ds-ease-out);
+}
+@keyframes mm-fade {
+  from {
+    opacity: 0;
+  }
 }
 .mm-row[data-active] {
   background: rgb(var(--ds-light) / 0.55);

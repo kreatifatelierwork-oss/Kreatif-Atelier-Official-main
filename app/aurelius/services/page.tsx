@@ -48,14 +48,6 @@ export default function Page() {
             <DisplayHeading level={2} id="all-services-heading" className="ds-heading">
               {servicesIndex.heading}
             </DisplayHeading>
-            {/* Three suiting objects in a quiet row beside the heading (wide screens only). */}
-            <div aria-hidden="true" className="hidden items-center gap-[var(--ds-space-5)] md:flex">
-              {sectionArtifacts.servicesIndex.map((slug, i) => (
-                <div key={slug} className="relative aspect-square w-[5.5rem]">
-                  <FloatingArtifact seed={40 + i * 7} className="fc-tile inset-0" image={poster(slug)} live={{ kind: "obj", slug }} />
-                </div>
-              ))}
-            </div>
           </div>
           <div className="mt-[var(--ds-space-6)]">
             <AllServices />
