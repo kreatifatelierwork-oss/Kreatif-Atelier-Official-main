@@ -1,0 +1,281 @@
+/*
+ * The Aurelius home hero (components/aurelius-site): its graphics, the logo mark and the wordmark.
+ * Colours only from the Aurelius tokens. Decorative motion is CSS (transform/opacity) and stops for
+ * reduced motion.
+ */
+/* The hero's own light, over the page fog (no solid layer, so the fog shows through). */
+.au-hero {
+  background:
+    radial-gradient(60% 50% at 50% 38%, rgb(253 249 245 / 0.75) 0%, transparent 70%),
+    radial-gradient(40% 40% at 8% 90%, rgb(94 26 23 / 0.08) 0%, transparent 70%),
+    radial-gradient(45% 40% at 95% 12%, rgb(94 26 23 / 0.1) 0%, transparent 70%);
+}
+
+/* The page background behind every Aurelius page: a still warm gradient, and over it the Vanta fog
+   (components/aurelius-site/AureliusBackground.tsx), which fades in once it has drawn. */
+.au-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(70% 55% at 18% 20%, var(--au-cream-200) 0%, transparent 70%),
+    radial-gradient(60% 50% at 85% 70%, var(--au-rose-200) 0%, transparent 70%),
+    radial-gradient(50% 40% at 60% 10%, var(--au-gold-200) 0%, transparent 70%),
+    var(--ds-surface);
+}
+.au-bg__fog {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--ds-dur-slow) var(--ds-ease-out);
+}
+.au-bg__fog[data-ready] {
+  opacity: 1;
+}
+
+.au-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Thin gold orbit lines around the scene. */
+.au-orbits {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--au-gold-400);
+  stroke-width: 1;
+  opacity: 0.45;
+}
+
+/* Glossy spheres: a soft highlight up and to the left, deepening to the edge. */
+.au-sphere {
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  animation: au-drift 9s var(--ds-ease-in-out) infinite alternate;
+}
+.au-sphere--maroon {
+  background: radial-gradient(circle at 32% 28%, var(--au-maroon-400) 0%, var(--au-maroon-600) 32%, var(--au-maroon-800) 68%, var(--au-maroon-950) 100%);
+  box-shadow: 0 30px 60px -30px rgb(94 26 23 / 0.6);
+}
+.au-sphere--gold {
+  background: radial-gradient(circle at 32% 28%, var(--au-gold-200) 0%, var(--au-gold-400) 35%, var(--au-gold-600) 72%, var(--au-gold-700) 100%);
+  box-shadow: 0 16px 30px -16px rgb(126 90 34 / 0.6);
+}
+.au-sphere--a {
+  left: -9vw;
+  top: 40%;
+  width: 22vw;
+  opacity: 0.9;
+}
+.au-sphere--b {
+  right: -11vw;
+  top: -10vw;
+  width: 30vw;
+  opacity: 0.85;
+  animation-duration: 11s;
+}
+.au-sphere--d {
+  left: 4%;
+  top: 46%;
+  width: 2.4vw;
+  animation-duration: 6s;
+}
+@keyframes au-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -14px, 0);
+  }
+}
+
+/* Misty mountains along the foot: three ridges, the far ones paler, with mist over them. */
+.au-mountains {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 34%;
+}
+.au-ridge--1 {
+  fill: var(--au-maroon-400);
+  opacity: 0.16;
+}
+.au-ridge--2 {
+  fill: var(--au-maroon-600);
+  opacity: 0.18;
+}
+.au-ridge--3 {
+  fill: var(--au-maroon-800);
+  opacity: 0.22;
+}
+.au-mist {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40%;
+  background: linear-gradient(to bottom, transparent 0%, rgb(253 249 245 / 0.55) 55%, rgb(253 249 245 / 0) 100%);
+}
+
+/* Script words, right side, quiet. */
+.au-script {
+  position: absolute;
+  right: 4%;
+  top: 30%;
+  display: none;
+  flex-direction: column;
+  font-family: var(--ds-font-accent);
+  font-style: italic;
+  font-size: var(--ds-text-2xl);
+  line-height: 1.05;
+  color: var(--au-gold-ink);
+  opacity: 0.45;
+  transform: rotate(-12deg);
+}
+.au-script span:nth-child(2) {
+  padding-left: 0.6em;
+}
+.au-script span:nth-child(3) {
+  padding-left: 1.2em;
+}
+.au-script span:nth-child(4) {
+  padding-left: 1.8em;
+}
+
+/* The parent's three words, set vertically with a gold rule. */
+.au-vertical {
+  position: absolute;
+  left: 5%;
+  top: 20%;
+  display: none;
+  flex-direction: column;
+  gap: var(--ds-space-4);
+  border-left: 1px solid var(--au-gold-500);
+  padding-left: var(--ds-space-4);
+  font-size: var(--ds-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ds-text-muted);
+}
+@media (min-width: 1100px) {
+  .au-script,
+  .au-vertical {
+    display: flex;
+  }
+}
+
+/* The Aurelius mark beside the wordmark: the horse emblem, cut from the mono artwork and filled gold. */
+.au-logo-mark {
+  display: block;
+  aspect-ratio: 900 / 993;
+  height: calc(var(--au-wordmark) * 0.78);
+  background: var(--au-cta-gradient);
+  -webkit-mask: url("/images/logos/horse-mono.webp") center / contain no-repeat;
+  mask: url("/images/logos/horse-mono.webp") center / contain no-repeat;
+  filter: drop-shadow(0 6px 10px rgb(94 26 23 / 0.25));
+}
+
+/* The wordmark: sized to fit one screen at any aspect (by width and by height). */
+.au-hero {
+  --au-wordmark: clamp(3.2rem, min(14.5vw, 17svh), 12.5rem);
+}
+/* The gold wordmark picture: as tall as the old type, never wider than the screen allows. */
+.au-wordmark-img {
+  display: block;
+  width: auto;
+  height: calc(var(--au-wordmark) * 1.02);
+  max-width: min(92vw, 1100px);
+  object-fit: contain;
+  filter: drop-shadow(0 8px 14px rgb(94 26 23 / 0.22));
+}
+.au-wordmark {
+  font-family: var(--ds-font-display);
+  font-size: var(--au-wordmark);
+  line-height: 0.92;
+  letter-spacing: var(--ds-tracking-display);
+  text-transform: uppercase;
+}
+.au-tagline {
+  font-size: clamp(1.25rem, min(2.4vw, 3.6svh), 2.25rem);
+}
+
+/* A small scroll cue at the foot. */
+.au-scroll-cue {
+  font-size: var(--ds-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ds-text-subtle);
+}
+.au-scroll-cue::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: var(--ds-space-5);
+  margin: var(--ds-space-2) auto 0;
+  background: var(--au-gold-500);
+  animation: au-cue 2.4s var(--ds-ease-in-out) infinite;
+  transform-origin: top;
+}
+@keyframes au-cue {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .au-sphere,
+  .au-scroll-cue::after {
+    animation: none;
+  }
+}
+
+/* The small glossy spheres among the floating objects. */
+.au-orb {
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+.au-orb--maroon {
+  background: radial-gradient(circle at 32% 28%, var(--au-maroon-400) 0%, var(--au-maroon-600) 34%, var(--au-maroon-900) 100%);
+}
+.au-orb--gold {
+  background: radial-gradient(circle at 32% 28%, var(--au-gold-200) 0%, var(--au-gold-500) 45%, var(--au-gold-700) 100%);
+}
+
+/* The scroll cue only where there is room under the scene. */
+@media (max-height: 860px) {
+  .au-scroll-cue {
+    display: none !important;
+  }
+}
+
+/* The horse mark beside "Aurelius" in the pill navigation. */
+.au-logo-mark--nav {
+  height: 26px;
+}
+
+/* Gold words in large display type (the tagline): a dark-gold gradient clipped to the letters. */
+.au-gold-text {
+  background: var(--au-gold-display);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

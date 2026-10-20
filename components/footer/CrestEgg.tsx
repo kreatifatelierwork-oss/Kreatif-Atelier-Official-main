@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Dialog } from "@/components/ui/Dialog";
 import { SmartLink } from "@/components/ui/SmartLink";
-import { Star } from "@/components/ui/Star";
+import { KaWordmark } from "@/components/ui/Brand";
 import { hero, parent, ventures } from "@/content/home";
 import { site } from "@/content/site";
 import { verticalBySlug } from "@/content/verticals";
@@ -44,10 +44,10 @@ export function CrestEgg() {
         type="button"
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
-        className="group display flex items-center gap-3 text-left text-[1.5rem] font-medium tracking-[0.2em] text-cream uppercase"
+        className="group flex items-center gap-4 text-left text-[#d4b27a]"
       >
-        <Star className="text-gold transition-transform duration-700 ease-out group-hover:rotate-180 group-focus-visible:rotate-180" />
-        {site.name}
+        <Image src={crest.eagle.src} alt="" width={crest.eagle.width} height={crest.eagle.height} sizes="4rem" className="h-14 w-auto transition-transform duration-700 ease-out group-hover:scale-110 group-focus-visible:scale-110" />
+        <KaWordmark className="h-9 md:h-11" label />
       </button>
 
       <Dialog open={open} onClose={() => setOpen(false)} labelledBy="crest-title" variant="sheet" tone="light">

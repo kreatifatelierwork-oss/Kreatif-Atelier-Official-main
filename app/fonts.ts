@@ -44,15 +44,18 @@ export const abril = localFont({
   weight: "400",
   variable: "--font-abril",
   display: "swap",
+  // Only the older typeset wordmark used it; the hero now shows the owner's wordmark picture.
+  preload: false,
   fallback: ["Didot", "Bodoni MT", "Georgia", "serif"],
 });
 
-// Asraya pages only: the condensed poster face from the Asraya profile. Not preloaded, so other pages never fetch it.
+// The condensed poster face from the Asraya profile, now used for headlines across the site.
 export const anton = localFont({
   src: "../node_modules/@fontsource/anton/files/anton-latin-400-normal.woff2",
   weight: "400",
   variable: "--font-anton",
   display: "swap",
+  // Headlines start below the fold on phones: not worth delaying the first paint for.
   preload: false,
   fallback: ["Impact", "Haettenschweiler", "Arial Narrow Bold", "sans-serif"],
 });

@@ -9,8 +9,8 @@ type Props = { params: Promise<{ slug: string }> };
 
 export const dynamicParams = false;
 
-/** Valora, Golden Guardian Productions and Rudra Yugen. Aurelius and Asraya have their own routes. */
-const OWN_ROUTE = ["aurelius", "asraya"];
+/** Golden Guardian Productions and Rudra Yugen. Aurelius, Asraya and Valora have their own routes. */
+const OWN_ROUTE = ["aurelius", "asraya", "valora"];
 
 export function generateStaticParams() {
   return verticals.filter((v) => !OWN_ROUTE.includes(v.slug)).map((v) => ({ slug: v.slug }));

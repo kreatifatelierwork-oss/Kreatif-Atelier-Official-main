@@ -8,9 +8,77 @@ export const config = {
   /** Founder card hover tilt, in degrees (Phase 1 uses CSS only; lerped tilt comes later). */
   founderTiltDeg: 6,
 
+  /**
+   * The sky above the footer (components/footer/FooterSky.tsx): two hills in a 1536×600 box, stretched to
+   * the band's size. The ridges are the hills' top edges, traced by the gold rims.
+   */
+  footerSky: {
+    viewBox: "0 0 1536 600",
+    backRidge: "M0 565 C 260 520 500 452 760 432 C 900 422 1050 428 1200 445",
+    frontRidge: "M620 515 C 760 488 940 446 1120 437 C 1300 430 1430 468 1536 515",
+    back: "M0 565 C 260 520 500 452 760 432 C 900 422 1050 428 1200 445 C 1350 460 1450 470 1536 476 L1536 600 L0 600 Z",
+    // The front hill slopes in from the left edge under the back ridge, so it has no visible start.
+    front: "M0 592 C 260 568 480 528 620 515 C 760 488 940 446 1120 437 C 1300 430 1430 468 1536 515 L1536 600 L0 600 Z",
+  },
+  /**
+   * The home hero's content factory (features/home-v2/scene/FactoryStage.tsx): it turns half way round and back,
+   * slowly, never a full spin (Roo, 2026-10-20). Swing is either side of its resting angle.
+   */
+  factory: { swingDeg: 35, periodS: 60 },
+  /** 3D artifacts. */
+  artifacts: {
+    /**
+     * Who responds to the pointer. "hover" (default): only the artifact under the cursor. "proximity":
+     * artifacts within `proximityRadius` lean toward the pointer too, weaker with distance (never all at once).
+     */
+    pointerMode: "proximity" as "hover" | "proximity", // Roo, 2026-10-20: move before the pointer reaches the artifact
+    /** Proximity: how far outside an artifact's edge (px) the pointer starts to move it. */
+    proximityPad: 140,
+    /** Kept for reference by older code paths. */
+    proximityRadius: 260,
+    /** The live 3D model that replaces a poster under the pointer (components/design/LiveArtifactLayer.tsx). */
+    live: {
+      /** Rotation toward the pointer at the artifact's edge, degrees on X and Y. */
+      maxTiltDeg: 20,
+      /** Lift toward the viewer at full hover (world units) and the matching scale. */
+      lift: 0.5,
+      scale: 0.06,
+      /** Spring smoothing (seconds to settle, maath damp). */
+      smooth: 0.18,
+      /** After the pointer leaves: poster back after `settleMs`, model disposed after `disposeAfterMs`. */
+      settleMs: 380,
+      disposeAfterMs: 900,
+      /** Device pixel ratio cap for the live canvas. */
+      maxDpr: 2,
+      maxDprTouch: 1.5,
+      /** The live canvas is this much larger than the poster's frame (camera widened to match), so a tilted,
+       *  lifted model is never clipped by the canvas edge. */
+      pad: 1.6,
+    },
+    /** Every gold-scale colour (gold-400 to gold-700) is drawn as this polished metal, not yellow plastic. */
+    goldMetal: { metalness: 0.92, roughness: 0.26, envMapIntensity: 2.2, clearcoat: 0.4, clearcoatRoughness: 0.1 },
+  },
+  /** The Aurelius pages' Vanta fog (components/aurelius-site/vantaFog.ts). */
+  background: {
+    /** Drift speed (Vanta's 1 = its default). */
+    speed: 0.6,
+    zoom: 0.7,
+    /** Fog softness: higher = smoother, larger shapes. */
+    blur: 0.62,
+    /** Render resolution divisor: 2 draws at half size (the fog is soft, so it does not show). */
+    scale: 2,
+    /** Pointer: radius of its reach (px at render scale), twist (radians at the centre), warm light (0–1). */
+    radius: 140,
+    swirl: 1.3,
+    glow: 0.45,
+    /** The pointer's effect fades out this long after it stops moving; per-frame fade in and out. */
+    restAfterMs: 1400,
+    fadeIn: 0.08,
+    fadeOut: 0.025,
+  },
   scroll: {
     /** Lenis smoothing: lower = floatier, higher = snappier (0–1). */
-    lerp: 0.085,
+    lerp: 0.09,
     wheelMultiplier: 1,
     /** Anchor jumps (nav links) — seconds, and the easing curve. */
     anchorDuration: 1.6,
@@ -23,9 +91,10 @@ export const config = {
   reveal: {
     /** Where an element's top must reach (from the viewport top) before it reveals. */
     start: "top 88%",
-    distance: 28,
-    duration: 1.1,
-    stagger: 0.08,
+    // review-animations: 12–20px travel, ease-out, 40–80ms stagger (tokens: --ds-reveal-distance, --ds-stagger).
+    distance: 16,
+    duration: 0.7,
+    stagger: 0.06,
     /** Headline lines slide up from behind a mask. */
     lineDuration: 1.25,
     lineStagger: 0.1,
@@ -48,7 +117,7 @@ export const config = {
   front: {
     hero: {
       /** Height of the hero stage in viewport heights; everything past 100 is the sticky hold. */
-      stageVh: 200,
+      stageVh: 140,
       /** Wide screens: the title starts this far left of its resting place (% of viewport width), behind the figure. */
       titleShiftVw: 37,
       /** Narrow screens: it starts this far below its resting place (% of viewport height), behind the figure. */
@@ -56,8 +125,10 @@ export const config = {
       /** The figure grows to this as the title clears it. */
       figureScale: 1.05,
       /** Full-bleed hero: the picture eases from this scale and sideways offset (%) to its opposite while the stage holds. */
-      fullScale: { from: 1.04, to: 1 },
-      fullDriftPercent: 1.4,
+      fullScale: { from: 1.12, to: 1 },
+      fullDriftPercent: 3.2,
+      /** The word slides the other way behind the horse, by this much of the screen width (vw) each side. */
+      wordDriftVw: 1.2,
     },
     /** The pull between the hero and the light block. */
     magnet: { duration: 1.15, ease: (t: number) => 1 - Math.pow(1 - t, 4) },
@@ -70,6 +141,8 @@ export const config = {
     dust: false,
     /** Dust drifts with the page at this fraction of scroll speed. */
     dustParallax: 0.05,
+    /** The sunset under the hero: how far the dark bowl hangs (percent of its band) as it scrolls through. */
+    sunset: { depth: { from: 92, to: 26 } },
     veil: {
       /** Glow ramp, dark edge → page colour (the last stop must match --cream). */
       ramp: ["#5E1322", "#C2551A", "#EDA02F", "#F6D488", "#F3F0E9"],

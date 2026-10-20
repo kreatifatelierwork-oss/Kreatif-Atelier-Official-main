@@ -1,5 +1,5 @@
 /**
- * /aurelius/history — a history of branding, marketing and advertising in five eras.
+ * The history section of /about/kreatif-atelier — a history of branding, marketing and advertising in five eras.
  *
  * The outline (the five eras and their opening paragraphs) is the owner's. The longer text, the key
  * dates and the picture descriptions were written for the site from general history and should be
@@ -47,8 +47,8 @@ export const historyPage = {
     description:
       "From town criers and painted walls to the printing press, the packaged brand, the golden age of television and the algorithm: five eras of branding, marketing and advertising, with pictures from each.",
   },
-  eyebrow: ["Aurelius", "History"],
-  title: "From the town crier to the algorithm.",
+  marker: "The history of our trade",
+  headline: { lead: "From the town crier", emphasis: "to the algorithm." },
   lead: "A short history of branding, marketing and advertising, in five eras.",
   intro: [
     "People have always had things to sell and a reason to be remembered. What changes from one age to the next is the tool: a voice, a wall, a press, a package, a broadcast, a feed.",
@@ -372,8 +372,7 @@ export const historyPage = {
         { year: "2000", text: "Google launches AdWords, selling advertising against search terms." },
         { year: "2005", text: "YouTube launches; anyone can publish video." },
         { year: "2007", text: "Facebook opens its advertising platform. The iPhone goes on sale." },
-        { year: "2011", text: "Patagonia's \"Don't Buy This Jacket\" asks customers to buy less." },
-        { year: "2016", text: "Low-cost 4G data arrives in India. Worldwide, mobile web use overtakes desktop." },
+          { year: "2016", text: "Low-cost 4G data arrives in India. Worldwide, mobile web use overtakes desktop." },
         { year: "2018", text: "Europe's General Data Protection Regulation takes effect." },
         { year: "2020", text: "Short vertical video becomes the dominant format on social platforms." },
         { year: "2021", text: "Apple asks iPhone users whether apps may track them. India's advertising standards body issues rules for influencers." },
@@ -383,57 +382,52 @@ export const historyPage = {
       strip: 3,
       photos: [
         {
-          ...img("crt-banner", 1456, 1088),
-          title: "The banner",
-          meta: "Illustration made for this page · mid-1990s",
+          ...img("youtube-launch", 1600, 900),
+          title: "Anyone can publish",
+          meta: "Illustration · 2005",
           description:
-            "A beige monitor in a dim room, an early web browser, and a bright rectangle across the top of the page. The banner was a magazine advertisement moved onto a screen, with one difference that changed everything: you could click it, and the advertiser knew that you had.",
-          alt: "A 1990s beige computer monitor on a cluttered desk showing an early web page with a colourful banner advertisement",
-          made: true,
+            "A bulky monitor in a bedroom shows an early video site with an \"Upload your videos\" button. When YouTube launched in 2005, publishing video stopped needing a broadcaster. Within a few years brands were competing for attention with people filming in their own rooms.",
+          alt: "A mid-2000s computer monitor on a cluttered desk showing an early video-sharing website, with a city sunset through the window",
         },
         {
-          ...img("two-screens", 1600, 899),
-          title: "Two screens",
-          meta: "Illustration made for this page · 2010s",
+          ...img("iphone-launch", 1600, 900),
+          title: "The screen in the pocket",
+          meta: "Illustration · 2007",
           description:
-            "A commercial plays on a large television while the person it was made for looks at a phone. Broadcast and personal media now compete in the same room, at the same moment, for the same pair of eyes. Most campaigns are planned for both.",
-          alt: "A person on a sofa in a dark room looking down at a smartphone while a large television plays an advertisement in the background",
-          made: true,
+            "A presenter in a black turtleneck holds up a small phone on a dark stage. The iPhone went on sale in 2007 and made the internet something people carry. Every channel that followed, from apps to social feeds to mobile search, was designed for that screen first.",
+          alt: "A man in a black turtleneck on a dark stage holding up an early smartphone in front of a large glowing logo",
         },
         {
-          ...img("analytics-desk", 1600, 899),
-          title: "The dashboard",
-          meta: "Illustration made for this page · 2010s–today",
+          ...img("low-cost-4g", 1451, 1084),
+          title: "A country comes online",
+          meta: "Illustration · India, 2016",
           description:
-            "Charts, funnels and audience segments on two monitors late at night. Every click, view and purchase can be recorded, so marketing decisions are now argued from data. The numbers show what happened. Deciding what to do about it is still a matter of judgment.",
-          alt: "A person seen from behind at a desk at night, looking at two monitors filled with charts, a funnel diagram and a world map",
-          made: true,
+            "Students and commuters on their phones at dusk beneath a 4G tower, with India Gate behind them. Low-cost mobile data from 2016 brought hundreds of millions of Indians online within a few years, most of them on a phone and many for the first time.",
+          alt: "Young people sitting by a road in Delhi at sunset looking at their phones, beneath a 4G sign with India Gate in the distance",
         },
         {
-          ...img("phone-lit-face", 1136, 1408),
-          title: "The attention economy",
-          meta: "Illustration made for this page · today",
+          ...img("gdpr-poster", 1600, 900),
+          title: "The right to say no",
+          meta: "Illustration · Europe, 2018",
           description:
-            "A face in the dark, lit only by a phone. The feed is chosen for one person and has no last page. When every brand, creator and friend is in the same stream, the thing being bought and sold is a few seconds of someone's attention.",
-          alt: "A close-up of a face in darkness lit from below by the glow of a phone screen",
-          made: true,
+            "A street poster in Brussels announces \"a stronger protection for your data\" and the date the General Data Protection Regulation applies: 25 May 2018. Tracking people across the web had made advertising precise. This was the moment the law caught up with it.",
+          alt: "A street poster about data protection in front of a European Union building with flags, on a wet evening",
         },
         {
-          ...img("creator-set", 1536, 1024),
-          title: "The creator's set",
-          meta: "Illustration made for this page · today",
+          ...img("short-form-video", 1600, 900),
+          title: "The feed with no last page",
+          meta: "Illustration · 2020",
           description:
-            "A ring light, a phone on a tripod and a tidy corner of an untidy room. Much of today's advertising is made like this, by one person speaking to an audience that chose to follow them. The production is small. The trust between creator and viewer is what a brand is paying for.",
-          alt: "A content creator seated at a desk holding up a product in front of a ring light and a phone on a tripod, with coloured lights behind",
-          made: true,
+            "Friends lie side by side, each lit by a phone, with vertical videos floating above them: a dance, a dog, a bowl of noodles. Short video, chosen for one person by an algorithm, became the dominant format in 2020. The thing being bought and sold is a few seconds of attention.",
+          alt: "A group of young people lying together looking at their phones, with vertical video screens floating in the air above them",
         },
         {
-          ...img("patagonia-ice-climber", 736, 1000),
-          title: "\"Explore the unexplored\"",
-          meta: "Poster · outdoor clothing",
+          ...img("generative-ai", 1600, 900),
+          title: "The machine that writes back",
+          meta: "Illustration · 2022",
           description:
-            "A single climber on a wall of ice, a logo and five words. No product is in sight. Brands in this era are often sold on what they stand for; in 2011 Patagonia ran a newspaper advertisement headed \"Don't Buy This Jacket\", asking customers to consider the cost of what they buy.",
-          alt: "A poster of a lone ice climber in a red jacket on a frozen cliff, with the Patagonia logo and the words Explore the unexplored",
+            "A student at a crowded desk at night, a laptop beside him and a chat assistant open on his phone. Generative AI reached the public in 2022. It now drafts copy, makes pictures and edits video, and has begun to change who makes advertising as well as where it runs.",
+          alt: "A young man at a desk at night looking at a chat assistant on his phone, with a laptop and books around him",
         },
       ],
     },

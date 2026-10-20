@@ -1,0 +1,753 @@
+/*
+ * Materials and type roles built only from tokens.css. These are the foundations the Phase 2
+ * primitives (Button, Card, Input, Toggle, Nav…) compose; sections never style surfaces directly.
+ * Rule: an element is either neumorphic or glass, never both.
+ */
+
+/* ── Neumorphic surfaces (structure) ───────────────────────── */
+.neu-raised-sm,
+.neu-raised-md,
+.neu-raised-lg {
+  background: var(--ds-surface-raised);
+}
+.neu-raised-sm {
+  box-shadow: var(--neu-raised-sm);
+}
+.neu-raised-md {
+  box-shadow: var(--neu-raised-md);
+}
+.neu-raised-lg {
+  box-shadow: var(--neu-raised-lg);
+}
+
+.neu-pressed-sm,
+.neu-pressed-md,
+.neu-pressed-lg {
+  background: var(--ds-surface-sunken);
+}
+.neu-pressed-sm {
+  box-shadow: var(--neu-pressed-sm);
+}
+.neu-pressed-md {
+  box-shadow: var(--neu-pressed-md);
+}
+.neu-pressed-lg {
+  box-shadow: var(--neu-pressed-lg);
+}
+
+/* ── Frosted glass (emphasis) ─────────────────────────────── */
+.glass-frost {
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+/* Without backdrop-filter, glass would be see-through and unreadable: go frosty-solid instead. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-frost {
+    background: var(--glass-fill-fallback);
+  }
+}
+
+/* ── Type roles ────────────────────────────────────────────── */
+.ds-display {
+  font-family: var(--ds-font-display);
+  font-size: var(--ds-text-display);
+  line-height: var(--ds-leading-display);
+  letter-spacing: var(--ds-tracking-display);
+  text-transform: uppercase;
+  color: var(--ds-text);
+}
+.ds-heading {
+  font-family: var(--ds-font-display);
+  font-size: var(--ds-text-3xl);
+  line-height: var(--ds-leading-heading);
+  letter-spacing: var(--ds-tracking-heading);
+  text-transform: uppercase;
+  color: var(--ds-text);
+}
+/* The emphasised half of a headline: Cormorant italic, sentence case. */
+.ds-emphasis {
+  font-family: var(--ds-font-accent);
+  font-style: italic;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: var(--ds-tracking-heading);
+}
+.ds-body {
+  font-family: var(--ds-font-text);
+  font-size: var(--ds-text-base);
+  line-height: var(--ds-leading-body);
+  letter-spacing: var(--ds-tracking-body);
+  color: var(--ds-text-muted);
+}
+.ds-label {
+  font-family: var(--ds-font-text);
+  font-size: var(--ds-text-xs);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: var(--ds-tracking-label);
+  text-transform: uppercase;
+  color: var(--ds-text-subtle);
+}
+.ds-gradient-text {
+  background: var(--ds-accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── Focus: visible on every surface ───────────────────────── */
+.ds-focusable:focus-visible {
+  outline: 2px solid var(--ds-focus);
+  outline-offset: 3px;
+}
+
+/* ── Primitives' states (components/design) ─────────────────
+   emil-design-eng: press feedback is a 0.97 scale with the inset-shadow swap, ~120ms, ease-out.
+   Hover only where the device can hover. Transitions name their properties; never `all`. */
+
+/* Cards: raised by default; linked cards lift on hover with the deeper shadow and a small translate (no scale). */
+.neu-card {
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface-raised);
+  box-shadow: var(--neu-raised-md);
+  transition:
+    transform var(--ds-dur-base) var(--ds-ease-out),
+    box-shadow var(--ds-dur-base) var(--ds-ease-out);
+}
+.neu-card--inset {
+  background: var(--ds-surface-sunken);
+  box-shadow: var(--neu-pressed-md);
+}
+@media (hover: hover) {
+  a.neu-card:hover {
+    transform: translateY(calc(var(--ds-lift) * -1));
+    box-shadow: var(--neu-raised-hover);
+  }
+}
+a.neu-card:active {
+  transform: translateY(0);
+  box-shadow: var(--neu-pressed-sm);
+}
+a.neu-card:focus-visible {
+  outline: 2px solid var(--ds-focus);
+  outline-offset: 4px;
+}
+
+.neu-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--ds-radius-pill);
+  padding: var(--ds-space-1) var(--ds-space-3);
+  background: var(--ds-surface-sunken);
+  box-shadow: var(--neu-pressed-sm);
+  font-size: var(--ds-text-xs);
+  font-weight: 600;
+  color: var(--ds-text-muted);
+}
+
+/* ── Header: neumorphic at the top, frosted glass once the page scrolls ─────────
+   The glass is a ::before layer whose opacity fades in (data-scrolled), so only opacity animates;
+   the blur itself is static (animation-performance: never animate backdrop-filter). At the top the
+   bar is the page surface with a soft raised shadow under it. */
+.ds-header {
+  background: var(--ds-surface);
+  box-shadow: 0 10px 24px -18px rgb(var(--ds-shadow-tint) / 0.35), 0 -1px 0 rgb(var(--ds-light) / 0.9) inset;
+  transition:
+    background-color var(--ds-dur-base) var(--ds-ease-out),
+    box-shadow var(--ds-dur-base) var(--ds-ease-out);
+}
+.ds-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgb(var(--ds-light) / 0.42);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: var(--glass-highlight), 0 12px 32px -20px rgb(var(--ds-shadow-tint) / 0.4);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  opacity: 0;
+  transition: opacity var(--ds-dur-slow) var(--ds-ease-out);
+  pointer-events: none;
+}
+.ds-header[data-scrolled] {
+  background: transparent;
+  box-shadow: none;
+}
+.ds-header[data-scrolled]::before {
+  opacity: 1;
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .ds-header::before {
+    background: var(--glass-fill-fallback);
+  }
+}
+
+/* ── Page-load entrance ───────────────────────────────────
+   Hero items rise 16px and fade in, 60ms apart, ease-out (animate skill: entrances use ease-out,
+   never ease-in; CSS so it runs off the main thread while the page is still loading). The wordmark
+   only rises, it never fades, so the largest paint is not delayed. Reduced motion: tokens go to 0. */
+@keyframes ds-enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--ds-reveal-distance));
+  }
+}
+@keyframes ds-enter-rise {
+  from {
+    transform: translateY(var(--ds-reveal-distance));
+  }
+}
+.ds-enter > * {
+  animation: ds-enter var(--ds-dur-slow) var(--ds-ease-out) both;
+}
+.ds-enter > .ds-enter-rise {
+  animation-name: ds-enter-rise;
+}
+.ds-enter > :nth-child(2) { animation-delay: calc(var(--ds-stagger) * 1); }
+.ds-enter > :nth-child(3) { animation-delay: calc(var(--ds-stagger) * 2); }
+.ds-enter > :nth-child(4) { animation-delay: calc(var(--ds-stagger) * 3); }
+.ds-enter > :nth-child(5) { animation-delay: calc(var(--ds-stagger) * 4); }
+@media (prefers-reduced-motion: reduce) {
+  .ds-enter > * {
+    animation: none;
+  }
+}
+
+/* A pressable tile (one service on a practice page): raised, lifts on hover, presses in on click. */
+.neu-tile {
+  display: flex;
+  width: 100%;
+  min-height: calc(var(--ds-tap) + var(--ds-space-5));
+  align-items: center;
+  gap: var(--ds-space-4);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-4) var(--ds-space-5);
+  background: var(--ds-surface-raised);
+  box-shadow: var(--neu-raised-sm);
+  text-align: left;
+  transition:
+    transform var(--ds-dur-press) var(--ds-ease-out),
+    box-shadow var(--ds-dur-fast) var(--ds-ease-out);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+@media (hover: hover) {
+  .neu-tile:hover {
+    transform: translateY(calc(var(--ds-lift) * -1));
+    box-shadow: var(--neu-raised-md);
+  }
+}
+.neu-tile:active {
+  transform: scale(var(--ds-press-scale));
+  box-shadow: var(--neu-pressed-sm);
+}
+.neu-tile:focus-visible {
+  outline: 2px solid var(--ds-focus);
+  outline-offset: 3px;
+}
+
+/* ── Phase 1 primitives (components/design) ─────────────────────────────────── */
+
+
+
+.neu-accordion > summary:focus-visible,
+.neu-field:focus-visible {
+  outline: 2px solid var(--ds-focus);
+  outline-offset: 3px;
+}
+
+/* Tabs: an inset track; the selected tab is a raised pill. */
+.neu-tabs {
+  display: inline-flex;
+  max-width: 100%;
+  gap: var(--ds-space-1);
+  overflow-x: auto;
+  border-radius: var(--ds-radius-pill);
+  padding: var(--ds-space-1);
+  background: var(--ds-surface-sunken);
+  box-shadow: var(--neu-pressed-sm);
+  scrollbar-width: none;
+}
+.neu-tab {
+  min-height: calc(var(--ds-tap) - 8px);
+  flex-shrink: 0;
+  border-radius: var(--ds-radius-pill);
+  padding: 0 var(--ds-space-5);
+  font-family: var(--ds-font-text);
+  font-size: var(--ds-text-sm);
+  font-weight: 700;
+  color: var(--ds-text-muted);
+  transition: color var(--ds-dur-fast) var(--ds-ease-out), box-shadow var(--ds-dur-base) var(--ds-ease-out), background-color var(--ds-dur-base) var(--ds-ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.neu-tab[aria-selected="true"],
+.neu-tab[aria-pressed="true"] {
+  color: var(--ds-text);
+  background: var(--ds-surface-raised);
+  box-shadow: var(--neu-raised-sm);
+}
+@media (hover: hover) {
+  .neu-tab:not([aria-selected="true"]):hover {
+    color: var(--ds-text);
+  }
+}
+
+
+/* Accordion: inset rows; the open row's summary stays raised. */
+.neu-accordion {
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-surface-sunken);
+  box-shadow: var(--neu-pressed-sm);
+}
+.neu-accordion > summary {
+  display: flex;
+  min-height: var(--ds-tap);
+  cursor: pointer;
+  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-4);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-3) var(--ds-space-5);
+  font-weight: 700;
+  color: var(--ds-text);
+}
+.neu-accordion > summary::-webkit-details-marker {
+  display: none;
+}
+.neu-accordion > summary::after {
+  content: "+";
+  font-size: var(--ds-text-lg);
+  color: var(--au-gold-ink, var(--ds-blue));
+  transition: transform var(--ds-dur-base) var(--ds-ease-out);
+}
+.neu-accordion[open] > summary {
+  background: var(--ds-surface-raised);
+  box-shadow: var(--neu-raised-sm);
+}
+.neu-accordion[open] > summary::after {
+  transform: rotate(45deg);
+}
+.neu-accordion__body {
+  padding: var(--ds-space-4) var(--ds-space-5) var(--ds-space-5);
+}
+
+/* Badge: a small raised pill; `gold` for highlights. */
+.neu-badge {
+  display: inline-flex;
+  min-width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ds-radius-pill);
+  padding: 0 var(--ds-space-2);
+  font-size: var(--ds-text-xs);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-text);
+  background: var(--ds-surface-raised);
+  box-shadow: var(--neu-raised-sm);
+}
+.neu-badge--gold {
+  color: var(--au-cta-ink, var(--ds-text));
+  background: var(--au-cta-gradient, var(--ds-surface-raised));
+}
+
+/* Input and textarea: a pressed well. */
+.neu-field {
+  display: block;
+  min-height: var(--ds-tap);
+  width: 100%;
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  font-size: max(16px, var(--ds-text-base)); /* 16px+ so phones never zoom the page on focus (mobile-native) */
+  color: var(--ds-text);
+  background: var(--ds-surface-sunken);
+  box-shadow: var(--neu-pressed-sm);
+}
+.neu-field::placeholder {
+  color: var(--ds-text-subtle);
+}
+.neu-field:disabled {
+  opacity: 0.55;
+}
+
+/* Tooltip popup (base-ui): a small glass panel. */
+.ds-tooltip {
+  border-radius: var(--ds-radius-sm);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  font-size: var(--ds-text-xs);
+  font-weight: 600;
+  color: var(--ds-text);
+  background: var(--glass-fill-fallback);
+  border: 1px solid var(--glass-gold-edge, var(--glass-border));
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  transform-origin: var(--transform-origin);
+  transition: opacity var(--ds-dur-fast) var(--ds-ease-out), transform var(--ds-dur-fast) var(--ds-ease-out);
+}
+.ds-tooltip[data-starting-style],
+.ds-tooltip[data-ending-style] {
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+/* ── DisplayHeading (components/design/DisplayHeading.tsx) ────
+   Real text in maroon; H2 has a soft maroon gradient fill (lighter at the top). No glass on headings. */
+.au-heading--1,
+.au-heading--3 {
+  color: var(--ds-brand);
+}
+.au-heading--2 {
+  background: var(--au-heading-fill, none);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── The Aurelius pill navigation ───────────────────────────
+   A floating pill: neumorphic (raised) at the top of the page, frosted glass once it scrolls. */
+.ds-header[data-variant="pill"] {
+  inset-inline: 0;
+  top: var(--ds-space-3);
+  background: transparent;
+  box-shadow: none;
+  padding-inline: var(--ds-gutter);
+}
+.ds-header[data-variant="pill"]::before {
+  display: none;
+}
+.ds-header[data-variant="pill"] .ds-header__inner {
+  max-width: calc(var(--ds-max-width) + var(--ds-space-8));
+  border-radius: var(--ds-radius-pill);
+  padding-inline: var(--ds-space-6);
+  background: var(--ds-surface-raised);
+  box-shadow: var(--neu-raised-sm);
+  transition: background-color var(--ds-dur-slow) var(--ds-ease-out), box-shadow var(--ds-dur-slow) var(--ds-ease-out);
+}
+.ds-header[data-variant="pill"] .ds-header__inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  /* A little more fill than the glass tokens, so the links stay legible over a busy scene (apple-design: vibrancy). */
+  background: rgb(var(--ds-light) / 0.55);
+  border: 1px solid var(--glass-gold-edge, var(--glass-border));
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  opacity: 0;
+  transition: opacity var(--ds-dur-slow) var(--ds-ease-out);
+  pointer-events: none;
+}
+.ds-header[data-variant="pill"][data-scrolled] .ds-header__inner {
+  background: transparent;
+  box-shadow: none;
+}
+.ds-header[data-variant="pill"][data-scrolled] .ds-header__inner::before {
+  opacity: 1;
+}
+
+/* ── FloatingArtifact (components/design/FloatingArtifact.tsx) ───────────────
+   Outer layer: the idle float, a CSS animation (off the main thread), seeded per artifact through
+   custom properties. Inner layer: the hover tilt, written by a spring in JS only while it moves. */
+.fa {
+  position: absolute;
+  animation: fa-float var(--fa-period, 6s) var(--ds-ease-in-out) var(--fa-delay, 0s) infinite alternate;
+  will-change: transform;
+}
+.fa[data-paused] {
+  animation-play-state: paused;
+}
+.fa__tilt {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+/* A soft light that follows the pointer across the object, cut to its shape; only while hovered. */
+.fa__glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: calc(var(--fa-hover, 0) * 0.85);
+  background: radial-gradient(circle at var(--fa-gx, 50%) var(--fa-gy, 50%), rgb(255 250 238 / 0.75) 0%, rgb(255 244 220 / 0.18) 28%, transparent 55%);
+  mix-blend-mode: soft-light;
+  -webkit-mask: var(--fa-mask) center / contain no-repeat;
+  mask: var(--fa-mask) center / contain no-repeat;
+}
+.fa__tilt > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+/* A soft, warm contact shadow under each artifact. */
+.fa__shadow {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  bottom: -6%;
+  height: 10%;
+  border-radius: 50%;
+  background: var(--ds-contact-shadow);
+  filter: blur(calc(4px + var(--fa-hover, 0) * 6px));
+  translate: var(--fa-sx, 0%) 0;
+  animation: fa-shadow var(--fa-period, 6s) var(--ds-ease-in-out) var(--fa-delay, 0s) infinite alternate;
+}
+@keyframes fa-float {
+  from {
+    transform: translate3d(0, 0, 0) rotate(calc(var(--fa-rot, 2deg) * -1));
+  }
+  to {
+    transform: translate3d(var(--fa-dx, 4px), var(--fa-dy, -12px), 0) rotate(var(--fa-rot, 2deg));
+  }
+}
+@keyframes fa-shadow {
+  from {
+    opacity: 0.9;
+    transform: scaleX(1);
+  }
+  to {
+    opacity: 0.6;
+    transform: scaleX(0.86);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fa,
+  .fa__shadow {
+    animation: none;
+  }
+}
+
+/* A readable glass panel (mega menu, dialogs): frosted, a little more fill than the decorative glass so
+   text over a busy page stays legible (apple-design: vibrancy), a gold edge and a soft shadow. */
+.glass-panel {
+  background: rgb(var(--ds-light) / 0.78);
+  border: 1px solid var(--glass-gold-edge, var(--glass-border));
+  box-shadow: var(--glass-highlight), 0 30px 80px -30px rgb(var(--ds-shadow-tint) / 0.4);
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturate));
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-panel {
+    background: var(--glass-fill-fallback);
+  }
+}
+/* Dialogs opened from an Aurelius page: the portal carries the theme, a light frosted scrim, a glass panel. */
+.ds-dialog.theme-aurelius {
+  background: transparent;
+}
+.ds-dialog.theme-aurelius .ds-dialog__scrim {
+  background: rgb(var(--ds-light) / 0.45);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.ds-dialog.theme-aurelius .ds-dialog__panel {
+  border-radius: var(--ds-radius-xl);
+  background: rgb(var(--ds-light) / 0.9);
+  border: 1px solid var(--glass-gold-edge);
+  box-shadow: var(--glass-highlight), 0 40px 100px -30px rgb(var(--ds-shadow-tint) / 0.45);
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturate));
+}
+
+/* ── Practice page floating objects (components/services/PracticeFloaters.tsx) ──
+   Two around the practice's own artifact in the header, two in the point-of-view card. */
+.pf {
+  z-index: 2;
+}
+.pf--hero-a {
+  top: -10%;
+  right: -4%;
+  width: 30%;
+}
+.pf--hero-b {
+  bottom: -8%;
+  left: -6%;
+  width: 30%;
+}
+.pf-pov {
+  display: flex;
+  gap: var(--ds-space-5);
+  margin-top: var(--ds-space-5);
+}
+.pf-pov__slot {
+  position: relative;
+  aspect-ratio: 1;
+  width: min(9rem, 40%);
+}
+/* Inside a square slot a poster fits whole, whatever its proportions. */
+.pf-pov__slot .fa,
+.pf-pov__slot .fa__tilt {
+  height: 100%;
+}
+.pf-pov__slot .fa__tilt > img {
+  height: 100%;
+  object-fit: contain;
+}
+@media (max-width: 767px) {
+  .pf--hero-a,
+  .pf--hero-b {
+    width: 24%;
+  }
+}
+@media (min-width: 1024px) {
+  .pf-pov {
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 40%;
+    margin: 0;
+    pointer-events: none;
+  }
+  .pf-pov__slot {
+    position: absolute;
+    width: 13rem;
+    pointer-events: auto;
+  }
+  .pf-pov__slot--c {
+    top: 10%;
+    left: 4%;
+  }
+  .pf-pov__slot--d {
+    bottom: 8%;
+    right: 8%;
+  }
+}
+
+/* ── Live artifact (components/design/LiveArtifactLayer.tsx) ──
+   One fixed, click-through box that follows the hovered poster and draws its model. The handover is
+   instant both ways: the model lands exactly on the poster, so a crossfade would only show two
+   half-transparent copies (a pale box) for a moment. */
+.live-artifact {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  pointer-events: none;
+  visibility: hidden;
+}
+.live-artifact[data-ready] {
+  visibility: visible;
+}
+/* Transparent, not hidden: a hidden element stops receiving the pointer, which froze the live model. */
+.fa[data-live] .fa__tilt {
+  opacity: 0;
+}
+
+/* ── Float cluster (components/design/FloatCluster.tsx): three objects in a section's empty side, in an
+   evenly spaced row with a gentle stagger. Equal sizes and fixed gaps, so they can never overlap. */
+.fc {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-6);
+  margin-top: var(--ds-space-6);
+}
+.fc__slot {
+  position: relative;
+  flex: none;
+  aspect-ratio: 1;
+  width: 4.5rem;
+}
+.fc__slot .fa,
+.fc__slot .fa__tilt {
+  height: 100%;
+}
+.fc__slot .fa__tilt > img {
+  height: 100%;
+  object-fit: contain;
+}
+@media (min-width: 1024px) {
+  .fc {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin: 0;
+    gap: var(--ds-space-7);
+    transform: translateY(-50%);
+  }
+  .fc__slot {
+    width: 7.5rem;
+  }
+  .fc__slot--2 {
+    margin-top: 3.5rem;
+  }
+}
+
+/* ── Phones (Roo, 2026-10-20: mobile must be calm and fast): the hero keeps its factory stage but drops the
+   floating objects and spheres; practice headers keep their own artifact only; section clusters shrink to
+   small tiles. Hidden pictures are never downloaded (they are lazy). */
+@media (max-width: 767px) {
+  .au-hero [data-hero-float],
+  .pf--hero-a,
+  .pf--hero-b {
+    display: none;
+  }
+  .fc__slot,
+  .pf-pov__slot {
+    width: 4.5rem;
+  }
+}
+
+/* ── Services mega menu (components/services/ServicesMegaMenu.tsx): glass, text rows, artifact in the panel only. */
+.mm-row {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-3);
+  border-radius: var(--ds-radius-sm);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border: 1px solid transparent;
+  transition: background-color var(--ds-dur-fast) var(--ds-ease-out), border-color var(--ds-dur-fast) var(--ds-ease-out);
+}
+.mm-row__name {
+  font-family: var(--ds-font-accent);
+  font-size: 1.22rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--ds-text);
+}
+.mm-row__count {
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--au-gold-ink);
+}
+.mm-row[data-active] {
+  background: rgb(var(--ds-light) / 0.55);
+  border-color: var(--glass-gold-edge);
+  box-shadow: var(--glass-highlight), 0 8px 20px -14px rgb(var(--ds-shadow-tint) / 0.35);
+}
+.mm-row:focus-visible {
+  outline: 2px solid var(--au-gold-500);
+  outline-offset: 2px;
+}
+.mm-panel {
+  background: rgb(var(--ds-light) / 0.5);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-highlight);
+}
+.mm-panel__name {
+  font-family: var(--ds-font-accent);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--ds-text);
+}
+
+/* A floating object in a small square slot: the picture fits whole. */
+.fc-tile,
+.fc-tile .fa__tilt {
+  height: 100%;
+}
+.fc-tile .fa__tilt > img {
+  height: 100%;
+  object-fit: contain;
+}

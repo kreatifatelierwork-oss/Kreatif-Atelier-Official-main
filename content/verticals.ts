@@ -18,6 +18,8 @@ export type Block =
   | { kind: "list"; label?: string; headline?: SplitHeadline; intro?: string; items: { title: string; body?: string }[]; footnote?: string }
   /** One large line. */
   | { kind: "statement"; label?: string; lead: string; emphasis?: string }
+  /** A heading and a line of copy beside one button to a standalone page. */
+  | { kind: "link"; label?: string; headline: SplitHeadline; body: string; href: string; cta: string }
   /** An image beside a line or two of copy. */
   | { kind: "feature"; label?: string; image: VerticalImage; headline?: SplitHeadline; body?: string[]; flip?: boolean }
   /** An image shown whole, like a poster on a wall. */
@@ -70,6 +72,7 @@ export const verticals: Vertical[] = [
     whatWeDo: ["Brand Strategy & Identity", "Marketing & Communication", "Creative Consulting", "Business Advisory"],
     value: "Builds brands that lead and last",
     accent: "#e0584b",
+    logo: { src: "/images/logos/horse-color.webp", alt: "Aurelius horse emblem", width: 900, height: 1025 },
     positioning: "We make the work. And we make sure it lands.",
     about: AURELIUS_ABOUT,
     meta: {
@@ -260,6 +263,14 @@ export const verticals: Vertical[] = [
         lead: "Imagine a network where every campus",
         emphasis: "becomes a launchpad.",
       },
+      {
+        kind: "link",
+        label: "Chapters",
+        headline: { lead: "Your campus is the chapter.", emphasis: "Your network is the ecosystem." },
+        body: "Four campuses run Valora today: Manipal University Jaipur, JECRC University, IIT Goa and BITS Hyderabad, with IMT Hyderabad proposed next. The chapter radar maps them, with the recruiters each campus shares and its latest placement figures.",
+        href: "/valora/chapters/index.html",
+        cta: "Open the chapter radar",
+      },
     ],
   },
   {
@@ -296,6 +307,20 @@ export const verticals: Vertical[] = [
     blocks: [],
   },
 ];
+
+/** Valora's chapter radar (/valora/chapters): campuses running Valora, the recruiters they share and their published placement figures. */
+export const valoraRadar = {
+  meta: {
+    title: "Valora Chapter Radar — Campuses, Recruiters & Placements | Kreatif Atelier",
+    description: "Valora chapter radar: campuses, shared recruiters and placement figures.",
+  },
+  teaser: {
+    label: "Chapter radar",
+    title: "Four campuses live. One on the table.",
+    body: "A live map of the campuses that run Valora: the recruiters they share and the placement figures each one has published, with every source named.",
+    cta: "Open the chapter radar",
+  },
+} as const;
 
 export const verticalBySlug = (slug: string) => verticals.find((v) => v.slug === slug);
 

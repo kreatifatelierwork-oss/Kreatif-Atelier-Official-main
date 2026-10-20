@@ -138,6 +138,25 @@ export const profileArt = {
   tower: { src: "/images/profile/aurelius/tower.webp", width: 704, height: 1765, alt: "A lone figure standing on a concrete tower before a red sun" },
 } as const;
 
+/** The owner's picture for each practice page: the practice at work, 4:5. */
+const practiceAlts: Record<PracticeSlug, string> = {
+  "digital-marketing": "Two people at a desk with a ring light and laptop, reviewing content on a phone",
+  "public-relations": "A spokesperson at a lectern taking questions from reporters and photographers",
+  promotions: "A promoter at a mall stand handing out samples beside a prize wheel",
+  seo: "A man at a desk with two monitors of spreadsheets, marking up a printed site map",
+  "branding-creative-design": "A designer sketching an emblem by hand beside a laptop and colour swatches",
+  advertising: "Two people pinning layouts to a studio wall covered in campaign references",
+  "analytics-performance": "Two analysts looking at charts on a pair of monitors, with printed reports on the desk",
+  "lead-generation-growth": "A man on a headset taking notes at a laptop, with a sales funnel drawn on the whiteboard behind",
+  "film-video-photography": "A film crew at work on a set with a cinema camera and a large softbox",
+  "technology-product": "Two developers at a desk at night, one pointing at code on a monitor",
+  "advisory-transformation": "A consultant drawing a diagram on a whiteboard for three people at a meeting table",
+};
+
+export const practiceImage = (slug: PracticeSlug) => ({ src: `/images/services/${slug}.webp`, width: 1122, height: 1402, alt: practiceAlts[slug] });
+
+/** "1 service", "20 services": counts read right at every number (break-ui: never "1 services"). */
+export const servicesLabel = (n: number) => `${n} ${n === 1 ? "service" : "services"}`;
 export const practiceBySlug = (slug: string) => practices.find((p) => p.slug === slug);
 export const practiceHref = (slug: PracticeSlug) => `/aurelius/services/${slug}`;
 export const serviceCount = practices.reduce((sum, p) => sum + p.services.length, 0);
@@ -190,6 +209,11 @@ export const aurelius = {
     index: "Service index",
     noNote: "A note on this service is on its way. Ask us about it in the meantime.",
     tapHint: "Select a service to read what it covers.",
+  },
+  /** The Aurelius page's point-of-view section: each practice's own first line (practices[].pov[0], from the profile). */
+  beliefs: {
+    label: "Point of view",
+    headline: { lead: "What we", emphasis: "believe." },
   },
 } as const;
 
@@ -250,8 +274,6 @@ export const ourServices: { label: string; image: { src: string; alt: string; wi
 export const pillarById = (id: string) => ourServices.items.find((p) => p.id === id);
 export const pillarServiceCount = (id: PillarId) =>
   practices.filter((p) => pillarById(id)?.practices.includes(p.slug)).reduce((sum, p) => sum + p.services.length, 0);
-/** The services index, opened on one pillar's share of the catalogue. */
-export const pillarHref = (id: PillarId) => `/aurelius/services/?pillar=${id}#index`;
+/** The services page, filtered to one pillar's share of the catalogue. Opens at the top of the page. */
+export const pillarHref = (id: PillarId) => `/aurelius/services/?pillar=${id}`;
 
-/** The staircase photo beside the eleven practice rows. */
-export const domainsImage = { src: "/reference/staircase.png", alt: "" } as const;

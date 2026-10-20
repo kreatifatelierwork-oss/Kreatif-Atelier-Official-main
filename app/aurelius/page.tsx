@@ -1,46 +1,56 @@
 import type { Metadata } from "next";
-import { PillarsSection } from "@/components/aurelius/PillarsSection";
-import { ServiceStaircase } from "@/components/aurelius/ServiceStaircase";
-import { AureliusHero } from "@/components/hero/AureliusHero";
-import { ContactCta } from "@/components/home/HomeSections";
+import { Section } from "@/components/design/Section";
+import { AttentionNeu } from "@/components/home-neu/AttentionNeu";
+import { BeliefsNeu } from "@/components/home-neu/BeliefsNeu";
+import { CapabilitiesNeu } from "@/components/home-neu/CapabilitiesNeu";
+import { ClientsNeu } from "@/components/home-neu/ClientsNeu";
+import { ContactNeu } from "@/components/home-neu/ContactNeu";
+import { FilmReelNeu } from "@/components/home-neu/FilmReelNeu";
+import { MeasurementNeu } from "@/components/home-neu/MeasurementNeu";
+import { PositioningNeu } from "@/components/home-neu/PositioningNeu";
+import { HeroAurelius } from "@/components/aurelius-site/HeroAurelius";
+import { ServicesNeu } from "@/components/home-neu/ServicesNeu";
 import { PageShell } from "@/components/layout/PageShell";
-import { Label } from "@/components/ui/Heading";
-import { aurelius, aureliusHeroFigure } from "@/content/aurelius";
+import { aurelius } from "@/content/aurelius";
 
 export const metadata: Metadata = { ...aurelius.meta, alternates: { canonical: "/aurelius/" } };
 
-/** The Aurelius page: the shared hero (no copy, no buttons), the four pillars, the eleven practice
- *  areas beside the staircase, the company's own words, and the closing call to action. */
+/**
+ * The Aurelius page: everything about Aurelius (the home page only introduces it). The hero, the film reel,
+ * positioning, the four pillars, the eleven capabilities, what we believe, attention (with the platforms), measurement,
+ * where we serve clients, the company's own words, and the call to action.
+ */
 export default function Page() {
   return (
-    <PageShell>
-      <AureliusHero figure={aureliusHeroFigure} />
-      <PillarsSection lightBlock />
-      <ServiceStaircase />
-
-      <section aria-labelledby="about-aurelius" className="relative bg-ink px-[var(--gutter)] py-[clamp(5rem,12vh,9rem)] text-cream">
-        <div className="mx-auto grid w-full max-w-[1280px] gap-10 border-t border-line pt-12 lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] lg:gap-20">
-          <div>
-            <Label>About Aurelius</Label>
-            <h2 id="about-aurelius" className="sr-only">
-              About Aurelius
+    <PageShell theme="aurelius">
+      <div className="font-ds-text text-ds-text">
+        <HeroAurelius primary={{ label: aurelius.labels.allServices, href: "/aurelius/services" }} secondary={null} />
+        <FilmReelNeu />
+        <PositioningNeu />
+        <ServicesNeu />
+        <CapabilitiesNeu />
+        <BeliefsNeu />
+        <AttentionNeu />
+        {/* Selected Work is unmounted for now (2026-10-20, Aurelius revamp); restore with
+            <WorkNeu /> from components/home-neu/WorkNeu.tsx. Its data is content/home.ts → work. */}
+        <MeasurementNeu />
+        <ClientsNeu />
+        <Section id="about-aurelius" labelledBy="about-aurelius-heading">
+          <div data-reveal className="neu-card grid gap-[var(--ds-space-6)] p-[var(--ds-space-7)] lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] lg:gap-[var(--ds-space-8)] lg:p-[var(--ds-space-8)]">
+            <h2 id="about-aurelius-heading" className="ds-heading">
+              About <span className="ds-emphasis block text-ds-muted">{aurelius.name}</span>
             </h2>
+            <div className="flex flex-col gap-[var(--ds-space-4)]">
+              {aurelius.about.map((paragraph, i) => (
+                <p key={paragraph} className={i === 0 ? "ds-emphasis text-[length:var(--ds-text-2xl)] leading-[var(--ds-leading-heading)] text-ds-text" : "ds-body text-[length:var(--ds-text-lg)]"}>
+                  {paragraph}
+                </p>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-col gap-6">
-            {aurelius.about.map((paragraph, i) => (
-              <p
-                key={paragraph}
-                data-reveal
-                className={i === 0 ? "display text-[clamp(1.5rem,2.4vw,2rem)] leading-snug text-cream" : "text-[1.05rem] leading-[1.8] text-cream-muted"}
-              >
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <ContactCta />
+        </Section>
+        <ContactNeu />
+      </div>
     </PageShell>
   );
 }

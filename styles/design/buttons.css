@@ -1,0 +1,420 @@
+/*
+ * The one button (components/design/NeuButton.tsx), after the reference: a soft raised pill on the
+ * surface, a bold label, and a round knob at the right end holding a gold-metal arrow.
+ *   emil-design-eng: press = inset-shadow swap + 0.97 scale, ~120ms ease-out; the knob nudges with it.
+ *   Hover only on hover-capable devices. Transitions name their properties, transform/shadow only.
+ *   mobile-native: every button is at least 44px tall.
+ * The NeuButton rules sit in Tailwind's components layer, so utilities (position, display) on a button
+ * still apply. Inside the Aurelius theme the older `.btn` (components/ui/Button.tsx, still shared with
+ * Kreatif Atelier pages) takes the same look at the end of this file, its `.btn-arrow` as the knob.
+ */
+:root {
+  --nb-h: 52px;
+  --nb-h-sm: 44px;
+  --nb-knob: 40px;
+  --nb-knob-sm: 34px;
+  --nb-pad: var(--ds-space-6);
+  --nb-pad-sm: var(--ds-space-4);
+  --nb-nudge: 3px;
+  --nb-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E");
+}
+
+@layer components {
+  .nb {
+    /* Light tone (default): the page surface, maroon type, warm dual shadows. */
+    --nb-face: var(--ds-surface);
+    --nb-ink: var(--ds-text);
+    --nb-dark: rgb(var(--ds-shadow-tint) / 0.2);
+    --nb-light: rgb(var(--ds-light) / 1);
+    --nb-knob-face: var(--ds-surface-raised);
+    --nb-icon: var(--au-gold-metal, var(--ds-brand));
+    position: relative;
+    display: inline-flex;
+    min-height: var(--nb-h);
+    align-items: center;
+    justify-content: center;
+    gap: var(--ds-space-4);
+    border-radius: var(--ds-radius-pill);
+    padding: 0 var(--nb-pad);
+    font-family: var(--ds-font-text);
+    font-size: var(--ds-text-sm);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+    text-transform: none;
+    white-space: nowrap;
+    color: var(--nb-ink);
+    background: var(--nb-face);
+    border: 0;
+    box-shadow:
+      8px 8px 16px var(--nb-dark),
+      -8px -8px 16px var(--nb-light);
+    cursor: pointer;
+    transition:
+      transform var(--ds-dur-press) var(--ds-ease-out),
+      box-shadow var(--ds-dur-fast) var(--ds-ease-out);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+  }
+  /* With a knob, the knob sits in the right end of the pill. */
+  .nb[data-knob] {
+    padding-right: calc((var(--nb-h) - var(--nb-knob)) / 2);
+  }
+
+  /* The knob: a small raised disc holding the icon (an arrow by default). */
+  .nb__knob {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: var(--nb-knob);
+    height: var(--nb-knob);
+    border-radius: 50%;
+    font-size: 0; /* the old `.btn-arrow` holds a "→" character; the knob draws its own arrow */
+    background: var(--nb-knob-face);
+    box-shadow:
+      4px 4px 8px var(--nb-dark),
+      -4px -4px 8px var(--nb-light);
+    transition:
+      transform var(--ds-dur-fast) var(--ds-ease-out),
+      box-shadow var(--ds-dur-fast) var(--ds-ease-out);
+  }
+  .nb__arrow {
+    content: "";
+    display: block;
+    width: 46%;
+    height: 46%;
+    background: var(--nb-icon);
+    -webkit-mask: var(--nb-arrow) center / contain no-repeat;
+    mask: var(--nb-arrow) center / contain no-repeat;
+  }
+  /* A custom icon inside the knob (cart plus/check, close): stroked in the ink colour. */
+  .nb__knob > svg {
+    width: 46%;
+    height: 46%;
+  }
+
+  /* Primary: a polished-gold pill; the knob is a cream disc with the gold arrow. */
+  .nb--primary {
+    --nb-face: var(--au-gold-metal, var(--ds-navy));
+    --nb-ink: var(--au-cta-ink, var(--ds-text-on-accent));
+    --nb-knob-face: var(--au-cream-50, var(--ds-surface-raised));
+    --nb-dark: rgb(var(--ds-shadow-tint) / 0.3);
+    box-shadow:
+      inset 0 1px 0 rgb(247 227 161 / 0.7),
+      8px 8px 16px var(--nb-dark),
+      -8px -8px 16px var(--nb-light);
+  }
+  .nb--primary .nb__knob {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.8),
+      0 2px 6px rgb(var(--ds-shadow-tint) / 0.35);
+  }
+
+  /* Compact: chips, nav, small actions. Still 44px for the finger. */
+  .nb--sm {
+    min-height: var(--nb-h-sm);
+    gap: var(--ds-space-3);
+    padding: 0 var(--nb-pad-sm);
+    font-size: var(--ds-text-xs);
+    box-shadow:
+      5px 5px 10px var(--nb-dark),
+      -5px -5px 10px var(--nb-light);
+  }
+  .nb--sm[data-knob] {
+    padding-right: calc((var(--nb-h-sm) - var(--nb-knob-sm)) / 2);
+  }
+  .nb--sm .nb__knob {
+    width: var(--nb-knob-sm);
+    height: var(--nb-knob-sm);
+  }
+
+  /* Icon-only: a round button, the icon in the middle. */
+  .nb--icon {
+    width: var(--nb-h);
+    padding: 0;
+  }
+  .nb--icon.nb--sm {
+    width: var(--nb-h-sm);
+  }
+  .nb--icon > svg {
+    width: 40%;
+    height: 40%;
+  }
+
+  /* Dark tone (footer and other dark surfaces): the same dual-shadow logic on deep maroon, gold accent. */
+  .nb--dark {
+    --nb-face: var(--au-maroon-900, #2a2a2e);
+    --nb-ink: var(--au-cream-50, #fff);
+    --nb-dark: rgb(0 0 0 / 0.5);
+    --nb-light: rgb(255 236 220 / 0.07);
+    --nb-knob-face: var(--au-maroon-950, #1c1c1f);
+  }
+  .nb--dark.nb--primary {
+    --nb-ink: var(--au-cta-ink);
+    --nb-knob-face: var(--au-maroon-900);
+  }
+
+  /* Hover (pointer devices only): the knob slides on, the shadow deepens a touch. */
+  @media (hover: hover) and (pointer: fine) {
+    .nb:hover .nb__knob {
+      transform: translateX(var(--nb-nudge));
+    }
+    .nb:hover:not(:disabled, [aria-disabled="true"]) {
+      box-shadow:
+        10px 10px 20px var(--nb-dark),
+        -9px -9px 18px var(--nb-light);
+    }
+    .nb--primary:hover:not(:disabled, [aria-disabled="true"]) {
+      filter: brightness(1.04);
+    }
+  }
+
+  /* Pressed (while held, or a toggle that is on): the inset swap, a 0.97 scale, the knob pressed in too. */
+  .nb:active,
+  .nb[aria-pressed="true"] {
+    box-shadow:
+      inset 5px 5px 10px var(--nb-dark),
+      inset -5px -5px 10px var(--nb-light);
+  }
+  .nb:active {
+    transform: scale(var(--ds-press-scale));
+  }
+  .nb:active .nb__knob,
+  .nb[aria-pressed="true"] .nb__knob {
+    transform: translateX(calc(var(--nb-nudge) / 2));
+    box-shadow:
+      inset 3px 3px 6px var(--nb-dark),
+      inset -3px -3px 6px var(--nb-light);
+  }
+  .nb[aria-pressed="true"] {
+    --nb-face: var(--ds-surface-sunken);
+  }
+
+  /* Focus: a visible gold ring. */
+  .nb:focus-visible {
+    outline: 2px solid var(--au-gold-500, var(--ds-focus));
+    outline-offset: 4px;
+  }
+
+  /* Disabled: flat and quiet. */
+  .nb:disabled,
+  .nb[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.55;
+    box-shadow:
+      inset 3px 3px 6px var(--nb-dark),
+      inset -3px -3px 6px var(--nb-light);
+  }
+
+  /* Loading: the knob's icon becomes a turning ring; the label stays. */
+  .nb[aria-busy="true"] {
+    cursor: progress;
+  }
+  .nb__spinner {
+    width: 46%;
+    height: 46%;
+    border-radius: 50%;
+    border: 2px solid rgb(var(--ds-shadow-tint) / 0.2);
+    border-top-color: var(--au-gold-500, var(--ds-brand));
+    animation: nb-spin 700ms linear infinite;
+  }
+  @keyframes nb-spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  /* A count badge on an icon button (the cart). */
+  .nb__badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    display: grid;
+    place-items: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: var(--ds-radius-pill);
+    font-size: 11px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--au-cta-ink, var(--ds-text));
+    background: var(--au-gold-metal, var(--ds-surface-raised));
+    box-shadow: 0 2px 6px rgb(var(--ds-shadow-tint) / 0.3);
+  }
+  .nb__badge[data-bump] {
+    animation: nb-bump var(--ds-dur-slow) var(--ds-ease-spring);
+  }
+  @keyframes nb-bump {
+    30% {
+      transform: scale(1.35);
+    }
+  }
+
+  /* The toggle (third reference): a sunken pill track with a raised, labelled thumb that slides across. */
+  .nb-toggle {
+    --nb-face: var(--ds-surface-sunken);
+    --nb-ink: var(--ds-text);
+    --nb-dark: rgb(var(--ds-shadow-tint) / 0.2);
+    --nb-light: rgb(var(--ds-light) / 1);
+    --nb-thumb: var(--ds-surface-raised);
+    position: relative;
+    display: inline-flex;
+    width: 112px;
+    height: var(--nb-h);
+    flex: none;
+    align-items: center;
+    border-radius: var(--ds-radius-pill);
+    padding: 5px;
+    background: var(--nb-face);
+    box-shadow:
+      inset 5px 5px 10px var(--nb-dark),
+      inset -5px -5px 10px var(--nb-light);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nb-toggle__thumb {
+    display: grid;
+    place-items: center;
+    width: 62%;
+    height: 100%;
+    border-radius: var(--ds-radius-pill);
+    font-size: var(--ds-text-xs);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--nb-ink);
+    background: var(--nb-thumb);
+    box-shadow:
+      4px 4px 8px var(--nb-dark),
+      -4px -4px 8px var(--nb-light);
+    transition:
+      transform var(--ds-dur-base) var(--ds-ease-out),
+      background var(--ds-dur-base) var(--ds-ease-out);
+  }
+  .nb-toggle[aria-checked="true"] .nb-toggle__thumb {
+    transform: translateX(61%);
+    color: var(--au-cta-ink, var(--ds-text-on-accent));
+    background: var(--au-gold-metal, var(--ds-navy));
+  }
+  .nb-toggle--dark {
+    --nb-face: var(--au-maroon-950, #1c1c1f);
+    --nb-ink: var(--au-cream-50, #fff);
+    --nb-dark: rgb(0 0 0 / 0.55);
+    --nb-light: rgb(255 236 220 / 0.07);
+    --nb-thumb: var(--au-maroon-900, #2a2a2e);
+  }
+  .nb-toggle:focus-visible {
+    outline: 2px solid var(--au-gold-500, var(--ds-focus));
+    outline-offset: 4px;
+  }
+  .nb-toggle:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nb__spinner {
+      animation-duration: 2s;
+    }
+  }
+  /* The knob alone, at the foot of a linked card: it slides on when the card is hovered. */
+  .nb__knob--card {
+    --nb-dark: rgb(var(--ds-shadow-tint) / 0.2);
+    --nb-light: rgb(var(--ds-light) / 1);
+    --nb-knob-face: var(--ds-surface-raised);
+    --nb-icon: var(--au-gold-metal, var(--ds-brand));
+  }
+  @media (hover: hover) and (pointer: fine) {
+    a:hover .nb__knob--card {
+      transform: translateX(var(--nb-nudge));
+    }
+  }
+}
+
+/* The older `.btn` (components/ui/Button.tsx, shared with Kreatif Atelier pages) inside the Aurelius
+   theme: the same pill and knob. Unlayered, because the legacy `.btn` rules in app/globals.css are. */
+.theme-aurelius .btn {
+  --nb-face: var(--ds-surface);
+  --nb-ink: var(--ds-text);
+  --nb-dark: rgb(var(--ds-shadow-tint) / 0.2);
+  --nb-light: rgb(var(--ds-light) / 1);
+  --nb-knob-face: var(--ds-surface-raised);
+  --nb-icon: var(--au-gold-metal);
+  min-height: var(--nb-h);
+  gap: var(--ds-space-4);
+  padding: 0 calc((var(--nb-h) - var(--nb-knob)) / 2) 0 var(--nb-pad);
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+  color: var(--nb-ink);
+  background: var(--nb-face);
+  box-shadow:
+    8px 8px 16px var(--nb-dark),
+    -8px -8px 16px var(--nb-light);
+}
+.theme-aurelius .btn-primary {
+  --nb-face: var(--au-gold-metal);
+  --nb-ink: var(--au-cta-ink);
+  --nb-knob-face: var(--au-cream-50);
+  --nb-dark: rgb(var(--ds-shadow-tint) / 0.3);
+}
+.theme-aurelius .btn > .btn-arrow {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--nb-knob);
+  height: var(--nb-knob);
+  border-radius: 50%;
+  font-size: 0;
+  background: var(--nb-knob-face);
+  box-shadow:
+    4px 4px 8px var(--nb-dark),
+    -4px -4px 8px var(--nb-light);
+}
+.theme-aurelius .btn > .btn-arrow::before {
+  content: "";
+  width: 46%;
+  height: 46%;
+  background: var(--nb-icon);
+  -webkit-mask: var(--nb-arrow) center / contain no-repeat;
+  mask: var(--nb-arrow) center / contain no-repeat;
+}
+@media (hover: hover) {
+  .theme-aurelius .btn:hover {
+    color: var(--nb-ink);
+  }
+}
+.theme-aurelius .btn:active {
+  transform: scale(var(--ds-press-scale));
+  box-shadow:
+    inset 5px 5px 10px var(--nb-dark),
+    inset -5px -5px 10px var(--nb-light);
+}
+.theme-aurelius .btn:focus-visible {
+  outline: 2px solid var(--au-gold-500);
+  outline-offset: 4px;
+}
+
+/* Header buttons: smaller, so the centred KA monogram has room either side. */
+.nb.nb--xs {
+  min-height: 38px;
+  padding-left: var(--ds-space-4);
+  font-size: 0.72rem;
+  gap: var(--ds-space-2);
+  box-shadow: 4px 4px 9px var(--nb-dark), -4px -4px 9px var(--nb-light);
+}
+.nb.nb--xs[data-knob] {
+  padding-right: 4px;
+}
+.nb.nb--xs .nb__knob {
+  width: 30px;
+  height: 30px;
+}
+
+
+/* Buttons fixed over the page (Back to top) cross the dark footer: no white "light" shadow there, which
+   showed as a white halo on the dark ground. A plain soft drop shadow works on light and dark. */
+.nb.nb--float {
+  box-shadow: 0 6px 18px -6px rgb(0 0 0 / 0.35), inset 0 1px 0 rgb(255 255 255 / 0.5);
+}

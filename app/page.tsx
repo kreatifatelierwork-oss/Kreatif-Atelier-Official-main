@@ -1,7 +1,9 @@
-import { AureliusHero } from "@/components/hero/AureliusHero";
-import { heroFigure } from "@/content/home";
-import { Attention, Capabilities, ContactCta, Measurement, ParentContext, Positioning, Ventures, WorkTeaser } from "@/components/home/HomeSections";
-import { PillarsSection } from "@/components/aurelius/PillarsSection";
+import { AureliusTeaserNeu } from "@/components/home-neu/AureliusTeaserNeu";
+import { ClientsNeu } from "@/components/home-neu/ClientsNeu";
+import { ContactNeu } from "@/components/home-neu/ContactNeu";
+import { HeroAurelius } from "@/components/aurelius-site/HeroAurelius";
+import { ParentNeu } from "@/components/home-neu/ParentNeu";
+import { VenturesNeu } from "@/components/home-neu/VenturesNeu";
 import { PageShell } from "@/components/layout/PageShell";
 import { site } from "@/content/site";
 
@@ -20,24 +22,22 @@ const organizationJsonLd = {
   },
 };
 
-/** Home: Aurelius-led, with the ventures and the parent grouped near the end (docs/website-blueprint.md §4). */
+/**
+ * Home (2026-10-20): the front door. The Aurelius hero, a short word on Aurelius that leads to its own
+ * page (where the depth lives: film, positioning, pillars, capabilities, attention, measurement), where we
+ * serve clients, the ventures, the parent company and the way to get in touch.
+ */
 export default function Home() {
   return (
-    <PageShell>
-      <AureliusHero figure={heroFigure} showCtas />
-      {/* Light block: transparent over the canvas, which paints the page and the dark rising at its end.
-          The long bottom padding is the room that rise needs. */}
-      <div data-light-block data-dome className="light-block pb-[92vh]">
-        <Positioning />
-        <PillarsSection />
-        <Capabilities />
+    <PageShell theme="aurelius">
+      <div className="font-ds-text text-ds-text">
+        <HeroAurelius secondary={null} />
+        <AureliusTeaserNeu />
+        <ClientsNeu />
+        <VenturesNeu />
+        <ParentNeu />
+        <ContactNeu />
       </div>
-      <Attention />
-      <WorkTeaser />
-      <Measurement />
-      <Ventures />
-      <ParentContext />
-      <ContactCta />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
     </PageShell>
   );

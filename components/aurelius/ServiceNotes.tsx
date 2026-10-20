@@ -1,7 +1,8 @@
 "use client";
 
+import { AddToCart } from "@/components/cart/AddToCart";
 import { useState } from "react";
-import { Button } from "@/components/ui/Button";
+import { NeuButton } from "@/components/design/NeuButton";
 import { Dialog } from "@/components/ui/Dialog";
 import { aurelius, practiceHref } from "@/content/aurelius";
 import { serviceNotes } from "@/content/aurelius-service-notes";
@@ -32,21 +33,30 @@ type RowProps = {
   variant?: "index" | "practice";
 };
 
-/** One service as a button: code, name and a small plus that says there is more to read. */
+/**
+ * One service as a button that opens its note. On a practice page it is a raised tile: the code in a
+ * small chip, the name bold, and a round "+" that turns on hover. In the service index it is a quieter row.
+ */
 export function ServiceRow({ service, onOpen, variant = "practice" }: RowProps) {
-  const practice = variant === "practice";
+  if (variant === "practice") {
+    return (
+      <button type="button" onClick={onOpen} aria-haspopup="dialog" className="neu-tile group h-full">
+        <span className="neu-chip shrink-0 !text-[length:var(--ds-text-xs)] !font-bold tracking-[0.06em] !text-ds-blue">{service.code}</span>
+        <span className="min-w-0 flex-1 text-[length:var(--ds-text-lg)] leading-snug font-bold [overflow-wrap:anywhere] text-ds-text">{service.name}</span>
+        <span
+          aria-hidden="true"
+          className="neu-raised-sm grid size-9 shrink-0 place-items-center rounded-full text-[length:var(--ds-text-lg)] font-bold text-ds-blue transition-transform duration-[var(--ds-dur-base)] ease-[var(--ds-ease-out)] [@media(hover:hover)]:group-hover:rotate-90"
+        >
+          +
+        </span>
+      </button>
+    );
+  }
   return (
-    <button
-      type="button"
-      onClick={onOpen}
-      aria-haspopup="dialog"
-      className={`group flex w-full items-baseline gap-4 text-left transition-colors ${practice ? "py-4" : "py-3"}`}
-    >
+    <button type="button" onClick={onOpen} aria-haspopup="dialog" className="group flex w-full items-baseline gap-4 py-3 text-left transition-colors">
       <span className="eyebrow w-[4.2rem] shrink-0 text-[0.58rem] text-gold">{service.code}</span>
-      <span className={`flex-1 transition-colors group-hover:text-gold-bright ${practice ? "text-[1rem] text-cream" : "text-[0.95rem] text-cream-muted"}`}>
-        {service.name}
-      </span>
-      <span aria-hidden="true" className="text-[0.95rem] text-gold/60 transition-[color,transform] duration-300 group-hover:rotate-90 group-hover:text-gold-bright">
+      <span className="min-w-0 flex-1 text-[0.95rem] font-semibold [overflow-wrap:anywhere] text-cream-muted transition-colors group-hover:text-gold-bright">{service.name}</span>
+      <span aria-hidden="true" className="shrink-0 text-[0.95rem] text-gold/60 transition-[color,transform] duration-300 group-hover:rotate-90 group-hover:text-gold-bright">
         +
       </span>
     </button>
@@ -76,10 +86,11 @@ export function ServiceNoteDialog({ selected, open, onClose, linkToPractice = tr
           </h2>
           <p className="mt-6 text-[1.05rem] leading-[1.75] text-cream-muted">{serviceNotes[selected.service.code] ?? labels.noNote}</p>
           <div className="mt-9 flex flex-wrap gap-3">
-            <Button href="/contact" variant="primary">
+            <AddToCart id={selected.service.code} />
+            <NeuButton href="/contact" variant="primary">
               {labels.discuss}
-            </Button>
-            {linkToPractice && <Button href={practiceHref(selected.practice.slug)}>{selected.practice.name}</Button>}
+            </NeuButton>
+            {linkToPractice && <NeuButton href={practiceHref(selected.practice.slug)}>{selected.practice.name}</NeuButton>}
           </div>
         </div>
       )}
@@ -92,9 +103,9 @@ export function PracticeServiceList({ services, practice }: { services: readonly
   const note = useServiceNote();
   return (
     <>
-      <ul className="mt-10 grid gap-x-10 border-t border-line sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-[var(--ds-space-6)] grid gap-[var(--ds-space-4)] sm:grid-cols-2 lg:grid-cols-3">
         {services.map((service) => (
-          <li key={service.code} className="border-b border-line">
+          <li key={service.code} data-reveal className="flex">
             <ServiceRow service={service} onOpen={() => note.show(service, practice)} />
           </li>
         ))}

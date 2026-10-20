@@ -1,0 +1,174 @@
+/*
+ * The service cart (components/cart/) and the All Services index (components/services-index/).
+ * Neumorphic structure, glass for the drawer; colours from the Aurelius theme only.
+ */
+
+/* Field errors (components/design/Field.tsx). */
+.neu-field[aria-invalid="true"] {
+  box-shadow: var(--neu-pressed-sm), inset 0 0 0 1.5px var(--au-maroon-500, var(--ds-brand));
+}
+.neu-field__error {
+  font-size: var(--ds-text-sm);
+  color: var(--au-maroon-700, var(--ds-brand));
+}
+
+/* Drawer (base-ui Drawer): glass sheet from the right, light frosted scrim. */
+.cart-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgb(var(--ds-shadow-tint) / 0.18);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: calc(1 - var(--drawer-swipe-progress, 0));
+  transition: opacity var(--ds-dur-drawer) var(--ds-ease-drawer);
+}
+.cart-backdrop[data-starting-style],
+.cart-backdrop[data-ending-style] {
+  opacity: 0;
+}
+.cart-viewport.theme-aurelius {
+  position: fixed;
+  inset: 0;
+  z-index: 71;
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--ds-space-2);
+  background: transparent;
+  pointer-events: none;
+}
+.cart-drawer {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  width: min(30rem, 100%);
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-6);
+  outline: none;
+  transform: translateX(var(--drawer-swipe-movement-x, 0px));
+  transition: transform var(--ds-dur-drawer) var(--ds-ease-drawer);
+}
+.cart-drawer[data-swiping] {
+  transition-duration: 0ms;
+  user-select: none;
+}
+.cart-drawer[data-starting-style],
+.cart-drawer[data-ending-style] {
+  transform: translateX(calc(100% + var(--ds-space-4)));
+}
+.cart-drawer[data-ending-style] {
+  transition-duration: calc(var(--drawer-swipe-strength, 1) * var(--ds-dur-drawer));
+}
+@media (max-width: 480px) {
+  .cart-viewport.theme-aurelius {
+    padding: 0;
+  }
+  .cart-drawer {
+    width: 100%;
+    border-radius: 0;
+    padding: var(--ds-space-5);
+  }
+}
+
+/* One selected service in the drawer. */
+.cart-item {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-3);
+  border-radius: var(--ds-radius-md);
+  background: rgb(var(--ds-light) / 0.55);
+  box-shadow: var(--neu-raised-sm);
+}
+.cart-item img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+/* Toasts (Sonner): small glass pills, bottom centre. */
+.au-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  width: 100%;
+  border-radius: var(--ds-radius-pill);
+  padding: var(--ds-space-3) var(--ds-space-3) var(--ds-space-3) var(--ds-space-5);
+  font-family: var(--ds-font-text);
+  font-size: var(--ds-text-sm);
+  color: var(--ds-text);
+  background: rgb(var(--ds-light) / 0.86);
+  border: 1px solid var(--glass-gold-edge, var(--glass-border));
+  box-shadow: var(--glass-highlight), 0 18px 40px -18px rgb(var(--ds-shadow-tint) / 0.45);
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturate));
+}
+.au-toast__title {
+  flex: 1;
+}
+.au-toast__action {
+  flex: none;
+  min-height: 32px;
+  border-radius: var(--ds-radius-pill);
+  padding: 0 var(--ds-space-4);
+  font-size: var(--ds-text-xs);
+  font-weight: 600;
+  color: var(--ds-text);
+  background: var(--ds-surface-raised);
+  box-shadow: var(--neu-raised-sm);
+}
+
+/* The check draws itself in when a service is added. */
+.cart-add__check {
+  stroke-dasharray: 14;
+  stroke-dashoffset: 0;
+  animation: cart-check var(--ds-dur-base) var(--ds-ease-out);
+}
+@keyframes cart-check {
+  from {
+    stroke-dashoffset: 14;
+  }
+}
+
+/* All Services: service cards. */
+.svc-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-5);
+}
+/* Type: the name in the display serif (sentence case, generous size), the note in the text face. */
+.svc-card__name {
+  font-family: var(--ds-font-accent);
+  font-size: clamp(1.45rem, 1.2rem + 0.6vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+  word-spacing: 0.04em;
+  color: var(--au-maroon-700);
+  text-wrap: balance;
+}
+.svc-card__note {
+  font-size: var(--ds-text-sm);
+  line-height: 1.6;
+  color: var(--ds-text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.svc-card__code {
+  flex: none;
+  border-radius: var(--ds-radius-pill);
+  padding: 2px var(--ds-space-2);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: var(--au-gold-ink);
+  box-shadow: var(--neu-pressed-sm);
+}

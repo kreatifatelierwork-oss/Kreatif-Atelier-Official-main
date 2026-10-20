@@ -1,7 +1,7 @@
 import { site } from "@/content/site";
 
 type Props = {
-  network: "instagramUrl" | "linkedinUrl";
+  network: "instagramUrl" | "linkedinUrl" | "youtubeUrl";
   children: React.ReactNode;
   className?: string;
 };

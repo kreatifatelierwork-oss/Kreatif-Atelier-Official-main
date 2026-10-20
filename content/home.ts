@@ -20,7 +20,9 @@ export const heroFigure: HeroFigure = {
 export const hero = {
   id: "home",
   primaryCta: { label: "Explore Aurelius", href: "/aurelius" },
-  secondaryCta: { label: "View Selected Work", href: "/work" },
+  secondaryCta: { label: "View all services", href: "/aurelius/services" },
+  /** The hero's quote (owner, 2026-10-20). The last two words are set in gold. */
+  quote: "We make brands impossible to ignore.",
   scrollCue: "Scroll",
   /** The two small word lists in the hero's top corners. */
   words: { start: ["Strategy", "Creative", "Media", "Technology"], end: ["Ideas", "Brands", "Audiences", "Impact"] },
@@ -94,6 +96,23 @@ export const ventures = {
   explore: "Explore",
 } as const;
 
+/**
+ * Where Aurelius's clients are (owner, 2026-10-20: "we serve clients in 3 timezones", Vancouver, the UAE and
+ * India), on the relief map. Positions are percentages of world-relief.svg: x = 50 + 0.27 × longitude,
+ * y = 52.93 − 0.5274 × latitude (fitted to the map's projection).
+ */
+export const clients = {
+  id: "clients",
+  marker: "Where our clients are",
+  headline: { lead: "We work across", emphasis: "3 timezones." },
+  map: { src: "/images/graphics/world-relief.svg", width: 1000, height: 512, alt: "A relief map of the world marking Vancouver, the UAE and India" },
+  places: [
+    { country: "Canada", city: "Vancouver", utc: "UTC−8", note: "UTC−7 in summer", x: 16.76, y: 26.94, label: "right" },
+    { country: "UAE", city: "Dubai", utc: "UTC+4", x: 64.92, y: 39.64, label: "left" },
+    { country: "India", city: "Hyderabad", utc: "UTC+5:30", x: 71.19, y: 43.76, label: "right", home: true },
+  ],
+} as const;
+
 export const parent = {
   id: "kreatif-atelier",
   marker: "Kreatif Atelier",
@@ -107,6 +126,8 @@ export const parent = {
     height: 941,
     alt: "The Kreatif Atelier crest in embroidery: a crowned eagle bearing a KA shield, above a KA monogram and the words Create, Design, Inspire",
     /** The verticals shown on the cloth beneath the crest, in order. Slugs from content/verticals.ts. */
+    /** The red eagle crest the owner supplied, shown small on the footer's hidden door. */
+    eagle: { src: "/images/logos/ka-eagle-crest.webp", width: 453, height: 479 },
     verticals: ["aurelius", "asraya", "valora", "golden-guardian-productions", "rudra-yugen"],
   },
 } as const;
@@ -116,4 +137,25 @@ export const contactCta = {
   headline: { lead: "Have a business challenge?", emphasis: "Let's make the work land." },
   body: "Tell us your goal, what you have tried and what you need help solving.",
   cta: { label: "Start a Project", href: "/contact" },
+} as const;
+
+/**
+ * The film-reel band under the home hero: two strips of film, text only, moving in opposite
+ * directions. Service names as supplied by the owner (2026-10-20); each `lines` entry is how the
+ * name breaks inside its frame.
+ */
+export const filmReel = {
+  id: "what-we-create",
+  eyebrow: "What we create",
+  headline: { lead: "Ideas", emphasis: "in motion." },
+  services: [
+    { name: "Brand Strategy", lines: ["Brand", "Strategy"] },
+    { name: "Social Media Management", lines: ["Social Media", "Management"] },
+    { name: "Content Creation", lines: ["Content", "Creation"] },
+    { name: "Graphic Design", lines: ["Graphic", "Design"] },
+    { name: "Website Development", lines: ["Website", "Development"] },
+    { name: "Performance Marketing", lines: ["Performance", "Marketing"] },
+    { name: "Photography & Videography", lines: ["Photography &", "Videography"] },
+    { name: "Creative Consulting", lines: ["Creative", "Consulting"] },
+  ],
 } as const;

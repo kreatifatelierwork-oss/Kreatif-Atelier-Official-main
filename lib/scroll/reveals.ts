@@ -16,7 +16,7 @@ export function createReveals() {
   const belowFold = (el: HTMLElement) => el.getBoundingClientRect().top > threshold;
 
   const blocks = gsap.utils.toArray<HTMLElement>("[data-reveal]").filter(belowFold);
-  gsap.set(blocks, { autoAlpha: 0, y: distance });
+  if (blocks.length) gsap.set(blocks, { autoAlpha: 0, y: distance });
   const blockTriggers = ScrollTrigger.batch(blocks, {
     start,
     once: true,
@@ -55,6 +55,6 @@ export function createReveals() {
   return () => {
     blockTriggers.forEach((t) => t.kill());
     splits.forEach((s) => s.revert());
-    gsap.set(blocks, { clearProps: "opacity,visibility,transform" });
+    if (blocks.length) gsap.set(blocks, { clearProps: "opacity,visibility,transform" });
   };
 }
