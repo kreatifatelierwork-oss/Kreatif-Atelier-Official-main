@@ -1,0 +1,243 @@
+/*
+ * Steps joined by a scroll-drawn wire (components/design/StepWire.tsx). Each step is its own raised card on
+ * the page surface; the wire is one SVG path (faint track + gold-metal line + bead). Only transform, opacity,
+ * box-shadow and stroke-dashoffset change.
+ *   emil-design-eng: lit cards lift 4px with a deeper shadow (no scale); press = inset + 0.97 like NeuButton.
+ *   animation-performance: the line is a dashoffset scrub; the bead is an SVG transform.
+ */
+.sw {
+  position: relative;
+  --sw-gutter: 3.25rem;
+}
+.sw__wire {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0;
+}
+.sw__track {
+  fill: none;
+  stroke: rgb(var(--ds-shadow-tint) / 0.14);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.sw__line {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  filter: drop-shadow(0 1px 2px rgb(138 98 9 / 0.35));
+}
+.sw-stop-a {
+  stop-color: var(--au-gold-600);
+}
+.sw-stop-b {
+  stop-color: var(--au-gold-300);
+}
+.sw-stop-c {
+  stop-color: var(--au-gold-500);
+}
+.sw__arrow {
+  fill: none;
+  stroke: var(--au-gold-600);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transition: opacity var(--ds-dur-base) var(--ds-ease-out);
+}
+.sw__bead {
+  opacity: 0;
+  transition: opacity var(--ds-dur-fast) var(--ds-ease-out);
+}
+.sw-glow-core {
+  stop-color: var(--au-gold-300);
+  stop-opacity: 0.9;
+}
+.sw-glow-edge {
+  stop-color: var(--au-gold-400);
+  stop-opacity: 0;
+}
+.sw__bead-core {
+  fill: var(--au-cream-50);
+}
+
+.sw[data-loop] {
+  --sw-gutter: 4.5rem;
+}
+.sw[data-loop] .sw-step__node {
+  left: calc(var(--sw-gutter) * -1 + 2.6rem);
+}
+
+/* The list: a vertical timeline by default, the wire down the left gutter. */
+.sw__list {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-5);
+  padding-left: var(--sw-gutter);
+}
+.sw__item {
+  display: flex;
+}
+
+/* One step: a raised card that stands alone; its node sits on the wire. */
+.sw-step {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 44px;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-5) var(--ds-space-6);
+  text-align: left;
+  color: var(--ds-text);
+  background: var(--ds-surface);
+  box-shadow: var(--neu-raised-sm);
+  transition:
+    transform var(--ds-dur-slow) var(--ds-ease-out),
+    box-shadow var(--ds-dur-slow) var(--ds-ease-out);
+}
+button.sw-step {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.sw-step[data-lit] {
+  transform: translateY(-4px);
+  box-shadow: var(--neu-raised-md);
+}
+@media (hover: hover) and (pointer: fine) {
+  button.sw-step:hover {
+    box-shadow: var(--neu-raised-md);
+  }
+}
+button.sw-step:active,
+button.sw-step[aria-expanded="true"] {
+  transform: translateY(-1px) scale(var(--ds-press-scale));
+  box-shadow: var(--neu-pressed-sm);
+  transition-duration: var(--ds-dur-press);
+}
+button.sw-step:focus-visible {
+  outline: 2px solid var(--au-gold-500);
+  outline-offset: 4px;
+}
+.sw-step__node {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--sw-gutter) * -1 + 0.6rem);
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  border-radius: 50%;
+  background: var(--ds-surface);
+  box-shadow: var(--neu-pressed-sm), 0 0 0 2px rgb(var(--ds-shadow-tint) / 0.12);
+  transition:
+    background var(--ds-dur-slow) var(--ds-ease-out),
+    box-shadow var(--ds-dur-slow) var(--ds-ease-out);
+}
+.sw-step[data-lit] .sw-step__node {
+  background: var(--au-gold-metal);
+  box-shadow: 0 0 0 3px rgb(var(--ds-light) / 0.9), 0 0 14px 2px rgb(230 185 58 / 0.55);
+}
+.sw-step__num {
+  font-size: var(--ds-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--au-gold-ink);
+}
+.sw-step__title {
+  font-family: var(--ds-font-display);
+  font-size: var(--ds-text-xl);
+  line-height: var(--ds-leading-heading);
+  text-transform: uppercase;
+  color: var(--ds-text);
+}
+.sw-step__line {
+  font-size: var(--ds-text-sm);
+  line-height: 1.55;
+  color: var(--ds-text-muted);
+}
+.sw__note {
+  position: relative;
+  z-index: 1;
+  margin-top: var(--ds-space-4);
+  padding-left: var(--sw-gutter);
+  font-family: var(--ds-font-accent);
+  font-style: italic;
+  font-size: var(--ds-text-lg);
+  color: var(--ds-text-muted);
+}
+
+/* The detail panel under the steps: an inset well, open for the chosen step. */
+.sw__detail {
+  position: relative;
+  z-index: 1;
+  margin-top: var(--ds-space-5);
+}
+.sw__detail[data-open] {
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-6);
+  background: var(--ds-surface-sunken);
+  box-shadow: var(--neu-pressed-md);
+}
+.sw__detail-body {
+  animation: sw-in var(--ds-dur-base) var(--ds-ease-out);
+}
+@keyframes sw-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.sw__detail-outcome {
+  margin-top: var(--ds-space-2);
+  font-family: var(--ds-font-accent);
+  font-size: var(--ds-text-xl);
+  line-height: 1.3;
+  color: var(--ds-text);
+}
+.sw__detail-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2);
+  margin-top: var(--ds-space-2);
+}
+.sw__detail-list li {
+  border-radius: var(--ds-radius-pill);
+  padding: var(--ds-space-2) var(--ds-space-4);
+  font-size: var(--ds-text-sm);
+  font-weight: 600;
+  background: var(--ds-surface);
+  box-shadow: var(--neu-raised-sm);
+}
+
+/* Row layout (lg up): steps side by side, the wire running above them. */
+@media (min-width: 1024px) {
+  .sw[data-layout="row"] .sw__list {
+    display: grid;
+    grid-template-columns: repeat(var(--sw-count, 5), minmax(0, 1fr));
+    padding-left: 0;
+    padding-top: var(--sw-gutter);
+  }
+  .sw[data-layout="row"] .sw-step__node {
+    top: calc(var(--sw-gutter) * -1 + 0.6rem);
+    left: 50%;
+    margin-top: 0;
+    margin-left: -7px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sw-step,
+  .sw-step__node,
+  .sw__detail-body {
+    transition: none;
+    animation: none;
+  }
+}

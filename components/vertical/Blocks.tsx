@@ -78,6 +78,30 @@ export function BlockView({ block }: { block: Block }) {
         </section>
       );
 
+    case "link":
+      return (
+        <section className={shell}>
+          <div className={`${inner} grid items-end gap-10 border-t border-line pt-12 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:gap-20`}>
+            <div>
+              {block.label && <Label>{block.label}</Label>}
+              <Headline headline={block.headline} className={block.label ? "mt-6" : ""} />
+              <p data-reveal className="mt-7 max-w-2xl text-[1.08rem] leading-relaxed text-cream-muted">
+                {block.body}
+              </p>
+            </div>
+            {/* A plain link: the target is a standalone page in /public, outside the router. */}
+            <div data-reveal className="lg:justify-self-end">
+              <a href={block.href} className="btn btn-primary">
+                {block.cta}
+                <span aria-hidden="true" className="btn-arrow">
+                  →
+                </span>
+              </a>
+            </div>
+          </div>
+        </section>
+      );
+
     case "statement":
       return (
         <section className={shell}>

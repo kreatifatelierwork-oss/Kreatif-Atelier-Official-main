@@ -1,0 +1,317 @@
+{
+  "hero:digital-marketing": {
+    "frame": 640,
+    "left": 220,
+    "top": 55,
+    "width": 212,
+    "height": 536
+  },
+  "hero:public-relations": {
+    "frame": 640,
+    "left": 126,
+    "top": 119,
+    "width": 416,
+    "height": 452
+  },
+  "obj:reactions": {
+    "frame": 640,
+    "left": 192,
+    "top": 58,
+    "width": 279,
+    "height": 514
+  },
+  "hero:promotions": {
+    "frame": 640,
+    "left": 88,
+    "top": 149,
+    "width": 454,
+    "height": 378
+  },
+  "obj:instagram-tile": {
+    "frame": 640,
+    "left": 68,
+    "top": 54,
+    "width": 523,
+    "height": 543
+  },
+  "hero:seo": {
+    "frame": 640,
+    "left": 160,
+    "top": 74,
+    "width": 354,
+    "height": 450
+  },
+  "obj:press-mic": {
+    "frame": 640,
+    "left": 112,
+    "top": 73,
+    "width": 453,
+    "height": 552
+  },
+  "hero:branding-creative-design": {
+    "frame": 640,
+    "left": 163,
+    "top": 53,
+    "width": 345,
+    "height": 550
+  },
+  "obj:news-mic": {
+    "frame": 640,
+    "left": 126,
+    "top": 119,
+    "width": 416,
+    "height": 452
+  },
+  "hero:advertising": {
+    "frame": 640,
+    "left": 68,
+    "top": 131,
+    "width": 514,
+    "height": 369
+  },
+  "obj:linkedin-tile": {
+    "frame": 640,
+    "left": 68,
+    "top": 54,
+    "width": 523,
+    "height": 543
+  },
+  "hero:analytics-performance": {
+    "frame": 640,
+    "left": 123,
+    "top": 124,
+    "width": 448,
+    "height": 420
+  },
+  "obj:gift-box": {
+    "frame": 640,
+    "left": 88,
+    "top": 149,
+    "width": 454,
+    "height": 378
+  },
+  "hero:lead-generation-growth": {
+    "frame": 640,
+    "left": 125,
+    "top": 82,
+    "width": 411,
+    "height": 527
+  },
+  "obj:megaphone": {
+    "frame": 640,
+    "left": 68,
+    "top": 131,
+    "width": 514,
+    "height": 369
+  },
+  "hero:film-video-photography": {
+    "frame": 640,
+    "left": 96,
+    "top": 83,
+    "width": 482,
+    "height": 465
+  },
+  "obj:target": {
+    "frame": 640,
+    "left": 178,
+    "top": 67,
+    "width": 407,
+    "height": 474
+  },
+  "hero:technology-product": {
+    "frame": 640,
+    "left": 24,
+    "top": 192,
+    "width": 530,
+    "height": 302
+  },
+  "obj:seo-magnifier": {
+    "frame": 640,
+    "left": 160,
+    "top": 74,
+    "width": 354,
+    "height": 450
+  },
+  "hero:advisory-transformation": {
+    "frame": 640,
+    "left": 141,
+    "top": 61,
+    "width": 377,
+    "height": 529
+  },
+  "obj:google-cluster": {
+    "frame": 640,
+    "left": 78,
+    "top": 123,
+    "width": 498,
+    "height": 428
+  },
+  "obj:browser-chart": {
+    "frame": 640,
+    "left": 123,
+    "top": 124,
+    "width": 448,
+    "height": 420
+  },
+  "obj:growth-bars": {
+    "frame": 640,
+    "left": 125,
+    "top": 82,
+    "width": 411,
+    "height": 527
+  },
+  "obj:palette-card": {
+    "frame": 640,
+    "left": 163,
+    "top": 53,
+    "width": 345,
+    "height": 550
+  },
+  "obj:pen-tool": {
+    "frame": 640,
+    "left": 148,
+    "top": 52,
+    "width": 387,
+    "height": 554
+  },
+  "obj:type-tile": {
+    "frame": 640,
+    "left": 86,
+    "top": 176,
+    "width": 487,
+    "height": 406
+  },
+  "obj:pen-nib": {
+    "frame": 640,
+    "left": 199,
+    "top": 79,
+    "width": 307,
+    "height": 473
+  },
+  "obj:billboard": {
+    "frame": 640,
+    "left": 129,
+    "top": 65,
+    "width": 422,
+    "height": 503
+  },
+  "obj:ad-card": {
+    "frame": 640,
+    "left": 135,
+    "top": 123,
+    "width": 437,
+    "height": 421
+  },
+  "obj:analytics-board": {
+    "frame": 640,
+    "left": 81,
+    "top": 74,
+    "width": 452,
+    "height": 529
+  },
+  "obj:growth-runner": {
+    "frame": 640,
+    "left": 99,
+    "top": 79,
+    "width": 484,
+    "height": 486
+  },
+  "obj:web-shop": {
+    "frame": 640,
+    "left": 120,
+    "top": 55,
+    "width": 438,
+    "height": 514
+  },
+  "obj:whatsapp-tile": {
+    "frame": 640,
+    "left": 68,
+    "top": 54,
+    "width": 523,
+    "height": 543
+  },
+  "obj:clapperboard": {
+    "frame": 640,
+    "left": 123,
+    "top": 61,
+    "width": 394,
+    "height": 510
+  },
+  "obj:film-strip": {
+    "frame": 640,
+    "left": 228,
+    "top": 72,
+    "width": 247,
+    "height": 568
+  },
+  "obj:camcorder": {
+    "frame": 640,
+    "left": 96,
+    "top": 83,
+    "width": 482,
+    "height": 465
+  },
+  "obj:youtube-tile": {
+    "frame": 640,
+    "left": 72,
+    "top": 130,
+    "width": 516,
+    "height": 398
+  },
+  "obj:dev-laptop": {
+    "frame": 640,
+    "left": 24,
+    "top": 192,
+    "width": 530,
+    "height": 302
+  },
+  "obj:lightbulb": {
+    "frame": 640,
+    "left": 141,
+    "top": 61,
+    "width": 377,
+    "height": 529
+  },
+  "obj:meeting-table": {
+    "frame": 640,
+    "left": 109,
+    "top": 88,
+    "width": 458,
+    "height": 503
+  },
+  "obj:amazon-tile": {
+    "frame": 640,
+    "left": 68,
+    "top": 54,
+    "width": 523,
+    "height": 543
+  },
+  "obj:flipkart-tile": {
+    "frame": 640,
+    "left": 68,
+    "top": 54,
+    "width": 523,
+    "height": 543
+  },
+  "obj:facebook-tile": {
+    "frame": 640,
+    "left": 68,
+    "top": 54,
+    "width": 523,
+    "height": 543
+  },
+  "obj:x-tile": {
+    "frame": 640,
+    "left": 68,
+    "top": 54,
+    "width": 523,
+    "height": 543
+  },
+  "obj:tiktok-tile": {
+    "frame": 640,
+    "left": 68,
+    "top": 54,
+    "width": 523,
+    "height": 543
+  }
+}

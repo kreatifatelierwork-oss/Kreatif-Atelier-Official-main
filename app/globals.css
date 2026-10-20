@@ -1,4 +1,15 @@
 @import "tailwindcss";
+/* The revamp design system: tokens (single source of truth) and the materials built from them. */
+@import "../styles/design/tokens.css";
+@import "../styles/design/materials.css";
+/* The Aurelius maroon-and-gold theme, applied only inside .theme-aurelius. */
+@import "../styles/design/aurelius-theme.css";
+@import "../styles/design/aurelius-hero.css";
+@import "../styles/design/cart.css";
+@import "../styles/design/buttons.css";
+@import "../styles/design/timezones.css";
+@import "../styles/design/footer.css";
+@import "../styles/design/stepwire.css";
 
 /* Pinned-section layout (Services, Process). Keep in sync with config.pin.query in lib/config.ts.
    `pin-short` tightens the pinned layout for short laptop screens (e.g. 1366×768 → ~620–700px visible). */
@@ -7,17 +18,19 @@
 
 /* ── Brand tokens ─────────────────────────────────────────── */
 :root {
-  /* Black and deep charcoal surfaces, warm ivory type, champagne-gold lines.
-     (`--navy` and `--cream` keep their first-palette names; they now hold charcoal and ivory.) */
-  /* Blueprint palette: Obsidian, Porcelain, Champagne, Forest, Vermilion, Deep Teal. */
-  --ink: #111210;
-  --navy: #1b1c19;
-  --gold: #cdb98a;
-  --gold-bright: #eadcb9;
+  /* The site is white (2026-10-13). The token names keep their first meaning by role, not by colour:
+     `--ink` is the page surface and `--cream` is the type on it, so every component that was written
+     as "cream on ink" now reads dark on white. `.classic` (below) restores the first, dark palette
+     for the few places that are still dark or were always light: hero, footer, the paper sections. */
+  /* Neumorphic site (2026-10-20): the surface and type come from styles/design/tokens.css. */
+  --ink: var(--ds-surface);
+  --navy: var(--ds-surface-raised);
+  --gold: #2a5bc4;
+  --gold-bright: var(--ds-navy);
   --bronze: #8c7a52;
   /* Bronze dark enough for small text on cream. */
   --bronze-deep: #6b4f2c;
-  --cream: #f3f0e9;
+  --cream: var(--ds-text);
   --forest: #24483a;
   --vermilion: #c9513d;
   --teal: #28565b;
@@ -25,17 +38,35 @@
   --mahogany: #440000;
   --emerald: #1d4a37;
 
-  --cream-muted: rgb(243 240 233 / 0.72);
-  --cream-faint: rgb(243 240 233 / 0.5);
-  --line: rgb(205 184 138 / 0.22);
-  --panel: rgb(22 22 22 / 0.5);
+  --cream-muted: var(--ds-text-muted);
+  --cream-faint: var(--ds-text-subtle);
+  --line: rgb(var(--ds-shadow-tint) / 0.12);
+  --panel: rgb(236 238 243 / 0.7);
   /* Per-page accent (vertical pages override it). */
   --accent: var(--gold);
 
   --gutter: clamp(1rem, 4vw, 3.5rem);
   --nav-h: 4.5rem;
 
-  color-scheme: dark;
+  color-scheme: light;
+}
+
+/* The first palette: obsidian surfaces, ivory type, champagne lines. */
+.classic,
+footer,
+.hist,
+.hist-gallery,
+.asraya,
+.crest-egg {
+  --ink: #111210;
+  --navy: #1b1c19;
+  --gold: #cdb98a;
+  --gold-bright: #eadcb9;
+  --cream: #f3f0e9;
+  --cream-muted: rgb(243 240 233 / 0.72);
+  --cream-faint: rgb(243 240 233 / 0.5);
+  --line: rgb(205 184 138 / 0.22);
+  --panel: rgb(22 22 22 / 0.5);
 }
 
 @theme inline {
@@ -66,6 +97,9 @@
 /* ── Base ─────────────────────────────────────────────────── */
 @layer base {
 html {
+  /* Clip sideways overflow at the root: a clip on <body> does not reach the viewport, so the
+     footer's wide sunset arc made every page scroll 27px sideways on a 320px phone (break-ui). */
+  overflow-x: clip;
   background: var(--ink);
   scroll-padding-top: var(--nav-h);
   -webkit-text-size-adjust: 100%;
@@ -107,10 +141,7 @@ body {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    radial-gradient(70vmax 60vmax at 85% 100%, rgb(22 22 22 / 0.8), transparent 70%),
-    radial-gradient(60vmax 50vmax at 0% 60%, rgb(22 22 22 / 0.6), transparent 70%),
-    var(--ink);
+  background: var(--ink);
 }
 
 .grain {
@@ -230,9 +261,10 @@ body {
 .hero-word {
   position: absolute;
   bottom: calc(16svh + 2.7vw);
-  left: 50%;
+  /* Centred by its box, not by a translate: the scroll animation owns its transform. */
+  inset-inline: 0;
   z-index: 2;
-  translate: -50% 0;
+  text-align: center;
   font-family: var(--font-abril), Didot, "Bodoni MT", Georgia, serif;
   font-size: 20.5vw;
   font-weight: 400;
@@ -241,6 +273,19 @@ body {
   white-space: nowrap;
   text-transform: uppercase;
   color: var(--cream);
+}
+
+/* The Aurelius horse, between the two word lists; the black mark is turned to ivory. */
+.hero-emblem {
+  position: absolute;
+  top: calc(var(--nav-h) + 1.5rem);
+  left: 50%;
+  z-index: 4;
+  width: clamp(3rem, 5vw, 4.5rem);
+  height: auto;
+  translate: -50% 0;
+  filter: invert(1) sepia(0.25) brightness(0.95);
+  opacity: 0.9;
 }
 
 .hero-words {
@@ -352,25 +397,6 @@ html[data-scene-ready] .light-block::after {
   display: none;
 }
 
-/* Header over the light page: dark type on a cream wash. */
-.site-header[data-tone="light"] {
-  background-color: rgb(244 239 228 / 0.78);
-  border-color: rgb(5 5 5 / 0.08);
-}
-
-.site-header[data-tone="light"] a {
-  color: var(--ink);
-}
-
-.site-header[data-tone="light"] a:hover,
-.site-header[data-tone="light"] a[aria-current="true"] {
-  color: var(--bronze-deep);
-}
-
-.site-header[data-tone="light"] button span span {
-  background-color: var(--ink);
-}
-
 /* Outlined numeral behind a vertical's typographic hero. */
 .outline-numeral {
   color: transparent;
@@ -379,110 +405,97 @@ html[data-scene-ready] .light-block::after {
 
 
 /* ── Shared pieces ────────────────────────────────────────── */
-/* One button for every action: softly raised, a little higher on hover, pressed in when active. */
+/* One button for every action: a raised neumorphic pill that presses in (emil-design-eng: 0.97 press,
+   ease-out, hover only on devices that hover). Faces and shadows come from styles/design/tokens.css. */
 .btn {
   display: inline-flex;
+  min-height: var(--ds-tap);
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.95rem 1.5rem;
-  border-radius: 0.6rem;
-  font-family: var(--font-sans);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--btn-ink, var(--cream));
-  background: var(--btn-face, linear-gradient(180deg, rgb(255 255 255 / 0.1), rgb(255 255 255 / 0.03)));
-  box-shadow:
-    inset 0 1px 0 var(--btn-edge, rgb(255 255 255 / 0.16)),
-    0 1px 2px rgb(0 0 0 / 0.35),
-    0 8px 18px -8px var(--btn-shadow, rgb(0 0 0 / 0.7));
+  gap: var(--ds-space-3);
+  padding: 0 var(--ds-space-6);
+  border-radius: var(--ds-radius-pill);
+  font-family: var(--ds-font-text);
+  font-size: var(--ds-text-sm);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  /* Long labels wrap rather than run off narrow screens or 200% text (break-ui). */
+  max-width: 100%;
+  white-space: normal;
+  text-wrap: balance;
+  color: var(--btn-ink, var(--ds-text));
+  background: var(--btn-face, var(--ds-surface-raised));
+  box-shadow: var(--btn-shadows, var(--neu-raised-sm));
   transition:
-    transform 200ms ease,
-    box-shadow 200ms ease,
-    filter 200ms ease;
+    transform var(--ds-dur-press) var(--ds-ease-out),
+    box-shadow var(--ds-dur-fast) var(--ds-ease-out),
+    color var(--ds-dur-fast) var(--ds-ease-out);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    inset 0 1px 0 var(--btn-edge, rgb(255 255 255 / 0.16)),
-    0 2px 3px rgb(0 0 0 / 0.35),
-    0 14px 24px -10px var(--btn-shadow, rgb(0 0 0 / 0.7));
+@media (hover: hover) {
+  .btn:hover {
+    color: var(--btn-ink-hover, var(--ds-blue));
+  }
+  .btn:hover > .btn-arrow {
+    transform: translateX(3px);
+  }
 }
-
 .btn:active {
-  transform: translateY(0);
-  box-shadow:
-    inset 0 2px 5px rgb(0 0 0 / 0.35),
-    0 0 0 rgb(0 0 0 / 0);
+  transform: scale(var(--ds-press-scale));
+  box-shadow: var(--btn-pressed, var(--neu-pressed-sm));
 }
-
+.btn:focus-visible {
+  outline: 2px solid var(--ds-focus);
+  outline-offset: 4px;
+}
 .btn > .btn-arrow {
-  transition: transform 200ms ease;
+  transition: transform var(--ds-dur-fast) var(--ds-ease-out);
 }
-
-.btn:hover > .btn-arrow {
-  transform: translateX(4px);
-}
-
 .btn-primary {
-  --btn-ink: var(--ink);
+  --btn-ink: var(--ds-text-on-accent);
+  --btn-ink-hover: var(--ds-text-on-accent);
+  --btn-face: var(--ds-navy);
+  --btn-shadows: 10px 10px 22px rgb(var(--ds-shadow-tint) / 0.32), -8px -8px 18px rgb(var(--ds-light) / 0.9);
+  --btn-pressed: inset 6px 6px 12px rgb(0 0 0 / 0.3), inset -4px -4px 10px rgb(var(--ds-light) / 0.12);
+}
+
+/* On the few dark surfaces left (footer, Valora radar, history gallery) the button is glass. */
+.on-dark .btn,
+.classic .btn {
+  --btn-ink: #f3f0e9;
+  --btn-ink-hover: #ffffff;
+  --btn-face: linear-gradient(180deg, rgb(255 255 255 / 0.1), rgb(255 255 255 / 0.03));
+  --btn-shadows: inset 0 1px 0 rgb(255 255 255 / 0.16), 0 8px 18px -8px rgb(0 0 0 / 0.7);
+  --btn-pressed: inset 0 2px 5px rgb(0 0 0 / 0.35);
+}
+.on-dark .btn-primary,
+.classic .btn-primary {
+  --btn-ink: #111210;
+  --btn-ink-hover: #111210;
   --btn-face: linear-gradient(180deg, #f8f5ee, #dcd6c8);
-  --btn-edge: rgb(255 255 255 / 0.9);
 }
 
-/* On light surfaces the same button is cut from the dark colour, with cooler, softer shadows. */
-.light-block .btn,
-.on-light .btn {
-  --btn-ink: var(--ink);
-  --btn-face: linear-gradient(180deg, #fbf9f4, #e9e5db);
-  --btn-edge: rgb(255 255 255 / 0.95);
-  --btn-shadow: rgb(60 66 78 / 0.45);
-}
-
-.light-block .btn-primary,
-.on-light .btn-primary {
-  --btn-ink: var(--cream);
-  --btn-face: linear-gradient(180deg, #2a2b27, #111210);
-  --btn-edge: rgb(255 255 255 / 0.14);
-}
-
-/* Neutral stand-in for artwork the owner will supply. */
+/* Neutral stand-in for artwork the owner will supply: a pressed well. */
 .placeholder {
   display: grid;
   place-items: center;
-  border: 1px dashed var(--line);
-  background: repeating-linear-gradient(135deg, rgb(205 185 138 / 0.05) 0 14px, transparent 14px 28px);
-  color: var(--cream-faint);
-  font-family: var(--font-sans);
-  font-size: 0.62rem;
-  letter-spacing: 0.24em;
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface-sunken);
+  box-shadow: var(--neu-pressed-md);
+  color: var(--ds-text-subtle);
+  font-family: var(--ds-font-text);
+  font-size: var(--ds-text-xs);
+  font-weight: 700;
+  letter-spacing: var(--ds-tracking-label);
   text-transform: uppercase;
   text-align: center;
-  padding: 1rem;
+  padding: var(--ds-space-4);
 }
-
-.light-block .placeholder,
-.on-light .placeholder {
-  border-color: rgb(17 18 16 / 0.25);
-  background: repeating-linear-gradient(135deg, rgb(17 18 16 / 0.04) 0 14px, transparent 14px 28px);
-  color: rgb(17 18 16 / 0.55);
-}
-
-/* Light header: menu buttons follow the links; the dropdown panels stay dark. */
-.site-header[data-tone="light"] nav button {
-  color: var(--ink);
-}
-
-.site-header[data-tone="light"] .nav-menu a {
-  color: var(--cream-muted);
-}
-
-.site-header[data-tone="light"] .nav-menu a:hover,
-.site-header[data-tone="light"] .nav-menu a[aria-current="true"] {
-  color: var(--gold-bright);
+.classic .placeholder {
+  background: transparent;
+  box-shadow: none;
+  border: 1px dashed var(--line);
+  color: var(--cream-faint);
 }
 
 /* ── Aurelius page system ─────────────────────────────────── */
@@ -508,6 +521,143 @@ html[data-scene-ready] .light-block::after {
 
 html[data-scene-ready] .light-block[data-dome]::after {
   display: none;
+}
+
+/* ── Headlines: the Asraya profile's poster face, site-wide (2026-10-13) ───── */
+/* Main headings are set in condensed capitals; the italic half of a split headline stays in the serif. */
+h1.display,
+h2.display {
+  font-family: var(--font-anton), Impact, "Arial Narrow Bold", sans-serif;
+  font-weight: 400 !important;
+  line-height: 0.96;
+  letter-spacing: 0.012em;
+  text-transform: uppercase;
+}
+
+h1.display .italic,
+h2.display .italic,
+h1.display em,
+h2.display em {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+/* ── Brand marks from the visiting card ─────────────────────── */
+.brand-mask {
+  display: inline-block;
+  flex: none;
+  background: currentColor;
+  mask: center / contain no-repeat;
+}
+
+.brand-mask--monogram {
+  aspect-ratio: 700 / 672;
+  mask-image: url("/images/logos/ka-monogram.webp");
+}
+
+.brand-mask--wordmark {
+  aspect-ratio: 1800 / 247;
+  mask-image: url("/images/logos/ka-wordmark.webp");
+}
+
+/* The card itself: dark mahogany, the monogram glowing faintly behind the gold script. */
+.ka-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #200606, #370b0b);
+  color: #f3f0e9;
+}
+
+.ka-card__mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding-block: clamp(3rem, 9vw, 7rem);
+}
+
+.ka-card__monogram {
+  width: clamp(9rem, 30vw, 22rem);
+  color: rgb(168 112 98 / 0.32);
+  filter: drop-shadow(0 0 18px rgb(214 140 110 / 0.18));
+}
+
+.ka-card__wordmark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(86%, 56rem);
+  translate: -50% -42%;
+  color: #d4b27a;
+}
+
+/* ── Sunset under the hero ───────────────────────────────── */
+.sunset-edge {
+  --depth: 92%;
+  position: relative;
+  height: clamp(14rem, 44svh, 30rem);
+  margin-top: -1px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 64% var(--depth) at 50% 0%, #1c0404 0 54%, #5e0c0c 62%, #d2261a 67%, #f2671d 72%, #ffb53a 78%, #ffe6a8 85%, rgb(255 255 255 / 0) 93%),
+    #fff;
+}
+
+/* Film grain over the glow, as in the reference. */
+.sunset-edge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1.2 -.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+
+/* ── Graphic assets ───────────────────────────────────────── */
+/* Contour lines: a mask, so they take whatever colour the element has. Decorative. */
+.topo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: currentColor;
+  mask: url("/images/graphics/topo-hills.svg") center / cover no-repeat;
+}
+
+.topo--ridge {
+  mask-image: url("/images/graphics/topo-ridge.svg");
+}
+
+/* Fades toward the reading side, so lines never run under body text at full strength. */
+.topo--fade-left {
+  mask-image: url("/images/graphics/topo-hills.svg"), linear-gradient(to right, transparent 28%, #000 78%);
+  mask-size: cover, 100% 100%;
+  mask-composite: intersect;
+}
+
+/* Grainy heat: two soft bursts of ivory, amber and vermilion on black, under film grain. */
+.heat {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(62% 46% at 22% 8%, #fff6dc 0%, #f4c257 20%, #e2491c 42%, rgb(226 73 28 / 0) 66%),
+    radial-gradient(70% 52% at 84% 98%, #fff6dc 0%, #f2a43a 22%, #d9351c 44%, rgb(217 53 28 / 0) 68%),
+    #0b0908;
+  color: #f3f0e9;
+}
+
+.heat::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.55;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1.4 -.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
 }
 
 /* ── /aurelius/history: the timeline infographic ─────────────── */
@@ -839,6 +989,8 @@ html[data-scene-ready] .light-block[data-dome]::after {
 /* The era's gallery: one picture at a time, each with its note. */
 .hist-gallery {
   border: 1px solid var(--line);
+  background: #111210;
+  color: var(--cream);
 }
 
 .hist-gallery__head {
@@ -1203,36 +1355,6 @@ html[data-scene-ready] .light-block[data-dome]::after {
 }
 
 /* Pre-footer: the hero's sunset arc, rising out of the footer. */
-.pre-footer-glow {
-  position: relative;
-  height: clamp(16rem, 40svh, 26rem);
-  overflow: hidden;
-  /* Page ink above, the footer's black below. */
-  background: linear-gradient(to bottom, var(--ink), #000 70%);
-}
-
-/* The arc sinks into the footer: its lower part fades out to black, so there is no edge between them. */
-.pre-footer-glow::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(to bottom, transparent 58%, rgb(0 0 0 / 0.35) 80%, #000 99%);
-}
-
-.pre-footer-glow__arc {
-  position: absolute;
-  inset-inline: -10%;
-  bottom: 0;
-  height: 130%;
-  background: radial-gradient(62% 64% at 50% 84%, #fbe3a4 0%, #f6c659 14%, #ee9a2a 30%, #c9531a 47%, #6a1424 64%, transparent 80%);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pre-footer-glow__arc {
-    transform: none !important;
-  }
-}
 
 /* ── Asraya ───────────────────────────────────────────────── */
 /* The Asraya pages take their character from the Asraya company profile — poster pages on paper,

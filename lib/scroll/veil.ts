@@ -64,7 +64,9 @@ export function createVeil(reducedMotion: boolean) {
     }
 
     if (hero.dataset.heroMode === "full") {
-      const { fullScale, fullDriftPercent } = config.front.hero;
+      const { fullScale, fullDriftPercent, wordDriftVw } = config.front.hero;
+      const span = { trigger: hero, start: "top top", end: "bottom top", scrub: true };
+      gsap.fromTo(".hero-word", { x: () => (-window.innerWidth * wordDriftVw) / 100 }, { x: () => (window.innerWidth * wordDriftVw) / 100, ease: "none", scrollTrigger: span });
       gsap.fromTo(
         "[data-hero-image]",
         { scale: fullScale.from, xPercent: fullDriftPercent },
@@ -98,7 +100,7 @@ export function createVeil(reducedMotion: boolean) {
   return () => {
     triggers.forEach((t) => t.kill());
     mm.revert();
-    if (hero) gsap.set("[data-hero-title], [data-hero-figure], [data-hero-image]", { clearProps: "transform" });
+    if (hero) gsap.set("[data-hero-title], [data-hero-figure], [data-hero-image], .hero-word", { clearProps: "transform" });
     setVeil({ light: false, exit: 0 });
   };
 }

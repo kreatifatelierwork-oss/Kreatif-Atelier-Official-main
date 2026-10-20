@@ -2,21 +2,22 @@
 
 import { mainNav, navCta, navLabels } from "@/content/navigation";
 import { nav, site } from "@/content/site";
+import { MobileServices } from "@/components/services/MobileServices";
+import { KaWordmark } from "./Brand";
 import { Dialog } from "./Dialog";
 import { SmartLink } from "./SmartLink";
-import { Star } from "./Star";
 
 type Props = { open: boolean; onClose: () => void };
 
 const rowClass = "display flex items-baseline justify-between py-4 text-[2rem] text-cream transition-colors hover:text-gold-bright";
 
-/** Full-screen menu for narrow screens. Groups open in place; service names stay on the services page. */
+/** Full-screen menu for narrow screens. Groups open in place; Services opens its category list and "Other services". */
 export function MobileMenu({ open, onClose }: Props) {
   return (
     <Dialog open={open} onClose={onClose} labelledBy="mobile-menu-title" variant="sheet">
       <div className="flex min-h-full flex-col px-[var(--gutter)] pt-24 pb-10">
-        <p id="mobile-menu-title" className="eyebrow flex items-center gap-3 text-gold">
-          <Star /> {site.name}
+        <p id="mobile-menu-title" className="text-gold">
+          <KaWordmark className="h-9" label />
         </p>
         <nav aria-label={nav.primaryLabel} className="mt-8">
           <ul className="flex flex-col">
@@ -30,22 +31,26 @@ export function MobileMenu({ open, onClose }: Props) {
                         +
                       </span>
                     </summary>
-                    <ul className="pb-4">
-                      {item.href && (
-                        <li>
-                          <SmartLink href={item.href} onClick={onClose} className="block py-2 text-[1.02rem] text-gold-bright">
-                            {navLabels.allServices}
-                          </SmartLink>
-                        </li>
-                      )}
-                      {item.children.map((child) => (
-                        <li key={child.href}>
-                          <SmartLink href={child.href} onClick={onClose} className="block py-2 text-[1.02rem] text-cream-muted hover:text-gold-bright">
-                            {child.label}
-                          </SmartLink>
-                        </li>
-                      ))}
-                    </ul>
+                    {item.mega ? (
+                      <MobileServices onNavigate={onClose} />
+                    ) : (
+                      <ul className="pb-4">
+                        {item.href && (
+                          <li>
+                            <SmartLink href={item.href} onClick={onClose} className="block py-2 text-[1.02rem] text-gold-bright">
+                              {navLabels.allServices}
+                            </SmartLink>
+                          </li>
+                        )}
+                        {item.children.map((child) => (
+                          <li key={child.href}>
+                            <SmartLink href={child.href} onClick={onClose} className="block py-2 text-[1.02rem] text-cream-muted hover:text-gold-bright">
+                              {child.label}
+                            </SmartLink>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </details>
                 ) : (
                   <SmartLink href={item.href ?? "/"} onClick={onClose} className={rowClass}>

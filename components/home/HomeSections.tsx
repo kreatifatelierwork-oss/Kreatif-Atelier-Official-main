@@ -1,7 +1,9 @@
 import Image from "next/image";
 import { aurelius, practiceBySlug, practiceHref, profileArt } from "@/content/aurelius";
-import { attention, capabilities, contactCta, measurement, parent, positioning, ventures, work } from "@/content/home";
+import { attention, capabilities, measurement, parent, positioning, ventures, work } from "@/content/home";
 import { verticals } from "@/content/verticals";
+import { ContactNeu } from "@/components/home-neu/ContactNeu";
+import { KaCard } from "@/components/ui/Brand";
 import { Button } from "@/components/ui/Button";
 import { Heading, Label } from "@/components/ui/Heading";
 import { Placeholder } from "@/components/ui/Placeholder";
@@ -232,10 +234,12 @@ export function Ventures() {
   );
 }
 
-/** 08 — The parent, in one breath. */
+/** 08 — The parent, in one breath, under the visiting card. */
 export function ParentContext() {
   return (
-    <section id={parent.id} aria-labelledby={`${parent.id}-heading`} className={shell}>
+    <section id={parent.id} aria-labelledby={`${parent.id}-heading`} className="classic relative">
+      <KaCard />
+      <div className="ka-card px-[var(--gutter)] pb-[clamp(4rem,10vh,7rem)]">
       <div className={`${wrap} grid gap-10 border-t border-line pt-12 lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] lg:gap-20`}>
         <div>
           <Label>{parent.marker}</Label>
@@ -248,9 +252,10 @@ export function ParentContext() {
             {parent.body}
           </p>
           <div data-reveal className="mt-8">
-            <Button href={parent.cta.href}>{parent.cta.label}</Button>
+            <span className="on-dark inline-block"><Button href={parent.cta.href}>{parent.cta.label}</Button></span>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );
@@ -258,19 +263,6 @@ export function ParentContext() {
 
 /** 09 — The closing invitation; also closes every inner page. */
 export function ContactCta() {
-  return (
-    <section id={contactCta.id} aria-labelledby={`${contactCta.id}-heading`} className={shell}>
-      <div className={`${wrap} text-center`}>
-        <Heading id={`${contactCta.id}-heading`} headline={contactCta.headline} className="mx-auto max-w-4xl text-cream" />
-        <p data-reveal className="mx-auto mt-7 max-w-xl text-[1.08rem] leading-relaxed text-cream-muted">
-          {contactCta.body}
-        </p>
-        <div data-reveal className="mt-10 flex justify-center">
-          <Button href={contactCta.cta.href} variant="primary">
-            {contactCta.cta.label}
-          </Button>
-        </div>
-      </div>
-    </section>
-  );
+  // The site-wide closing block is the neumorphic one now (components/home-neu/ContactNeu.tsx).
+  return <ContactNeu />;
 }

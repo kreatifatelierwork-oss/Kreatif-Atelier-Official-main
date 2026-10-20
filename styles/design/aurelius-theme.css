@@ -1,0 +1,104 @@
+/*
+ * The Aurelius colour system: maroon, gold and cream. Single source of truth for the Aurelius pages
+ * (home, /aurelius, services, approach, contact, work). Kreatif Atelier pages do not use it: the scales
+ * are defined on :root, but they are only applied inside `.theme-aurelius`.
+ *
+ * Built from the brand's own values (the mahogany #440000, the monogram #5E1A17), then lifted on Roo's
+ * request (2026-10-20): the reds a step brighter, and the golds replaced by a true, rich gold (the earlier
+ * brass #A87830 and champagne #CDB98A are retired on Aurelius pages).
+ * Mirrored for code in lib/design/aurelius.ts (checked by lib/design/aurelius.test.ts).
+ */
+:root {
+  --au-maroon-950: #24070a;
+  --au-maroon-900: #3a0c10;
+  --au-maroon-800: #5c0f14;
+  --au-maroon-700: #7a1c1e;
+  --au-maroon-600: #962a28;
+  --au-maroon-500: #b23b33;
+  --au-maroon-400: #cc5e52;
+
+  --au-gold-700: #8a6209;
+  --au-gold-600: #b07f0c;
+  --au-gold-500: #d4a017;
+  --au-gold-400: #e6b93a;
+  --au-gold-300: #f0cf6e;
+  --au-gold-200: #f7e3a1;
+  /* Gold as text or links on cream: the only gold that passes AA as body text. Bright golds are for
+     fills, borders, icons, rims and gradients only. */
+  --au-gold-ink: #7a5a0e;
+  /* Polished gold: CTA fills, button knobs, rims and underlines. */
+  --au-gold-metal: linear-gradient(135deg, #8a6209 0%, #d4a017 22%, #f7e3a1 48%, #d4a017 72%, #9a700b 100%);
+  /* Gold for large display type (24px+): the darker golds only, so it stays 3:1 or better on cream. */
+  --au-gold-display: linear-gradient(180deg, #8a6209 0%, #7a5a0e 100%);
+
+  --au-cream-50: #fdf9f5;
+  --au-cream-100: #f8f1eb;
+  --au-cream-200: #f1e6de;
+  --au-cream-300: #e6d7cd;
+  /* A soft rose for the background fog (components/aurelius-site/AureliusBackground.tsx). */
+  --au-rose-200: #efd3ca;
+}
+
+.theme-aurelius {
+  /* Surfaces: warm cream tinted toward maroon. */
+  --ds-surface: #f4ebe5;
+  --ds-surface-raised: #f9f2ed;
+  --ds-surface-sunken: #ede1d9;
+  /* Neumorphic shadows: the dark layer is maroon-tinted, the light layer warm white. */
+  --ds-shadow-tint: 94 26 23;
+  --ds-light: 255 251 246;
+
+  /* Type: maroon, from deep to soft. All AA on the surfaces (lib/design/aurelius.test.ts). */
+  --ds-text: var(--au-maroon-900);
+  --ds-text-muted: #5d3a35;
+  --ds-text-subtle: #6e4a44;
+  --ds-text-on-accent: var(--au-cream-50);
+
+  --ds-brand: var(--au-maroon-800);
+  --ds-navy: var(--au-maroon-800); /* the filled (dark) surface role */
+  --ds-blue: var(--au-maroon-600); /* links and active states */
+  --ds-focus: var(--au-gold-600);
+  --ds-focus-ring: 0 0 0 3px rgb(212 160 23 / 0.55);
+
+  --ds-accent-gradient: linear-gradient(135deg, var(--au-maroon-600) 0%, var(--au-maroon-500) 40%, var(--au-gold-500) 100%);
+  --ds-accent-gradient-cool: linear-gradient(180deg, var(--au-gold-400) 0%, var(--au-gold-600) 100%);
+  /* The primary call to action: a gold gradient with deep maroon type. */
+  --au-cta-gradient: var(--au-gold-metal);
+  --au-cta-ink: var(--au-maroon-900);
+  /* Maroon text fill for glass headings: a soft top highlight over the maroon. */
+  --au-heading-fill: linear-gradient(180deg, var(--au-maroon-600) 0%, var(--au-maroon-800) 55%, var(--au-maroon-900) 100%);
+
+  /* Glass: cream-tinted, with a faint gold edge. */
+  --glass-fill: rgb(255 248 242 / 0.14);
+  --glass-fill-strong: rgb(255 248 242 / 0.18);
+  --glass-fill-fallback: rgb(253 249 245 / 0.86);
+  --glass-border: rgb(255 251 246 / 0.6);
+  --glass-gold-edge: rgb(212 160 23 / 0.5);
+  --glass-shadow: 0 24px 60px -24px rgb(94 26 23 / 0.3);
+  --ds-contact-shadow: radial-gradient(closest-side, rgb(94 26 23 / 0.22), transparent);
+
+  /* The older site variables, redeclared so components written against them follow the theme too. */
+  --ink: var(--ds-surface);
+  --navy: var(--ds-surface-raised);
+  --gold: var(--au-gold-ink);
+  --accent: var(--au-gold-ink);
+  --gold-bright: var(--au-maroon-800);
+  --cream: var(--ds-text);
+  --cream-muted: var(--ds-text-muted);
+  --cream-faint: var(--ds-text-subtle);
+  --line: rgb(94 26 23 / 0.14);
+  --panel: rgb(249 242 237 / 0.7);
+
+  background: var(--ds-surface);
+  color: var(--ds-text);
+}
+
+/* Large blurs are costly on phones: smaller neumorphic shadows on small screens (animation-performance). */
+@media (max-width: 767px) {
+  .theme-aurelius {
+    --neu-raised-lg: var(--neu-raised-md);
+    --neu-pressed-lg: var(--neu-pressed-md);
+    --neu-raised-md: 9px 9px 16px rgb(var(--ds-shadow-tint) / 0.15), -8px -8px 15px rgb(var(--ds-light) / 1);
+  }
+}
+

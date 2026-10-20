@@ -18,7 +18,7 @@ export function PillarsSection({ lightBlock = false }: { lightBlock?: boolean })
       id="services"
       aria-labelledby="services-heading"
       data-light-block={lightBlock ? "" : undefined}
-      className="on-light relative flex flex-col overflow-hidden bg-[#f5f4ed] pt-[clamp(5rem,11vh,6.5rem)] text-ink lg:h-[100svh] lg:min-h-[680px]"
+      className="classic on-light relative flex flex-col overflow-hidden bg-[#f5f4ed] pt-[clamp(5rem,11vh,6.5rem)] text-ink lg:h-[100svh] lg:min-h-[680px]"
     >
       <div className="relative z-10 mx-auto w-full max-w-[calc(1280px+2*var(--gutter))] shrink-0 px-[var(--gutter)]">
         <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">

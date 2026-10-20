@@ -100,7 +100,7 @@ export function QuoteDrawer() {
 
   return (
     <Dialog open={open} onClose={close} labelledBy="quote-title" variant="panel">
-      <div ref={panelRef} onKeyDown={trapFocus} className="max-h-[88svh] w-full overflow-y-auto border border-line bg-ink p-7 md:max-w-2xl md:p-10">
+      <div ref={panelRef} onKeyDown={trapFocus} data-lenis-prevent className="max-h-[88svh] w-full overflow-y-auto border border-line bg-ink p-7 md:max-w-2xl md:p-10">
         <div className="pr-14">
           <div>
             <p className="eyebrow text-[0.62rem] text-gold">Aurelius</p>

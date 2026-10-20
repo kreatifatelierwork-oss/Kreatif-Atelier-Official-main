@@ -44,7 +44,7 @@ export function AureliusHero({ figure, showCtas = false }: Props) {
   );
 
   return (
-    <section id={hero.id} aria-labelledby="home-heading" className="relative bg-mahogany">
+    <section id={hero.id} aria-labelledby="home-heading" className="classic on-dark relative bg-mahogany text-cream">
       <div
         data-hero-stage
         data-hero-mode={figure.mode}
@@ -76,6 +76,7 @@ export function AureliusHero({ figure, showCtas = false }: Props) {
               </div>
               <div aria-hidden="true" className="hero-full__shade absolute inset-0" />
 
+              <Image src="/images/logos/horse-mono.webp" alt="" aria-hidden="true" width={900} height={993} sizes="5rem" className="hero-emblem" />
               {list(hero.words.start, "start")}
               {list(hero.words.end, "end")}
 

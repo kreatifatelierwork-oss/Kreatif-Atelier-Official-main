@@ -8,11 +8,23 @@ export const site = {
   description:
     "Kreatif Atelier is a creative holding ecosystem connecting people, ideas and complementary disciplines to create meaningful opportunities and lasting impact.",
   locale: "en_IN",
-  email: "hello@kreatifatelier.com",
+  email: "contact@kreatifatelier.com",
+  /** Supplied by the owner (2026-10-20). `phoneHref` is the dialable form for tel: links. */
+  phone: "+91 94609 23782",
+  phoneHref: "tel:+919460923782",
+  /** Every number to call (owner, 2026-10-20); the first is the main line (the floating call button). */
+  phones: [
+    { label: "+91 94609 23782", href: "tel:+919460923782" },
+    { label: "+91 83779 25834", href: "tel:+918377925834" },
+    { label: "+91 96048 96235", href: "tel:+919604896235" },
+    { label: "+91 70012 72866", href: "tel:+917001272866" },
+  ],
+  callLabel: "Call us",
   handle: "@kreatifatelier",
   /** Fill these in and the handle / labels render as links automatically. */
   instagramUrl: "",
   linkedinUrl: "",
+  youtubeUrl: "",
   city: "Hyderabad",
   region: "Telangana",
   country: "India",
@@ -24,6 +36,7 @@ export const nav = {
   menuOpen: "Open menu",
   menuClose: "Close menu",
   primaryLabel: "Primary",
+  secondaryLabel: "More",
 } as const;
 
 export const hero = {
@@ -53,6 +66,7 @@ export const contact: {
     locationLabel: string;
     location: [string, string];
     emailLabel: string;
+    phoneLabel: string;
     socialLabel: string;
     socialNetworks: { label: string; key: "instagramUrl" | "linkedinUrl" }[];
   };
@@ -66,6 +80,7 @@ export const contact: {
     locationLabel: "Studio Location",
     location: ["Hyderabad & Secunderabad", "Telangana, India"],
     emailLabel: "Email",
+    phoneLabel: "Phone",
     socialLabel: "Social",
     socialNetworks: [
       { label: "instagram", key: "instagramUrl" },
@@ -78,16 +93,21 @@ export const footer = {
   socialNetworks: [
     { label: "Instagram", key: "instagramUrl" },
     { label: "LinkedIn", key: "linkedinUrl" },
+    { label: "YouTube", key: "youtubeUrl" },
   ] as const,
+  /** Bottom-row links. Privacy and Terms are added here once those pages exist (not built yet). */
+  legal: [{ label: "Contact", href: "/contact" }],
+  /** Shown as "© {year} Kreatif Atelier. All rights reserved." */
+  rightsLine: "All rights reserved.",
+  email: (address: string) => `Email ${address}`,
+  call: (number: string) => `Call ${number}`,
   /** Rendered as "© {year} Kreatif Atelier · All Rights Reserved" with the current year. */
   rights: "All Rights Reserved",
   venturesLabel: "Our Ventures",
   aureliusLinks: [
-    { label: "About Aurelius", href: "/about/aurelius" },
     { label: "Services", href: "/aurelius/services" },
-    { label: "Work", href: "/work" },
     { label: "Approach", href: "/approach" },
-    { label: "History of advertising", href: "/aurelius/history" },
+    { label: "About & history", href: "/about/kreatif-atelier" },
   ],
   backToTop: "Back to top",
 } as const;

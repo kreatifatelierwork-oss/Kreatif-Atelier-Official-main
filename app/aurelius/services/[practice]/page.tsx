@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ContactCta } from "@/components/home/HomeSections";
+import { ContactNeu } from "@/components/home-neu/ContactNeu";
+import { ServiceArtifact } from "@/components/services/ServiceArtifact";
+import { PracticeArtifact } from "@/components/services/PracticeArtifact";
+import { PracticeFloaters } from "@/components/services/PracticeFloaters";
+import { StepWire } from "@/components/design/StepWire";
+import { processSteps } from "@/content/approach";
+import { serviceCategories } from "@/content/services-menu";
 import { PageHero } from "@/components/layout/PageHero";
 import { PracticeServiceList } from "@/components/aurelius/ServiceNotes";
 import { PageShell } from "@/components/layout/PageShell";
-import { Button } from "@/components/ui/Button";
-import { Label } from "@/components/ui/Heading";
-import { Placeholder } from "@/components/ui/Placeholder";
+import { NeuButton } from "@/components/design/NeuButton";
 import { SmartLink } from "@/components/ui/SmartLink";
-import { aurelius, practiceBySlug, practiceHref, practices } from "@/content/aurelius";
+import { aurelius, practiceBySlug, practiceHref, practices, servicesLabel } from "@/content/aurelius";
 import { site } from "@/content/site";
 
 type Props = { params: Promise<{ practice: string }> };
@@ -29,10 +33,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-const shell = "px-[var(--gutter)] py-[clamp(3.5rem,8vh,6rem)]";
-const wrap = "mx-auto w-full max-w-[1280px]";
+const shell = "px-[var(--ds-gutter)] py-[var(--ds-space-9)]";
+const wrap = "mx-auto w-full max-w-[var(--ds-max-width)]";
+const categoryOf = (slug: string) => serviceCategories.find((c) => c.id === slug);
 
-/** One practice area, from the shared template: point of view, scope, every service, process, related practices. */
+/** One practice area, from the shared template: its 3D artifact, every service, point of view and scope, process, related practices. */
 export default async function Page({ params }: Props) {
   const practice = practiceBySlug((await params).practice);
   if (!practice) notFound();
@@ -40,87 +45,80 @@ export default async function Page({ params }: Props) {
   const related = practice.related.map((slug) => practiceBySlug(slug)).filter((p) => p !== undefined);
 
   return (
-    <PageShell>
-      <PageHero eyebrow={[aurelius.name, practice.name]} title={practice.headline} lead={practice.descriptor}>
-        {practice.expansion && <p className="eyebrow mt-6 text-[0.6rem] text-gold">{labels.expansion}</p>}
-      </PageHero>
-
-      <section className={shell}>
-        <div className={`${wrap} grid gap-12 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:gap-20`}>
-          <div className="flex flex-col gap-6">
-            {practice.pov.map((line, i) => (
-              <p key={line} data-reveal className={i === 0 ? "display text-[clamp(1.8rem,3vw,2.6rem)] leading-snug text-cream" : "display text-[1.5rem] leading-snug text-cream-muted"}>
-                {line}
-              </p>
-            ))}
-            <p data-reveal className="mt-2 max-w-xl text-[1.05rem] leading-[1.8] text-cream-muted">
-              {practice.scope}
-            </p>
-            <div data-reveal>
-              <Button href="/contact" variant="primary">
-                {labels.discuss}
-              </Button>
-            </div>
+    <PageShell theme="aurelius">
+      <PageHero eyebrow={[aurelius.name, practice.name]} title={practice.headline} lead={practice.descriptor} aside={
+          <div className="relative mx-auto w-full max-w-[min(34rem,90vw)]">
+            <PracticeArtifact slug={practice.slug} />
+            <PracticeFloaters slug={practice.slug} zone="hero" />
           </div>
-          <Placeholder className="aspect-[4/5] w-full" />
-        </div>
-      </section>
+        }>
+        {practice.expansion && <p className="neu-chip mt-[var(--ds-space-5)]">{labels.expansion}</p>}
+      </PageHero>
 
       <section aria-labelledby="services-heading" className={shell}>
         <div className={wrap}>
-          <Label>{labels.servicesIn}</Label>
-          <h2 id="services-heading" data-reveal className="display mt-6 text-[clamp(2rem,4vw,3.4rem)] text-cream">
-            {practice.services.length} {labels.services.toLowerCase()}
+          <p className="ds-label">{labels.servicesIn}</p>
+          <h2 id="services-heading" data-reveal className="ds-heading mt-[var(--ds-space-3)]">
+            {servicesLabel(practice.services.length)}
           </h2>
-          <p data-reveal className="mt-4 text-[0.95rem] text-cream-muted">
+          <p data-reveal className="ds-body mt-[var(--ds-space-3)]">
             {labels.tapHint}
           </p>
           <PracticeServiceList services={practice.services} practice={{ slug: practice.slug, name: practice.name }} />
         </div>
       </section>
 
+      <section className={shell}>
+        <div data-reveal className={`${wrap} neu-card relative flex flex-col gap-[var(--ds-space-5)] p-[var(--ds-space-7)] lg:p-[var(--ds-space-8)]`}>
+          {practice.pov.map((line, i) => (
+            <p key={line} className={`ds-emphasis leading-[var(--ds-leading-heading)] lg:max-w-[58%] ${i === 0 ? "text-[length:var(--ds-text-3xl)] text-ds-text" : "text-[length:var(--ds-text-2xl)] text-ds-muted"}`}>
+              {line}
+            </p>
+          ))}
+          <p className="ds-body max-w-2xl text-[length:var(--ds-text-lg)]">{practice.scope}</p>
+          <div>
+            <NeuButton href="/contact" variant="primary">
+              {labels.discuss}
+            </NeuButton>
+          </div>
+          <PracticeFloaters slug={practice.slug} zone="pov" />
+        </div>
+      </section>
+
       <section aria-labelledby="how-heading" className={shell}>
         <div className={wrap}>
-          <Label>{labels.how}</Label>
-          <h2 id="how-heading" className="sr-only">
+          <h2 id="how-heading" className="ds-label">
             {labels.how}
           </h2>
-          <ol className="mt-8 grid border-t border-line sm:grid-cols-2 lg:grid-cols-5">
-            {aurelius.process.map((step, i) => (
-              <li key={step} data-reveal className="border-b border-line py-7 sm:pr-6 lg:border-b-0 lg:border-l lg:pl-6 lg:first:border-l-0 lg:first:pl-0">
-                <p className="eyebrow text-[0.62rem] text-cream-faint">{String(i + 1).padStart(2, "0")}</p>
-                <p className="display mt-3 text-[1.6rem] leading-tight text-cream">{step}</p>
-              </li>
-            ))}
-          </ol>
+          <div className="mt-[var(--ds-space-6)]">
+            <StepWire steps={processSteps} layout="row" label={labels.how} />
+          </div>
         </div>
       </section>
 
       <section aria-labelledby="related-heading" className={shell}>
         <div className={wrap}>
-          <Label>{labels.related}</Label>
-          <h2 id="related-heading" className="sr-only">
+          <h2 id="related-heading" className="ds-label">
             {labels.related}
           </h2>
-          <ul className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {related.map((p) => (
-              <li key={p.slug} data-reveal>
-                <SmartLink href={practiceHref(p.slug)} className="group flex h-full flex-col justify-between gap-8 border border-line bg-navy/60 p-7 transition-colors hover:border-gold/70">
-                  <span>
-                    <span className="display block text-[1.6rem] leading-tight text-cream">{p.name}</span>
-                    <span className="mt-3 block text-[0.92rem] leading-relaxed text-cream-muted">{p.descriptor}</span>
-                  </span>
-                  <span aria-hidden="true" className="text-gold transition-transform duration-500 group-hover:translate-x-1.5">
-                    →
-                  </span>
-                </SmartLink>
-              </li>
-            ))}
+          <ul className="mt-[var(--ds-space-6)] grid gap-[var(--ds-space-5)] md:grid-cols-3">
+            {related.map((p) => {
+              const category = categoryOf(p.slug);
+              return (
+                <li key={p.slug} data-reveal className="flex">
+                  <SmartLink href={practiceHref(p.slug)} className="neu-card flex w-full flex-col gap-[var(--ds-space-3)] p-[var(--ds-space-5)]">
+                    {category && <ServiceArtifact category={category} size={240} className="mx-auto h-auto w-[min(12rem,70%)]" />}
+                    <span className="font-ds-display text-[length:var(--ds-text-xl)] leading-[var(--ds-leading-heading)] text-ds-text uppercase">{p.name}</span>
+                    <span className="ds-body">{p.descriptor}</span>
+                  </SmartLink>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </section>
 
-      <ContactCta />
+      <ContactNeu />
     </PageShell>
   );
 }

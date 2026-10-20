@@ -1,0 +1,118 @@
+/* "We serve clients in three time zones" (components/home-neu/ClientsNeu.tsx): the relief map with pulsing gold pins. */
+.tz-map {
+  --tz-dot: 12px;
+  --tz-pulse: 2.4s;
+  padding: var(--ds-space-5);
+}
+.tz-map__frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--ds-radius-md);
+  box-shadow: var(--neu-pressed-sm);
+}
+/* The white relief, warmed a touch toward the cream page. */
+.tz-map__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: sepia(0.18) saturate(1.1);
+}
+.tz-pin {
+  position: absolute;
+  width: var(--tz-dot);
+  height: var(--tz-dot);
+  transform: translate(-50%, -50%);
+}
+.tz-pin__dot {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--au-gold-metal);
+  box-shadow: 0 0 0 2px var(--au-cream-50), 0 2px 8px rgb(var(--ds-shadow-tint) / 0.45);
+}
+.tz-pin[data-home] .tz-pin__dot {
+  box-shadow: 0 0 0 2px var(--au-maroon-700), 0 2px 8px rgb(var(--ds-shadow-tint) / 0.45);
+}
+/* The pulse: a gold ring that grows and fades, transform and opacity only (animation-performance). */
+.tz-pin__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--au-gold-500);
+  animation: tz-pulse var(--tz-pulse) var(--ds-ease-out) infinite;
+}
+/* Staggered, so the three places pulse one after another. */
+.tz-pin:nth-of-type(2) .tz-pin__ring {
+  animation-delay: calc(var(--tz-pulse) / 3);
+}
+.tz-pin:nth-of-type(3) .tz-pin__ring {
+  animation-delay: calc(var(--tz-pulse) * 2 / 3);
+}
+@keyframes tz-pulse {
+  from {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(3.4);
+  }
+}
+.tz-pin__label {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + var(--ds-space-2));
+  display: none;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  border-radius: var(--ds-radius-pill);
+  padding: var(--ds-space-1) var(--ds-space-3);
+  font-size: var(--ds-text-xs);
+  line-height: 1.2;
+  background: rgb(var(--ds-light) / 0.88);
+  box-shadow: 0 4px 14px -6px rgb(var(--ds-shadow-tint) / 0.4);
+}
+.tz-pin[data-label="left"] .tz-pin__label {
+  left: auto;
+  right: calc(100% + var(--ds-space-2));
+}
+.tz-pin__city {
+  font-weight: 700;
+  color: var(--ds-text);
+}
+.tz-pin__utc {
+  margin-left: var(--ds-space-2);
+  font-variant-numeric: tabular-nums;
+  color: var(--au-gold-ink);
+}
+@media (min-width: 768px) {
+  .tz-pin__label {
+    display: inline-block;
+  }
+}
+.tz-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-3) var(--ds-space-6);
+  margin-top: var(--ds-space-5);
+}
+.tz-legend li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ds-space-2);
+}
+.tz-legend__dot {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  align-self: center;
+  border-radius: 50%;
+  background: var(--au-gold-metal);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tz-pin__ring {
+    animation: none;
+    opacity: 0.5;
+    transform: scale(1.8);
+  }
+}

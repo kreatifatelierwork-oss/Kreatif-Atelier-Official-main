@@ -38,6 +38,10 @@ export function ScrollSystem() {
         lerp: config.scroll.lerp,
         wheelMultiplier: config.scroll.wheelMultiplier,
         syncTouch: false,
+        // Scrollable lists inside the page (mega menu, dialogs, drawers) scroll themselves first.
+        allowNestedScroll: true,
+        // A link to another page stops the glide, so the next page starts still.
+        stopInertiaOnNavigate: true,
       });
       lenis.on("scroll", ScrollTrigger.update);
       gsap.ticker.add(tick);
