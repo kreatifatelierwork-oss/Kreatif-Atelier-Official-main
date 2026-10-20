@@ -31,7 +31,17 @@ export const config = {
    */
   stepWire: { sag: 14, start: "top 78%", end: "bottom 60%", scrub: 0.6 },
   /** Services mega menu: hover must rest this long on a row before it becomes active (no flicker on diagonal moves). */
-  megaMenu: { intentMs: 90 },
+  megaMenu: {
+    intentMs: 90,
+    /** Close this long after the pointer leaves the menu (re-entering cancels). */
+    closeDelay: 180,
+    /** After a click closes it, hover cannot reopen it for this long (or until the pointer leaves). */
+    reopenAfter: 300,
+    /** Scrolling more than this (px) while it is open closes it. */
+    scrollClose: 80,
+    /** Whether a click- or keyboard-opened menu also closes when the pointer leaves. */
+    pinnedClosesOnLeave: false,
+  },
   /** 3D artifacts. */
   artifacts: {
     /**

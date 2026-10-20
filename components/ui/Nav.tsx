@@ -6,7 +6,7 @@ import { mainNav, navCta, navLabels, type NavItem } from "@/content/navigation";
 import { nav } from "@/content/site";
 import { config } from "@/lib/config";
 import { useScrollStore } from "@/lib/scroll/store";
-import { ServicesMegaMenu } from "@/components/services/ServicesMegaMenu";
+import { MegaNavItem } from "./MegaNavItem";
 import { CartButton } from "@/components/cart/CartButton";
 import { CallButton } from "./CallButton";
 import { NeuButton } from "@/components/design/NeuButton";
@@ -48,20 +48,8 @@ function Item({ item, pathname, mark = false }: { item: NavItem; pathname: strin
   const closeOnEscape = (event: React.KeyboardEvent<HTMLLIElement>) => {
     if (event.key === "Escape" && document.activeElement instanceof HTMLElement) document.activeElement.blur();
   };
-  if (item.mega) {
-    return (
-      <li className="group" onKeyDown={closeOnEscape}>
-        {item.href && (
-          <SmartLink href={item.href} aria-current={current ? "true" : undefined} aria-haspopup="true" className={linkClass}>
-            {label}
-          </SmartLink>
-        )}
-        {/* Starts just under the link so the pointer can travel down into it without it closing. */}
-        <div className="invisible fixed inset-x-0 top-[calc(var(--nav-h)/2+0.6rem)] z-10 pt-[calc(var(--nav-h)/2-0.2rem)] opacity-0 transition-[opacity,visibility,translate] duration-200 ease-out group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100 motion-safe:translate-y-1 motion-safe:group-hover:translate-y-0 motion-safe:group-focus-within:translate-y-0">
-          <ServicesMegaMenu pathname={pathname} />
-        </div>
-      </li>
-    );
+  if (item.mega && item.href) {
+    return <MegaNavItem href={item.href} label={label} current={current} pathname={pathname} linkClass={linkClass} />;
   }
   return (
     <li className="group relative" onKeyDown={closeOnEscape}>

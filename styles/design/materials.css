@@ -775,3 +775,50 @@ a.neu-card:focus-visible {
   height: 100%;
   object-fit: contain;
 }
+
+/* ── Services mega menu open state (components/ui/MegaNavItem.tsx). The wrapper only positions the panel and
+   ignores the pointer, so the menu's hover region is exactly the visible glass plus a bridge of the same width
+   between the trigger and the glass. */
+.mega__wrap {
+  position: fixed;
+  inset-inline: 0;
+  top: calc(var(--nav-h) / 2 + 0.6rem);
+  z-index: 10;
+  padding-top: calc(var(--nav-h) / 2 - 0.2rem);
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 140ms var(--ds-ease-out),
+    transform 140ms var(--ds-ease-out),
+    visibility 0s linear 140ms;
+}
+.mega[data-open] .mega__wrap {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 220ms var(--ds-ease-out),
+    transform 220ms var(--ds-ease-out),
+    visibility 0s;
+}
+.mega__bridge {
+  position: absolute;
+  /* Starts just below the trigger's text, never over it (it used to cover the lower half of "Services"). */
+  top: 0.5rem;
+  left: 50%;
+  width: min(64rem, calc(100vw - 2 * var(--gutter)));
+  height: calc(var(--nav-h) / 2 - 0.7rem);
+  transform: translateX(-50%);
+}
+.mega[data-open] .mega__bridge,
+.mega[data-open] .mega__wrap .glass-panel {
+  pointer-events: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mega__wrap,
+  .mega[data-open] .mega__wrap {
+    transform: none;
+  }
+}
