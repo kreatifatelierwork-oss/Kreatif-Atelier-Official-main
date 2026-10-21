@@ -303,12 +303,3 @@
 .au-stage-poster {
   transition: opacity 120ms linear;
 }
-/* Not shown until decoded (HeroAurelius): no part-loaded paint. Without script it shows as soon as it can. */
-.au-stage-poster:not([data-decoded]) > img {
-  visibility: hidden;
-}
-@media (scripting: none) {
-  .au-stage-poster:not([data-decoded]) > img {
-    visibility: visible;
-  }
-}

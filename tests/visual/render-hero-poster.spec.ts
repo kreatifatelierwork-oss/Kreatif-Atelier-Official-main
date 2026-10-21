@@ -37,7 +37,7 @@ for (const name of ["wide", "narrow"] as const) {
       const boxH = meta.width!;
       img = sharp(await img.extract({ left: 0, top: Math.round((meta.height! - boxH) / 2), width: meta.width!, height: boxH }).png().toBuffer());
     }
-    await img.webp({ quality: 86, alphaQuality: 90 }).toFile(path.join(OUT, `hero-stage-${name}.webp`));
+    await img.webp({ quality: 80, alphaQuality: 85 }).toFile(path.join(OUT, `hero-stage-${name}.webp`));
     await ctx.close();
   });
 }
