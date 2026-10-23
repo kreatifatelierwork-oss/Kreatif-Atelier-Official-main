@@ -11,6 +11,7 @@ import { StudioLighting } from "../three/lighting/StudioLighting";
 import { clay } from "../three/materials/materials";
 import { AU, LIGHT } from "../three/materials/palette";
 import { prefersReducedMotion } from "./pointer";
+import { FRAMING } from "./factoryFraming";
 
 const PITCH = 20 * (Math.PI / 180);
 const FOV = 30;
@@ -18,14 +19,25 @@ const FOV = 30;
 const PODIUM_TOP = -1.634;
 const PODIUM_R = 4.3;
 
-/** Frames the factory on its podium: fits its height, and its width on narrow screens. */
-function cameraFor(aspect: number): [number, number, number] {
-  const half = Math.tan((FOV / 2) * (Math.PI / 180));
-  // Fits the factory and the whole podium (its front rim included), with a margin, so nothing is cut.
-  // Portrait screens (phones) fit the width more tightly, so the factory fills the screen instead of shrinking.
-  const portrait = aspect < 1;
-  const d = Math.max(6.9 / (2 * half), (portrait ? 9.3 : 10.2) / (2 * half * aspect));
-  return [0, Math.sin(PITCH) * d - 0.55, Math.cos(PITCH) * d];
+/**
+ * The framing, shared with the still pictures (tests/visual/render-hero-poster.spec.ts). The camera always looks
+ * straight at `target` from the same direction, so changing the box only zooms about the centre: the factory
+ * fills a fixed "fit box" (fitW × fitH world units) scaled to fit the stage, exactly like an image with
+ * object-fit: contain. That is what lets a still rendered at the fit box's aspect stand in for the live view at
+ * any screen size with no jump. Portrait boxes (phones) use a tighter box, centred lower on the factory.
+ */
+
+
+function framingFor(aspect: number) {
+  const f = aspect < 1 ? FRAMING.portrait : FRAMING.landscape;
+  // The camera never moves; only its field of view widens to fit the box (a true zoom: moving it would also change
+  // the perspective, and then no still picture could match).
+  const d = f.fitH / (2 * Math.tan((FOV / 2) * (Math.PI / 180)));
+  const half = Math.max(f.fitH / (2 * d), f.fitW / (2 * d * aspect));
+  const fov = (2 * Math.atan(half) * 180) / Math.PI;
+  const target: [number, number, number] = [0, f.targetY, 0];
+  const position: [number, number, number] = [0, f.targetY + Math.sin(PITCH) * d, Math.cos(PITCH) * d];
+  return { position, target, fov };
 }
 
 const REST_YAW = -Math.PI / 4;
@@ -80,10 +92,10 @@ function Podium() {
 
 function Scene({ still }: { still: boolean }) {
   const aspect = useThree((s) => s.size.width / Math.max(1, s.size.height));
-  const camera = useMemo(() => cameraFor(aspect), [aspect]);
+  const camera = useMemo(() => framingFor(aspect), [aspect]);
   return (
     <>
-      <PerspectiveCamera makeDefault fov={FOV} position={camera} onUpdate={(c) => c.lookAt(0, aspect < 1 ? -2.1 : -1.15, 0)} />
+      <PerspectiveCamera makeDefault fov={camera.fov} position={camera.position} onUpdate={(c) => c.lookAt(...camera.target)} />
       <StudioLighting shadow={false} />
       {/* The factory: large and centred, turning slowly half way round and back. */}
       <SwingingFactory still={still} />

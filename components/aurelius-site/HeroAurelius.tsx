@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { preload } from "react-dom";
 import { FloatingArtifact } from "@/components/design/FloatingArtifact";
 import { NeuButton } from "@/components/design/NeuButton";
 import { useLiveScene } from "@/components/design/useLiveScene";
@@ -37,6 +38,9 @@ function Tagline() {
 export function HeroAurelius({ primary = hero.primaryCta, secondary = hero.secondaryCta }: { primary?: { label: string; href: string }; secondary?: { label: string; href: string } | null } = {}) {
   // The factory runs live on phones too (owner, 2026-10-21); the floating objects stay off there.
   const live = useLiveScene({ allowTouch: true });
+  // Fetch the factory still from the start of the page load (in the document head), the one for this screen only.
+  preload("/images/home/hero-stage-wide.webp", { as: "image", fetchPriority: "high", media: "(min-aspect-ratio: 1/1)" });
+  preload("/images/home/hero-stage-narrow.webp", { as: "image", fetchPriority: "high", media: "(max-aspect-ratio: 1/1)" });
   const [ready, setReady] = useState(false);
 
   return (
@@ -80,14 +84,15 @@ export function HeroAurelius({ primary = hero.primaryCta, secondary = hero.secon
           space left under the words, so nothing in it can sit on the text or the buttons. */}
       <div className="relative z-10 mt-[var(--ds-space-3)] min-h-0 w-full flex-1 md:mx-auto md:w-[min(100%,1180px)]">
         <div data-stage className="absolute inset-0">
-          <picture
-            data-stage-poster
-            data-hidden={ready || undefined}
-            className="absolute inset-0 transition-opacity duration-[var(--ds-dur-slow)] ease-[var(--ds-ease-out)] data-[hidden]:opacity-0"
-          >
-            <source media="(min-width: 768px)" srcSet="/images/home/hero-stage-wide.webp" />
-            <img src="/images/home/hero-stage-narrow.webp" alt="" width={780} height={600} decoding="async" fetchPriority="high" className="h-full w-full object-contain" />
-          </picture>
+          {/* The live factory's exact framing as stills (one per framing), contained in the stage like the live
+              camera, so the swap to live 3D is invisible. Which one shows follows the stage's own shape, the same
+              rule the camera uses (portrait below 1:1), via a container query (.au-stage-poster). */}
+          <div data-stage-poster data-hidden={ready || undefined} className="au-stage-poster absolute inset-0 data-[hidden]:opacity-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img data-framing="landscape" src="/images/home/hero-stage-wide.webp" alt="" width={2100} height={1421} loading="lazy" decoding="async" fetchPriority="high" className="h-full w-full object-contain" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img data-framing="portrait" src="/images/home/hero-stage-narrow.webp" alt="" width={1400} height={1400} loading="lazy" decoding="async" fetchPriority="high" className="h-full w-full object-contain" />
+          </div>
           {live && <FactoryStage onReady={() => setReady(true)} />}
         </div>
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-20">

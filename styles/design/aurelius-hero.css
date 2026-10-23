@@ -279,3 +279,27 @@
   background-clip: text;
   color: transparent;
 }
+
+/* The factory's stills (HeroAurelius): the stage is a size container, and the still for its shape shows, matching
+   FactoryStage's framing rule (portrait below 1:1). Hidden once the live canvas has drawn. */
+[data-stage] {
+  container-type: size;
+}
+.au-stage-poster > img {
+  position: absolute;
+  inset: 0;
+}
+.au-stage-poster > img[data-framing="portrait"] {
+  display: none;
+}
+@container (aspect-ratio < 1) {
+  .au-stage-poster > img[data-framing="landscape"] {
+    display: none;
+  }
+  .au-stage-poster > img[data-framing="portrait"] {
+    display: block;
+  }
+}
+.au-stage-poster {
+  transition: opacity 120ms linear;
+}
