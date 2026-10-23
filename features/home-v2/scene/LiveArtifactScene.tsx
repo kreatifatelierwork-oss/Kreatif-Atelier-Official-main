@@ -3,7 +3,7 @@
 import { PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { easing } from "maath";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import * as THREE from "three";
 import { useLive, type LiveKind } from "@/lib/artifacts/live";
 import { config } from "@/lib/config";
@@ -84,6 +84,11 @@ function Model({ kind, slug, onReady }: { kind: LiveKind; slug: string; onReady:
   const { Component } = entry;
   return (
     <>
+      {entry.framing === "fitted" ? (
+        <PerspectiveCamera makeDefault fov={padFov(28)} position={[0, 1.2, 9]} onUpdate={(c) => c.lookAt(0, 0, 0)} />
+      ) : (
+        <PerspectiveCamera makeDefault fov={padFov(serviceCamera.fov)} position={serviceCameraPosition()} onUpdate={(c) => c.lookAt(...serviceCamera.target)} />
+      )}
       <StudioLighting shadow={entry.framing === "service"} />
       <PointerLight />
       <Tilt onReady={onReady}>
@@ -97,27 +102,6 @@ function Model({ kind, slug, onReady }: { kind: LiveKind; slug: string; onReady:
       </Tilt>
     </>
   );
-}
-
-/**
- * The one camera, never unmounted: it takes each model's framing (the poster's own camera). A camera per model
- * used to hand control back to the canvas's default wide camera when models were swapped, drawing them too small.
- */
-function LiveCamera({ kind, slug }: { kind?: LiveKind; slug?: string }) {
-  const service = !!kind && !!slug && liveEntry(kind, slug)?.framing === "service";
-  const fov = padFov(service ? serviceCamera.fov : 28);
-  const pos = service ? serviceCameraPosition() : ([0, 1.2, 9] as [number, number, number]);
-  const target = service ? serviceCamera.target : ([0, 0, 0] as [number, number, number]);
-  const cam = useRef<THREE.PerspectiveCamera>(null);
-  useEffect(() => {
-    const c = cam.current;
-    if (!c) return;
-    c.fov = fov;
-    c.position.set(...pos);
-    c.lookAt(...target);
-    c.updateProjectionMatrix();
-  });
-  return <PerspectiveCamera ref={cam} makeDefault fov={fov} position={pos} />;
 }
 
 /**
@@ -140,7 +124,6 @@ export default function LiveArtifactScene({ kind, slug, onReady }: { kind?: Live
         gl.setClearColor(0x000000, 0);
       }}
     >
-      <LiveCamera kind={kind} slug={slug} />
       {active && <Model key={`${kind}:${slug}`} kind={kind} slug={slug} onReady={onReady} />}
     </Canvas>
   );

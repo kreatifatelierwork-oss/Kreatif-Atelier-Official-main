@@ -73,8 +73,6 @@ export const config = {
       /** The live canvas is this much larger than the poster's frame (camera widened to match), so a tilted,
        *  lifted model is never clipped by the canvas edge. */
       pad: 1.6,
-      /** No live model starts while the page scrolls, nor this long after it stops. */
-      scrollQuietMs: 250,
     },
     /** Every gold-scale colour (gold-400 to gold-700) is drawn as this polished metal, not yellow plastic. */
     goldMetal: { metalness: 0.92, roughness: 0.26, envMapIntensity: 2.2, clearcoat: 0.4, clearcoatRoughness: 0.1 },
