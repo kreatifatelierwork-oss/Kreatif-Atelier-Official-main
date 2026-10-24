@@ -54,8 +54,13 @@ export const contactPage = {
     budget: "Approximate budget and timing",
     consent: "I agree to be contacted about this enquiry.",
     submit: "Start a Project",
-    /** This site is static: the form opens the visitor's own email app with the enquiry filled in. Nothing is sent from the page. */
-    note: "This opens your email app with your enquiry filled in — nothing is sent until you press send there.",
+    /** The enquiry is emailed to the team (lib/enquiry/send.ts); if that fails, the visitor can send it from their own email app. */
+    note: "Your enquiry comes straight to our inbox. We reply by email.",
+    sending: "Sending…",
+    sent: (email: string) => `Thank you. Your enquiry has reached us, and we will reply to ${email}.`,
+    failed: "Your enquiry did not go through. Please try again, or send it from your email app.",
+    fallback: "Send it by email instead",
+    another: "Send another enquiry",
     subject: "Project enquiry",
   },
   detailsLabel: "Or reach us directly",

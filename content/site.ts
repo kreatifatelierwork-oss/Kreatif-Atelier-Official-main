@@ -9,6 +9,15 @@ export const site = {
     "Kreatif Atelier is a creative holding ecosystem connecting people, ideas and complementary disciplines to create meaningful opportunities and lasting impact.",
   locale: "en_IN",
   email: "contact@kreatifatelier.com",
+  /**
+   * Where "Start a Project" enquiries are emailed (owner, 2026-10-24), via FormSubmit's AJAX endpoint. The first
+   * submission sends FormSubmit's activation email to the inbox; nothing is delivered until it is confirmed. FormSubmit
+   * then offers a random alias: put it in place of the address in `endpoint` to keep the address out of the page.
+   */
+  enquiries: {
+    inbox: "kreatifatelier.work@gmail.com",
+    endpoint: "https://formsubmit.co/ajax/kreatifatelier.work@gmail.com",
+  },
   /** Supplied by the owner (2026-10-20). `phoneHref` is the dialable form for tel: links. */
   phone: "+91 94609 23782",
   phoneHref: "tel:+919460923782",
