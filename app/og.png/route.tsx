@@ -28,7 +28,7 @@ async function gold(file: string, w: number, h: number, strength = 1) {
 /**
  * The link preview card (Open Graph / Twitter; WhatsApp, iMessage, LinkedIn, Slack use it), in the visiting card's
  * language: black, the KA monogram large and faint in gold, the gold script "Kreatif Atelier" across it, and the
- * line and domain in spaced gold capitals inside a hairline gold frame. Built at export time as /og.png (a real .png
+ * line and domain in spaced gold capitals. Built at export time as /og.png (a real .png
  * path, so static hosts send it as image/png; WhatsApp ignores a card served as octet-stream). Linked from the
  * metadata in app/layout.tsx.
  */
@@ -53,7 +53,6 @@ export async function GET() {
           fontFamily: "Cormorant",
         }}
       >
-        <div style={{ position: "absolute", top: 28, left: 28, right: 28, bottom: 28, display: "flex", border: "1px solid rgba(201,154,46,0.45)" }} />
         {/* eslint-disable-next-line @next/next/no-img-element -- ImageResponse renders plain img only */}
         <img src={monogram} width={470} height={470} alt="" style={{ position: "absolute", top: 50, left: 365, opacity: 0.11 }} />
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 20 }}>
