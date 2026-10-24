@@ -26,8 +26,11 @@ export const cart = {
     message: "Message",
     messageHint: "Your goal, timing and anything we should know.",
     submit: "Request quote",
-    note: "This opens your email app with the request filled in. Nothing is sent until you press send there.",
-    opened: "Your email app is opening with the request. Press send there to reach us.",
+    note: "Your request comes straight to our inbox. We reply by email.",
+    sending: "Sending…",
+    sent: (email: string) => `Thank you. Your request has reached us, and we will reply to ${email}.`,
+    failed: "Your request did not go through. Please try again, or send it from your email app.",
+    fallback: "Send it by email instead",
     subject: "Quote request — Aurelius",
     errors: {
       name: "Please enter your name.",

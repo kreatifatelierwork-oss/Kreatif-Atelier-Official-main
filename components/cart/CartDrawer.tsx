@@ -7,7 +7,7 @@ import { DisplayHeading } from "@/components/design/DisplayHeading";
 import { NeuButton } from "@/components/design/NeuButton";
 import { cart } from "@/content/cart";
 import { domainArtifact, serviceById } from "@/content/services";
-import { cartRequestSchema, openCartRequest } from "@/lib/cart/request";
+import { cartRequestMailto, cartRequestSchema, sendCartRequest } from "@/lib/cart/request";
 import { useCart } from "@/lib/cart/store";
 
 
@@ -16,7 +16,8 @@ type Errors = Partial<Record<"name" | "email" | "phone" | "services", string>>;
 /**
  * The cart: a glass drawer from the right (base-ui Drawer: focus is trapped inside, Escape and a swipe
  * close it, focus returns to the cart button). Lists the selected services with remove and clear, then
- * the quote request, which opens the visitor's email app like the site's contact form. No payments.
+ * the quote request, emailed to the team like the contact form (if that fails, the visitor can send it from
+ * their own email app). A sent request empties the cart. No payments.
  */
 export function CartDrawer() {
   const open = useCart((s) => s.open);
@@ -27,7 +28,8 @@ export function CartDrawer() {
   const [errors, setErrors] = useState<Errors>({});
   // What just happened, said in the drawer's own status line: toasts sit outside the modal, where they
   // can be neither reached nor heard while it is open. A removal or clear carries its Undo.
-  const [undo, setUndo] = useState<{ message: string; items?: string[] } | null>(null);
+  const [undo, setUndo] = useState<{ message: string; items?: string[]; mailto?: string } | null>(null);
+  const [sending, setSending] = useState(false);
   const list = useRef<HTMLUListElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const { form } = cart;
@@ -52,9 +54,11 @@ export function CartDrawer() {
     setUndo(null);
   };
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    if (sending) return;
+    const el = event.currentTarget;
+    const data = new FormData(el);
     const parsed = cartRequestSchema.safeParse({
       services: items,
       name: data.get("name"),
@@ -71,12 +75,22 @@ export function CartDrawer() {
       setErrors(next);
       // Focus the first field that needs attention.
       const first = (["name", "email", "phone"] as const).find((k) => next[k]);
-      if (first) event.currentTarget.querySelector<HTMLInputElement>(`[name="${first}"]`)?.focus();
+      if (first) el.querySelector<HTMLInputElement>(`[name="${first}"]`)?.focus();
       return;
     }
     setErrors({});
-    openCartRequest(parsed.data);
-    setUndo({ message: form.opened });
+    setSending(true);
+    setUndo({ message: form.sending });
+    try {
+      await sendCartRequest(parsed.data);
+      clear();
+      setUndo({ message: form.sent(parsed.data.email) });
+      closeRef.current?.focus();
+    } catch {
+      setUndo({ message: form.failed, mailto: cartRequestMailto(parsed.data) });
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -103,7 +117,17 @@ export function CartDrawer() {
             </div>
 
             <div role="status" className="mt-[var(--ds-space-5)] flex min-h-[var(--ds-tap)] flex-wrap items-center justify-between gap-[var(--ds-space-3)]">
-              <p className="ds-label">{undo ? undo.message : cart.count(items.length)}</p>
+              <p className="ds-label">
+                {undo ? undo.message : cart.count(items.length)}
+                {undo?.mailto && (
+                  <>
+                    {" "}
+                    <a href={undo.mailto} className="underline underline-offset-4">
+                      {form.fallback}
+                    </a>
+                  </>
+                )}
+              </p>
               {undo?.items && (
                 <NeuButton size="sm" onClick={onUndo}>
                   {cart.undo}
@@ -157,8 +181,8 @@ export function CartDrawer() {
                   {errors.services && <p className="neu-field__error">{errors.services}</p>}
                   <p className="ds-body text-[length:var(--ds-text-sm)]">{form.note}</p>
                   <div>
-                    <NeuButton type="submit" variant="primary">
-                      {form.submit}
+                    <NeuButton type="submit" variant="primary" loading={sending}>
+                      {sending ? form.sending : form.submit}
                     </NeuButton>
                   </div>
                 </form>
