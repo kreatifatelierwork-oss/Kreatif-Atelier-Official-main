@@ -34,17 +34,18 @@ flowchart LR
   staff["Staff browser<br/>crm. host, staff cookie"] --> app
   client["Client browser<br/>portal. host, client cookie"] --> app
   pub --> app["Next.js app<br/>(admin) (portal) (public)"]
-  app --> db[("PostgreSQL<br/>Prisma; pg-boss queue")]
-  worker["Worker<br/>reminders, e-mail, PDFs,<br/>payment reconcile"] --> db
-  app --> store[("Private bucket<br/>R2 / S3, signed URLs")]
+  app --> db[("Neon Postgres<br/>Prisma")]
+  worker["Job functions on Vercel<br/>reminders, e-mail, PDFs,<br/>payment reconcile"] --> db
+  app --> store[("Google Drive<br/>Shared drive, private;<br/>files served via the app")]
   worker --> store
+  jobs["Inngest<br/>scheduled jobs"] --> worker
   worker --> mail["E-mail provider<br/>per-vertical sender"]
   app --> pay["Razorpay<br/>hosted checkout"]
   pay -->|"signed webhook"| app
   worker --> ai["Anthropic API<br/>brief parsing, contracts"]
 ```
 
-Staff and clients enter through separate hosts and cookies, and the website posts enquiries to the public endpoint. The app holds the logic; the worker sends reminders and e-mails, renders PDFs and checks payments from a queue stored in Postgres.
+Staff and clients enter through separate subdomains of kreatifatelier.com (no second domain is bought) with separate cookies, and the website posts enquiries to the public endpoint. The app holds the logic; Inngest triggers the job functions that send reminders and e-mails, render PDFs and check payments. Files live in Google Drive.
 
 ## Stack and hosting
 
@@ -53,16 +54,16 @@ The CRM must be its own server app, because the website is a static export (`out
 | Layer | Choice | Why |
 | --- | --- | --- |
 | App | One Next.js 16 app, App Router, TypeScript, route groups `(admin)`, `(portal)`, `(public)` | Same stack as the website and the NGO platform; one codebase, hosts decide which area you see |
-| Database | PostgreSQL with Prisma 6.x | Both zips use Prisma 6 on SQLite; Postgres from day one avoids a migration later (the NGO repo ships `scripts/use-postgres.mjs`) |
+| Database | Neon Postgres (free tier) with Prisma 6.x; Supabase Postgres is a drop-in alternative | Owner's choice (2026-10-25): Neon, Supabase or MongoDB. Postgres is picked because both zips use Prisma on SQL, and gapless invoice numbers, immutable approvals and the audit log rely on transactions and constraints; MongoDB would lose Prisma migrations and make those harder |
 | Auth | Auth.js or Better Auth, whichever is current when you start | E-mail and password plus magic link, mandatory TOTP 2FA for staff, argon2id hashing, rate limits, session revocation |
-| Background jobs | pg-boss worker (Postgres-backed queue) | Reminders, e-mails, PDF rendering and contract extraction need reliable scheduling without adding Redis |
-| File storage | Private S3-compatible bucket (Cloudflare R2 or S3) | Signed short-lived URLs, no public files, virus scan on upload |
+| Background jobs | Inngest (free tier) calling job functions in the same app | Vercel has no long-running worker and its free cron runs once a day; reminders need minute-level scheduling and retries |
+| File storage | Google Drive (owner's choice, 2026-10-25) through the Drive API: a Shared drive in Google Workspace, or the company Google account via OAuth (15 GB free). One folder per vertical, then per client and project | Files stay private in Drive: never "anyone with the link". The app downloads from Drive and streams to the signed-in user after a permission check, so Drive links never reach clients. Note: a service account has no storage of its own, so it must write into a Shared drive or act through the company account. Generated invoices, MOUs and receipts are saved there too, with the Drive file id and a sha256 hash in the database |
 | E-mail | Resend, Postmark or SES, with SPF, DKIM and DMARC per vertical sending domain | Branded sender per vertical; bounce and complaint webhooks |
 | Documents | HTML templates rendered to PDF by headless Chromium (Playwright); `pdf-lib` to stamp uploaded PDFs; `sharp` for images | Handles Hindi and Telugu fonts; the NGO platform's react-pdf setup renders Latin text only (its README says so) |
 | Payments | Razorpay first for INR, behind a provider interface so Stripe or another gateway can be added | Hosted checkout only, so no card data touches your server |
 | AI | Anthropic API; model ID in an env variable | Brief parsing, contract extraction, suggestion wording; every output is validated and confirmed by a person |
 | UI | Tailwind 4, base-ui primitives, Motion for UI transitions, tokens copied from the website's `styles/design` | Keeps the Aurelius look; copy first, extract a shared package later |
-| Hosting | A long-running Node host (Railway, Fly or Render) with managed Postgres, web process plus worker | Vercel works only if jobs move to Inngest or Trigger.dev; the NGO README notes a 300-second limit on long runs |
+| Hosting | Vercel, on subdomains of kreatifatelier.com: `crm.` for staff and `portal.` for clients (owner: same domain, 2026-10-25) | Free Hobby plan while building; Hobby is for non-commercial use, so move to Pro (about $20 a month) before real clients log in, or use Netlify. Keep every request within Vercel's function time limit; PDFs use a serverless Chromium build (`@sparticuz/chromium`) or a PDF service |
 | Tests | vitest for pure logic, Playwright for flows and cross-client access, an injectable clock | Reminder and delay logic must be testable by moving time |
 
 Skip for now: microservices, Redis, row-level security. Add them only if the app outgrows this.
@@ -99,13 +100,13 @@ Every vertical ships both a light and a dark token set, written as CSS variables
 
 Rules that keep it safe:
 
-- **Two hosts, two cookies.** Staff use one host (for example `crm.`), clients another (`portal.`); the names are placeholders until you pick domains.
+- **Two hosts, two cookies.** Staff use `crm.kreatifatelier.com`, clients `portal.kreatifatelier.com`, both on the existing domain.
 - **Credentials.** You create the account and choose the vertical. The default sends an invite link where the client sets their own password. The option you asked for, setting an id and password yourself, creates a one-time temporary password shown once, with a forced change at first login. Passwords are never stored in readable form.
 - **No leakage by design.** Every client-facing read goes through one data-access layer scoped by account and vertical, and Prisma models never reach the browser; only whitelisted `toClientView` mappers do. This is the rule the NGO platform already follows (`assertClientSafe`, internal versus NGO-facing exports). Internal notes, costs, hours and margins have no path into a client view, and a test fails if a forbidden field shows up in a client response.
 - **Access tests.** Playwright tests try every route as the wrong client and the wrong vertical; the answer is 404, not 403.
 - **Staff 2FA is mandatory**, client 2FA optional; login rate limits, lockout, session list and revoke.
 - **Audit log, append only**: logins, approvals, downloads, document views, permission changes, impersonation. "Preview as client" is read-only, shows a banner and is logged.
-- **Uploads**: type and size limits, virus scan, private storage, signed URLs.
+- **Uploads**: type and size limits, virus scan, stored privately in Google Drive and served only through the app after a permission check.
 - **Untrusted text.** Contract PDFs and client-typed fields are data, never instructions (port `lib/ai/untrusted.ts`). Client values are escaped before entering any HTML template, and Chromium renders with scripts and outside network requests blocked.
 - **Request hygiene.** Same-origin check on every state-changing request and security headers (port `src/proxy.ts`, minus its Basic-auth gate).
 - **Privacy.** Consent log plus data export and delete on request. Ask your lawyer which of India's DPDP Act, GDPR and Canada's PIPEDA apply to your clients; I am not a lawyer.
@@ -351,8 +352,9 @@ You do not need everything at once. Each group is needed before the phase named,
 **Before Phase 1 (foundation)**
 
 - [x] Unzip the two inner zips into a reference folder (done: `~/Developer/kreatif-crm-reference/`)
-- [ ] Domains for the staff area and the client portal (for example `crm.` and `portal.` under your main domain), and whether any vertical wants its own portal domain
-- [ ] Hosting choice (Railway, Fly, Render or a VPS), a monthly budget ceiling and who will maintain it
+- [x] Domains: subdomains of kreatifatelier.com (`crm.` and `portal.`); still needed: access to the domain's DNS settings
+- [x] Hosting: Vercel (Hobby while building, Pro before launch); database Neon Postgres; files Google Drive; jobs Inngest
+- [ ] Accounts to create yourself: Vercel, Neon, Inngest, Resend; and which Google account or Workspace Shared drive holds the files
 - [ ] The list of staff users with a role and vertical access for each, and who is the Owner
 
 **Before Phase 2 (verticals and branding)**
@@ -406,7 +408,7 @@ Claude Code builds one phase at a time, commits after each, and runs type checks
 | Phase | What ships | Release | Stop |
 | --- | --- | --- | --- |
 | 0 | Read both zips, write `docs/crm/DECISIONS.md` and the CRM repo's `CLAUDE.md`, list open questions; no app code |  | Yes, short |
-| 1 | Repo, Postgres, auth with 2FA, roles, audit log, security headers, CI, staging and error monitoring, design tokens ported | 1 |  |
+| 1 | Repo, Neon Postgres, auth with 2FA, roles, audit log, security headers, CI, staging and error monitoring, design tokens ported | 1 |  |
 | 2 | Verticals, branded light and dark portals, client accounts, invites and temporary passwords, preview as client | 1 | Yes |
 | 3 | 206-service catalogue, leads and the website enquiry endpoint, brief builder, estimator, estimate approval | 1 |  |
 | 4 | Projects, phases, deliverables with versions, contacts, tasks, comments, approvals, popups, the Awaiting client button | 1 |  |
@@ -454,7 +456,7 @@ WORKING RULES
 - Colours come only from design tokens. Port the website's palette-audit idea so a hardcoded colour fails the build.
 - UI phases: use my installed skills and name the one behind each decision: emil-design-eng, apple-design, animate, animation-vocabulary, find-animation-opportunities, review-animations, improve-animations, animation-performance, mobile-native, break-ui, pick-ui-library.
 - No new heavy dependency without a one-line justification. Prefer base-ui primitives and Motion for UI.
-- Security defaults: argon2id, same-origin check on mutations, security headers, rate limits on auth and public endpoints, private storage with signed URLs, virus scan on upload, secrets only in env, never log secrets or personal data.
+- Security defaults: argon2id, same-origin check on mutations, security headers, rate limits on auth and public endpoints, files private in Google Drive and served only through the app, virus scan on upload, secrets only in env, never log secrets or personal data.
 - If you need something from me that is not supplied, build with a clearly marked placeholder and ask once, at the end of the phase. The checklist is in BRIEF.md section What I need from you.
 
 PHASE 0: AUDIT (no app code)
@@ -464,13 +466,13 @@ PHASE 0: AUDIT (no app code)
 - Stop.
 
 PHASE 1: FOUNDATION
-- Next.js App Router, TypeScript strict, Tailwind 4, Prisma with Postgres (docker-compose for local), zod-validated env, Vitest, Playwright, CI running typecheck, lint and tests.
+- Next.js App Router, TypeScript strict, Tailwind 4, Prisma with Neon Postgres (a Neon dev branch or local Postgres for development), zod-validated env, Vitest, Playwright, CI running typecheck, lint and tests.
 - Auth: password plus e-mail magic link, argon2id, mandatory TOTP 2FA for staff, sessions with revoke, login rate limits and lockout. Staff and clients use different hosts and cookies.
 - RBAC with the roles in BRIEF.md and a single can(user, action, resource) function. Per-vertical staff access.
 - Append-only AuditLog; enforce it in the database so rows cannot be updated or deleted.
 - Port the NGO platform's src/proxy.ts security headers and same-origin check, without its Basic-auth gate.
 - Provenance on every lead-like record from day one: source (WEB_SCRAPE, UPLOAD, MANUAL, WEBSITE_FORM), createdBy, createdAt, and per-field changes written to AuditLog with old and new values.
-- Worker skeleton on pg-boss. Staging config and error-monitoring hooks. Port design tokens and primitives from the website.
+- Inngest skeleton (job functions in the app, local dev server). Google Drive storage adapter behind a Storage interface (put, get stream, delete, list), with a local-disk adapter for tests. Staging config and error-monitoring hooks. Port design tokens and primitives from the website.
 - Acceptance: staff log in with 2FA; a Playwright test proves a user without access to a vertical cannot read it; an audit row cannot be changed.
 
 PHASE 2: VERTICALS, BRANDED PORTALS, CLIENT ACCOUNTS
@@ -497,7 +499,7 @@ PHASE 4: PROJECTS, DELIVERABLES, APPROVALS, POPUPS
 - Tests: approval rows cannot be edited; only an approver role can approve; revision count increments; a Playwright flow from estimate to project to deliverable to approval.
 
 PHASE 5: REMINDERS, DELAY WARNINGS, E-MAILS
-- Editable ReminderRule. ScheduledNotification rows are materialised per ActionRequest, run by pg-boss, recomputed when a due date changes, idempotent, sent in the client's local quiet hours, stopped on response, paused on hold or when the ball is with the team.
+- Editable ReminderRule. ScheduledNotification rows are materialised per ActionRequest, run by Inngest, recomputed when a due date changes, idempotent, sent in the client's local quiet hours, stopped on response, paused on hold or when the ball is with the team.
 - Delay impact as a domain function that reruns the schedule. It names a new date only when the item is on the critical path.
 - E-mail provider adapter, branded templates per vertical, plain-text versions, the NGO platform's tone lint ported from src/lib/pitch/lint.ts, delivery and bounce logging, admin template preview and test send.
 - Warning levels 0 to 3 in the portal and a Needs attention queue for admins.
@@ -560,7 +562,7 @@ DELIVERABLES PER PHASE
 
 - **Five verticals** are Aurelius, Asraya, Valora, Golden Guardian Productions and Rudra Yugen, taken from your website notes.
 - **A new app in a new repo**, not an extension of the website or of either zip: the website is a static export, and the zips have no login and use older stacks (the Radar is on Next 15 and Tailwind 3).
-- **Postgres, Prisma, Razorpay, Chromium PDFs and pg-boss are my picks.** Swap any of them if you already have accounts elsewhere.
+- **Owner's picks (2026-10-25):** same domain via subdomains, Vercel hosting, Google Drive for files and invoices, Neon for the database (Supabase or MongoDB were also allowed; Postgres chosen for the reasons in the stack table). Razorpay and serverless Chromium PDFs are still my picks.
 - **Credentials.** I read your request to make an id and password as: you create the account, and the client gets an invite link or a one-time temporary password. A password you choose and keep is not stored readable.
 - **Client template maker** is read as universal document templates (MOU, invoice, quotation) filled from verified client details. Project templates, such as a website with scroll animation, live in the brief builder and estimator rules.
 - **Contract intelligence** is read as extracting terms from signed contracts and driving renewals and checks, with you confirming each term. It is not legal review.
