@@ -232,7 +232,7 @@ Full-spectrum creative agency, Hyderabad. Four divisions. Six service pillars.
 - Page designs must stay cohesive across the site: new pages reuse the shared header, footer, type
   system, labels, `.btn` and reveal motion. A venture may add its own colour and one signature face.
 - Founder bios on `/about/kreatif-atelier` are still the old site's wording (they call it an agency).
-- The contact form has no server: it opens the visitor's email app with the enquiry filled in.
+- The /contact form ("Start a Project") emails each enquiry to kreatifatelier.work@gmail.com through FormSubmit (`site.enquiries`, `lib/enquiry/send.ts`); it must be activated once from the first submission. Cart quote requests still open the visitor's email app.
 - `pnpm` is not installed on this machine; use `npx next dev` / `npx next build --webpack`.
 
 ## No logo — hard rule
