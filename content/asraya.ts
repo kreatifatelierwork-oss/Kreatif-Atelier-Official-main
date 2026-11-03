@@ -1,7 +1,7 @@
 /**
  * Asraya — the social division of Kreatif Atelier. All copy here comes from the Asraya company
  * profile (31 pages), in the profile's own order. `**double asterisks**` mark the words the profile
- * sets in bold. Figures (fees, costs, the Ad Grants amount) are the profile's own.
+ * sets in bold. The Ad Grants amount is the profile's own; Asraya's own prices are left out by the owner's instruction.
  */
 
 export const asraya = {
@@ -33,18 +33,16 @@ export const asraya = {
   },
 } as const;
 
-/** Artwork from the Asraya company profile (the owner's Canva file), cropped from its pages. The statue is a true cut-out. */
+/**
+ * Artwork from the Asraya company profile (the owner's Canva file), cropped from its pages. Only the pictures whose
+ * ground sinks into the paper are used; the statue is a true cut-out.
+ */
 export const art = {
   statue: { src: "/images/profile/asraya/statue.webp", width: 1200, height: 1266, alt: "A marble statue of a seated thinker, working on a laptop" },
-  speaker: { src: "/images/profile/asraya/speaker.webp", width: 1000, height: 1134, alt: "A speaker at a lectern in front of a crowd, in silhouette" },
   houses: { src: "/images/profile/asraya/houses.webp", width: 1358, height: 1399, alt: "A desk lamp lighting one small house among many unlit ones" },
-  door: { src: "/images/profile/asraya/door.webp", width: 1400, height: 1370, alt: "A small figure standing before a keyboard key that opens like a door onto social media" },
   lion: { src: "/images/profile/asraya/lion.webp", width: 1130, height: 1159, alt: "A cat walking through a door and coming out the other side as a lion" },
-  camera: { src: "/images/profile/asraya/camera.webp", width: 1600, height: 634, alt: "A film camera throwing a red beam across volunteers serving food" },
-  offering: { src: "/images/profile/asraya/offering.webp", width: 1500, height: 668, alt: "A golden hand holding two children" },
   handAsraya: { src: "/images/profile/asraya/hand-asraya.webp", width: 1600, height: 746, alt: "A hand made of words — the things Asraya builds — reaching out" },
   handYou: { src: "/images/profile/asraya/hand-you.webp", width: 1600, height: 746, alt: "A hand made of words — invisibility, neglect, silence — reaching back" },
-  teacher: { src: "/images/profile/asraya/teacher.webp", width: 1800, height: 1527, alt: "A young woman sitting in a circle of children, smiling" },
 } as const;
 export type ArtName = keyof typeof art;
 
@@ -82,6 +80,8 @@ export const gap = {
 export const problem = {
   title: ["The", "communication", "problem"],
   subtitle: "Why NGOs struggle to communicate their impact",
+  /** The two places named in the first beat, labelled on the drawing of scattered organisations. */
+  places: ["Hyderabad", "Warangal"],
   beats: [
     "An organisation in Hyderabad solves a problem that an organisation in Warangal is still struggling with. Neither knows the other exists.",
     "One has a donor relationship that would fit another's cause perfectly. One has a volunteer network sitting idle. One has already fought a battle the other is about to walk into blindly.",
@@ -229,24 +229,13 @@ export const build = {
 
 export const partnership = {
   eyebrow: "Partnership",
-  costs: {
-    title: ["What it", "normally", "costs"],
-    rows: [
-      { figure: "₹1.3 crore", label: "Other market", body: "What a comparable agency charges an NGO for the same eleven practices. Midpoint per practice; the full stack lands near ₹1.3 crore." },
-      { figure: "₹44.6 lakh", label: "Kreatif Atelier", body: "Our own Master Price List v2.0 — the same rates a paying commercial client is quoted. Roughly a third of market, and still ₹44.6 lakh for the Asraya build." },
-    ],
-    close: "This is the number an NGO cannot raise. It is also the number Asraya absorbs in full.",
+  /** By the owner's instruction (2026-11-04) the Asraya pages carry no prices: the costs, the fee and the give-back are
+   *  replaced by this. Owner-approved wording. */
+  personalised: {
+    title: ["Personalised,", "not packaged."],
+    body: "Every partnership is shaped around your organisation — your cause, your stage, what you already have and what you need next. We scope the work together, so you get the services that move your work forward.",
   },
   changes: {
-    title: ["What", "Asraya", "changes"],
-    lead: "One fee. Everything included.",
-    fee: "₹25,000",
-    feeLine: "Three practices or eleven — same ₹25,000. No tiers, no line items to cut. Brand, website, content, SEO, analytics, CRM, PR, film and Ad Grants ship as one stack or not at all.",
-    points: [
-      { title: "The build costs nothing.", body: "Kreatif Atelier absorbs the full ₹44.6 lakh. The fee only keeps it alive — hosting, security, updates, and monthly management of the Ad Grants account so it's never suspended." },
-      { title: "And in the eleventh month, it comes back.", body: "A portion of what the NGO has paid is returned as a donation to its own work. The fee funds the infrastructure for a year; the year ends with money going back into the field." },
-    ],
-    market: "The market asks what an NGO can afford. Asraya asks nothing upfront — and gives back at the end.",
     presence: [
       "**We will build your organisation a complete digital presence.** Not a website. A full profile — how you look, how you're found, how you're read, how your work is documented and how your impact is measured.",
       "When a donor, a journalist or a CSR committee searches for you, they will find an organisation that looks the size of the work it does. **The things that are normally out of reach are included.**",
@@ -340,3 +329,38 @@ export const tomorrow = {
   found: "Sometimes, they simply haven't found each other yet. That's where we want to begin.",
   starts: "But it starts with you.",
 } as const;
+
+/* ── Photographs ──────────────────────────────────────────── */
+
+/**
+ * The owner's field photographs, by the ids in docs/asraya-photo-brief.md. Until a `src` is filled in, an essential
+ * photo shows a marked slot and an optional one is left out. Fill in `src` (a file in /public/images/asraya/), its
+ * `width`, `height` and `alt`, and the page picks it up. All of them are toned to warm black and white on the page.
+ */
+type Photo = { label: string; essential: boolean; src?: string; width?: number; height?: number; alt?: string };
+
+export const photos = {
+  A1: { label: "NGO team at work in the field", essential: true },
+  A2: { label: "The unseen work: a shelter, a night class", essential: true },
+  A3: { label: "A city NGO worker", essential: true },
+  A4: { label: "A village NGO worker", essential: true },
+  A5: { label: "Our crew filming at an NGO", essential: false },
+  B1: { label: "NGO material in use: signboard, ID cards, profile", essential: true },
+  B2: { label: "Staff updating their page", essential: false },
+  B3: { label: "An awareness campaign on the street", essential: true },
+  B4: { label: "A beneficiary interview being filmed", essential: true },
+  B5: { label: "An NGO event or launch", essential: false },
+  C1: { label: "An NGO founder and our team, planning", essential: true },
+  C2: { label: "Walking into a community with NGO staff", essential: false },
+  C3: { label: "Volunteers signing up", essential: false },
+  D1: { label: "Women's safety session", essential: true },
+  D2: { label: "Animal rescue", essential: true },
+  D3: { label: "An elder with a companion", essential: true },
+  D4: { label: "Children learning", essential: true },
+  D5: { label: "Essentials being handed out", essential: false },
+  D6: { label: "Tree planting or a clean-up", essential: false },
+} satisfies Record<string, Photo> as Record<string, Photo>;
+export type PhotoId = keyof typeof photos;
+
+/** Shared words on the pages. */
+export const ui = { more: "Read more", less: "Show less", photoPending: "Photograph to be supplied" } as const;

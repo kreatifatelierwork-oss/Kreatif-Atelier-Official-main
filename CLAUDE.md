@@ -163,6 +163,21 @@ Full-spectrum creative agency, Hyderabad. Four divisions. Six service pillars.
   `app/globals.css`. The profile's photographs and collages are not reproduced; the pages are typographic.
   Exception (2026-10-12): the `/asraya` cover carries the owner's jigsaw collage of black-and-white portraits
   (`public/reference/asraya-collage.webp`), multiplied onto the paper ground beside the wordmark.
+- Asraya redesign (2026-11-04, owner): the four Asraya pages are a "field report" on one warm paper ground — ink, one red
+  (#c2301f), no kraft/slate/oxblood/blue/navy grounds. Numbered chapters (`Chapter` in `components/asraya/kit.tsx`) with the
+  number and name in a sticky left margin; lists as ruled rows; Anton only for page and chapter titles, Cormorant for leads
+  and quotes, 18px body. /asraya/what-we-build has a sticky chapter bar (`ChapterIndex.tsx`). Only profile pictures whose
+  ground sinks into the paper stay (collage, statue, lamp and houses, lion, the two hands); the speaker, keyboard door,
+  camera, golden hand and teacher were dropped as looking pasted on. In their place, drawings made for the site
+  (`components/asraya/graphics.tsx`): NGOs scattered apart (Hyderabad, Warangal) on /asraya, the same network joined under
+  the closing CTA, and a search sketch. Dashed `<Photo>` slots mark where the owner's field photographs will go.
+- Asraya, second pass (2026-11-04, owner): "content heavy — tell the story". Each chapter now leads with a picture, a
+  headline and one line; the rest of the copy is folded under "Read more" (`More`), and service lists are titles that
+  open (`Rows`, native `<details>`, still real HTML text). Prices removed from all Asraya pages by the owner's instruction
+  (costs, ₹25,000 fee, "the build costs nothing", the eleventh-month give-back): Partnership opens on "Personalised, not
+  packaged." (owner-approved wording, `partnership.personalised`). The Google Ad Grants figure stays (Google's programme).
+  Photographs: 19 by id in `docs/asraya-photo-brief.md` and `photos` in `content/asraya.ts`; fill in `src` to use one.
+  Essential ones show a marked slot until supplied, optional ones are hidden; the six /tomorrow photos show only as a full set.
 - Heroes (2026-10-12): the home page and `/aurelius` both use the owner's galloping-horse picture
   (`public/reference/aurelius-horse.webp`) as a full-bleed hero with AURELIUS along its foot; it drifts forward on
   scroll. The crowned figure and the bust are no longer used; the text-behind-subject slide only runs for `cutout` figures.

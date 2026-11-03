@@ -1,188 +1,114 @@
 import type { Metadata } from "next";
 import { AsrayaShell } from "@/components/asraya/AsrayaShell";
-import { Art, Body, IsoSteps, Poster, Rich } from "@/components/asraya/kit";
+import { Art, Body, Chapter, More, PageHead, Photo, Rich, Rows, Tags } from "@/components/asraya/kit";
 import { asraya, partnership } from "@/content/asraya";
 
 export const metadata: Metadata = {
   title: `Partnership — ${asraya.name} | Kreatif Atelier`,
-  description: partnership.model.statement,
+  description: partnership.personalised.body,
   alternates: { canonical: "/asraya/partnership/" },
 };
 
-/** Asraya, part three: what it costs, what Asraya changes, what an NGO brings, and how progress is read. */
+const { personalised, changes, needs, model, measures } = partnership;
+
+/**
+ * Asraya, part three, told as a story: how we work together → what we need from you → what changes.
+ * No prices, by the owner's instruction: the services are personalised.
+ */
 export default function Page() {
-  const { costs, changes, needs, model, measures } = partnership;
+  const [presenceKey, ...presenceRest] = changes.presence;
 
   return (
     <AsrayaShell next={asraya.nav[3]}>
-      {/* What it normally costs */}
-      <Poster tone="navy" labelledBy="home-heading">
-        <p className="a-wide a-accent">{partnership.eyebrow}</p>
-        <h1 id="home-heading" className="a-serif a-accent mt-6 text-[clamp(3.4rem,10vw,8.5rem)] font-bold">
-          {costs.title.map((line) => (
-            <span key={line} className="block">
-              {line}
-            </span>
-          ))}
-        </h1>
-        <dl className="mt-14 grid gap-px overflow-hidden border a-rule bg-[color:var(--a-rule)] md:grid-cols-2">
-          {costs.rows.map((row) => (
-            <div key={row.label} className="bg-[color:var(--a-bg)] p-8 md:p-10">
-              <dt className="a-wide a-accent">{row.label}</dt>
-              <dd>
-                <span className="a-serif mt-4 block text-[clamp(3rem,7vw,6rem)] font-bold">{row.figure}</span>
-                <span className="a-body mt-4 block max-w-md">{row.body}</span>
-              </dd>
-            </div>
-          ))}
-        </dl>
-        <p className="a-serif mt-10 max-w-3xl text-[clamp(1.6rem,3vw,2.5rem)] leading-snug">{costs.close}</p>
-      </Poster>
+      <PageHead label={asraya.name} title={partnership.eyebrow} />
 
-      {/* What Asraya changes */}
-      <Poster tone="navy" labelledBy="changes-heading" className="!pt-0">
-        <div className="grid gap-12 border-t a-rule pt-16 lg:grid-cols-2 lg:gap-20">
-          <div>
-            <h2 id="changes-heading" data-reveal className="a-serif a-accent text-[clamp(3rem,8vw,7rem)] font-bold">
-              {changes.title.map((line) => (
-                <span key={line} className="block">
-                  {line}
-                </span>
-              ))}
-            </h2>
-            <p data-reveal className="a-display mt-6 text-[clamp(1.6rem,3vw,2.5rem)]">
-              {changes.lead}
-            </p>
-          </div>
-          <div data-reveal className="self-end">
-            <p className="a-serif text-[clamp(4rem,11vw,9rem)] leading-[0.85] font-bold">{changes.fee}</p>
-            <p className="a-body mt-5 max-w-xl">{changes.feeLine}</p>
-          </div>
-        </div>
+      {/* The profile's two hands, reaching for each other from the edges of the screen. */}
+      <div className="a-bleed a-band--pair mb-[clamp(3rem,7vh,5rem)]">
+        <Art name="handAsraya" blend="multiply" sizes="(min-width: 640px) 50vw, 100vw" className="a-band__from-left" />
+        <Art name="handYou" blend="multiply" sizes="(min-width: 640px) 50vw, 100vw" className="a-band__from-right" />
+      </div>
 
-        <ul className="mt-14 grid gap-x-14 gap-y-10 md:grid-cols-2">
-          {changes.points.map((point) => (
-            <li key={point.title} data-reveal className="border-t-2 border-[color:var(--a-accent)] pt-6">
-              <h3 className="a-display text-[clamp(1.6rem,2.8vw,2.4rem)]">{point.title}</h3>
-              <p className="a-body mt-4">{point.body}</p>
-            </li>
-          ))}
-        </ul>
-        <p data-reveal className="a-serif mt-14 max-w-4xl text-[clamp(1.6rem,3vw,2.5rem)] leading-snug">
-          {changes.market}
+      {/* 01 Personalised, not packaged */}
+      <Chapter id="personalised" n={1} name={personalised.title.join(" ")}>
+        <h2 id="personalised-heading" data-reveal className="a-display a-h2">
+          {personalised.title[0]} <span className="a-red">{personalised.title[1]}</span>
+        </h2>
+        <p data-reveal className="a-lead mt-6 max-w-3xl">
+          {personalised.body}
         </p>
-
-        <div className="mt-16 grid gap-10 border-t a-rule pt-12 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-20">
-          <Body paragraphs={changes.presence} />
-          <p data-reveal className="a-display a-accent self-end text-[clamp(1.9rem,3.6vw,3rem)] lg:text-right">
-            {changes.owe}
-          </p>
+        <div className="mt-10">
+          <Photo id="C1" className="aspect-[16/9]" />
         </div>
-      </Poster>
+        <p data-reveal className="a-body a-callout mt-10 max-w-2xl">
+          <Rich text={presenceKey} />
+        </p>
+        <More>
+          <Body paragraphs={presenceRest} />
+        </More>
+        <p data-reveal className="a-display a-red mt-12 max-w-3xl text-[clamp(1.9rem,3.6vw,3rem)]">
+          {changes.owe}
+        </p>
+      </Chapter>
 
-      {/* What we need from you */}
-      <Poster tone="paper" labelledBy="needs-heading" className="!pb-0">
-        <h2 id="needs-heading" data-reveal className="a-display a-accent max-w-xl text-[clamp(3rem,8vw,7rem)]">
+      {/* 02 What we need from you: seven asks to scan, each opening to its detail. */}
+      <Chapter id="needs" n={2} name={needs.title}>
+        <h2 id="needs-heading" data-reveal className="a-display a-h2">
           {needs.title}
         </h2>
-        <ol className="mt-14 grid gap-x-14 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
-          {needs.items.map((item, i) => (
-            <li key={item.title} data-reveal>
-              <span aria-hidden="true" className="a-display block text-[clamp(4.5rem,8vw,7rem)] leading-[0.8]">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <h3 className="a-serif mt-3 text-[clamp(1.7rem,2.6vw,2.2rem)] uppercase">{item.title}</h3>
-              <p className="a-body mt-4">
-                <Rich text={item.body} />
-              </p>
-              {"list" in item && (
-                <ul className="a-serif mt-4 flex flex-wrap gap-x-4 gap-y-1 text-[1.15rem] font-bold">
-                  {item.list.map((entry) => (
-                    <li key={entry}>{entry}</li>
-                  ))}
-                </ul>
-              )}
-              {"note" in item && <p className="a-display a-accent mt-4 text-[1.3rem] leading-[1.05]">{item.note}</p>}
-            </li>
-          ))}
-          <li data-reveal className="a-display a-accent self-center text-[clamp(3.4rem,7vw,6rem)]">
-            {needs.thatsIt}
-          </li>
-        </ol>
-        <p data-reveal className="mt-16 lg:text-right">
-          <span className="a-display block text-[clamp(2.6rem,7vw,6rem)]">{needs.close[0]}</span>
-          <span className="a-display block text-[clamp(1.5rem,3.4vw,2.8rem)]">{needs.close[1]}</span>
+        <Rows items={needs.items} numbered className="mt-10" />
+        <div className="mt-10">
+          <Photo id="C2" />
+        </div>
+        <p data-reveal className="a-display a-red mt-12 text-[clamp(2.6rem,5vw,4rem)]">
+          {needs.thatsIt}
         </p>
-        <IsoSteps heights={[2.4, 4.8, 2.2, 3.4, 1.8, 3.8, 5.6]} className="mt-6 block h-[clamp(11rem,34vw,26rem)] w-full" />
-      </Poster>
+        <p data-reveal className="a-quote mt-4 max-w-3xl">
+          {needs.close[0]} <span className="block">{needs.close[1]}</span>
+        </p>
+      </Chapter>
 
-      {/* The partnership model */}
-      <Poster tone="kraft" labelledBy="model-heading" className="!pb-[clamp(1.5rem,4vh,3rem)]">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
-          <h2 id="model-heading" data-reveal className="a-display a-accent text-[clamp(3rem,8vw,7rem)] lg:text-right">
-            {model.title.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
-          </h2>
-          <div className="a-accent flex flex-col gap-6">
-            {model.body.map((paragraph) => (
-              <p key={paragraph} data-reveal className="a-serif text-[clamp(1.4rem,2.3vw,1.9rem)] leading-snug font-semibold">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        </div>
-      </Poster>
-
-      {/* The two hands of the profile, reaching for each other from the edges of the screen. */}
-      <Poster tone="kraft" bleed>
-        <div className="a-band a-band--pair">
-          <Art name="handAsraya" className="a-band__from-left" />
-          <Art name="handYou" className="a-band__from-right" />
-        </div>
-      </Poster>
-
-      <Poster tone="kraft" className="!pt-[clamp(1.5rem,4vh,3rem)]">
-        <p data-reveal className="a-display a-accent border-t a-rule pt-10 text-center text-[clamp(1.9rem,4.4vw,3.6rem)]">
+      {/* 03 The partnership model */}
+      <Chapter id="model" n={3} name={model.title.join(" ")}>
+        <h2 id="model-heading" data-reveal className="a-display a-h2">
+          {model.title[0]} <span className="a-red">{model.title[1]}</span> {model.title[2]}
+        </h2>
+        <p data-reveal className="a-quote a-callout mt-8 max-w-3xl">
           {model.statement}
         </p>
-      </Poster>
+        <More>
+          <Body paragraphs={model.body} />
+        </More>
+      </Chapter>
 
-      {/* What changed because we were here */}
-      <Poster tone="blue" labelledBy="measures-heading">
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-20">
-          <h2 id="measures-heading" data-reveal className="a-display a-accent text-[clamp(2.8rem,7vw,6rem)]">
-            {measures.title}
-          </h2>
-          <div className="flex flex-col gap-4 self-end">
-            {measures.intro.map((paragraph) => (
-              <p key={paragraph} data-reveal className="a-body a-strong font-bold !text-[#151413]">
-                {paragraph}
-              </p>
-            ))}
-          </div>
+      {/* 04 What changed because we were here: six measures as cards. */}
+      <Chapter id="measures" n={4} name={measures.title}>
+        <h2 id="measures-heading" data-reveal className="a-display a-h2">
+          {measures.title}
+        </h2>
+        <p data-reveal className="a-lead mt-6 max-w-3xl">
+          {measures.intro[0]}
+        </p>
+        <More>
+          <Body paragraphs={measures.intro.slice(1)} />
+        </More>
+        <div className="mt-10">
+          <Photo id="C3" className="aspect-[4/5] max-w-md" />
         </div>
-        <ul className="mt-14 grid gap-x-14 gap-y-12 border-t a-rule pt-12 md:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-10 grid gap-px border border-[color:var(--a-rule)] bg-[color:var(--a-rule)] sm:grid-cols-2 lg:grid-cols-3">
           {measures.items.map((item) => (
-            <li key={item.title} data-reveal>
-              <h3 className="a-display flex items-end gap-3 text-[clamp(1.8rem,2.8vw,2.4rem)] text-[#151413]">
-                <span aria-hidden="true" className="text-[3.2rem] leading-[0.9] font-normal normal-case">
+            <li key={item.title} data-reveal className="bg-[color:var(--a-paper)] p-6 md:p-7">
+              <h3 className="a-title flex items-end gap-3">
+                <span aria-hidden="true" className="a-red text-[2.6rem] leading-[0.9] font-normal">
                   {item.piece}
                 </span>
                 {item.title}
               </h3>
-              <p className="a-serif mt-4 text-[1.45rem] leading-snug">{item.question}</p>
-              <ul className="a-serif mt-4 flex flex-wrap gap-x-4 gap-y-1 text-[1.1rem] font-bold">
-                {item.list.map((entry) => (
-                  <li key={entry}>{entry}</li>
-                ))}
-              </ul>
+              <p className="a-serif mt-4 text-[1.4rem] leading-snug">{item.question}</p>
+              <Tags items={item.list} className="mt-5" />
             </li>
           ))}
         </ul>
-      </Poster>
+      </Chapter>
     </AsrayaShell>
   );
 }

@@ -1357,203 +1357,40 @@ h2.display em {
 /* Pre-footer: the hero's sunset arc, rising out of the footer. */
 
 /* ── Asraya ───────────────────────────────────────────────── */
-/* The Asraya pages take their character from the Asraya company profile — poster pages on paper,
-   slate, oxblood and kraft grounds, heavy condensed headlines, bright red for emphasis — while staying
-   inside the site's system: the same serif, body face, small-caps labels, buttons, grid and motion.
-   Everything here is scoped to .asraya. */
+/* The Asraya pages read as a field report: one warm paper ground, ink type and one red, with the
+   profile's pictures set into the page like plates in a printed report. Chapters are numbered; on wide
+   screens their number and name sit in a left margin. Anton for page and chapter titles only,
+   Cormorant for leads and pull quotes, the site's body face for reading. Scoped to .asraya. */
 .asraya {
-  --a-paper: #ece5d8;
-  --a-kraft: #d9c39d;
-  --a-slate: #38383a;
-  --a-oxblood: #5c1321;
-  --a-red: #d2301f;
-  --a-ink: #151413;
-  --a-blue: #6d92b6;
-  --a-navy: #0c0f2c;
-  background: var(--a-paper);
+  --a-paper: #f2ede4;
+  --a-paper-deep: #e7dfd1;
+  --a-ink: #1a1816;
+  /* Body copy and quiet labels; both pass AA on the paper. */
+  --a-soft: rgb(26 24 22 / 0.84);
+  --a-faint: rgb(26 24 22 / 0.7);
+  --a-red: #c2301f;
+  --a-rule: rgb(26 24 22 / 0.16);
+  --a-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .25 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+  background: var(--a-grain), var(--a-paper);
+  color: var(--a-ink);
+  /* Plates break out of the centred column to the screen's edges. */
+  overflow-x: clip;
 }
 
-.a-poster {
-  --a-bg: var(--a-paper);
-  --a-fg: var(--a-ink);
-  --a-soft: rgb(21 20 19 / 0.74);
-  --a-accent: var(--a-red);
-  --a-rule: rgb(21 20 19 / 0.22);
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  padding: clamp(4.5rem, 11vh, 8rem) var(--gutter);
-  background: var(--a-bg);
-  color: var(--a-fg);
-}
-
-/* Paper grain, as on the printed pages. */
-.a-poster::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.5;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .25 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
-}
-
-.a-poster[data-tone="kraft"] {
-  --a-bg: var(--a-kraft);
-  --a-accent: var(--a-oxblood);
-}
-
-.a-poster[data-tone="slate"] {
-  --a-bg: var(--a-slate);
-  --a-fg: #f3eee4;
-  --a-soft: rgb(243 238 228 / 0.82);
-  --a-accent: #e9c98b;
-  --a-rule: rgb(243 238 228 / 0.24);
-}
-
-.a-poster[data-tone="oxblood"] {
-  --a-bg: var(--a-oxblood);
-  --a-fg: #f6ecdf;
-  --a-soft: rgb(246 236 223 / 0.84);
-  --a-accent: #f0c9a0;
-  --a-rule: rgb(246 236 223 / 0.26);
-}
-
-.a-poster[data-tone="red"] {
-  --a-bg: var(--a-red);
-  --a-fg: #14110f;
-  --a-soft: rgb(20 17 15 / 0.86);
-  --a-accent: #f6ecdf;
-  --a-rule: rgb(20 17 15 / 0.3);
-}
-
-.a-poster[data-tone="blue"] {
-  --a-bg: var(--a-blue);
-  --a-fg: #f7f3ea;
-  --a-soft: rgb(247 243 234 / 0.92);
-  --a-accent: #f3c8a0;
-  --a-rule: rgb(247 243 234 / 0.35);
-}
-
-.a-poster[data-tone="navy"] {
-  --a-bg: var(--a-navy);
-  --a-fg: #f3eee4;
-  --a-soft: rgb(243 238 228 / 0.8);
-  --a-accent: #e9a7d8;
-  --a-rule: rgb(243 238 228 / 0.22);
-}
-
-/* The cover: the jigsaw of portraits, multiplied onto the paper so its own white ground disappears
-   into the poster. It runs past the gutter on both sides, like a print laid across the page. */
-.a-cover__collage {
-  width: calc(100% + 1.6 * var(--gutter));
-  max-width: none;
-  height: auto;
-  margin-inline: calc(-0.8 * var(--gutter));
-  mix-blend-mode: multiply;
-  /* Lifts the picture's off-white paper to pure white, so no rectangle shows after the multiply. */
-  filter: brightness(1.09) contrast(1.12);
-}
-
-@media (min-width: 1024px) {
-  .a-cover__collage {
-    width: 111%;
-    margin-inline: -5% 0;
-  }
-}
-
-/* Pictures from the profile. Blended ones lose their own ground into the poster's colour. */
-.a-art {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* The picture's off-white ground is lifted to pure white first, so the multiply leaves no rectangle. */
-.a-art--multiply {
-  mix-blend-mode: multiply;
-  filter: brightness(1.1) contrast(1.14);
-}
-
-/* And a dark ground is pushed below the poster's colour, so the lighten drops it out. */
-.a-art--lighten {
-  mix-blend-mode: lighten;
-  filter: brightness(0.8) contrast(1.3);
-}
-
-/* Fades out completely before its edges, so no frame shows: for a picture whose ground is close to
-   the poster's, or that runs off its own frame. */
-.a-art--soft {
-  mask-image: radial-gradient(closest-side, #000 56%, transparent 100%);
-}
-
-/* Fades in from the top and the sides: a picture rising out of the foot of a poster. */
-.a-art--rise {
-  mask-image: linear-gradient(to bottom, transparent, #000 30%), linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
-  mask-composite: intersect;
-}
-
-/* Sinks away at its foot and its left: the statue's plinth runs off the picture there. */
-.a-art--plinth {
-  mask-image: linear-gradient(to top, transparent 3%, #000 26%), linear-gradient(to right, transparent, #000 12%);
-  mask-composite: intersect;
-}
-
-/* A band of pictures running edge to edge between posters. */
-.a-poster--bleed {
-  /* Overlaps its neighbours by a pixel, so no hairline of the page shows between them. */
-  margin-block: -1px;
-  padding: 0;
-}
-
-.a-band {
-  display: grid;
-}
-
-.a-band--pair {
-  grid-template-columns: 1fr;
-  padding-block: clamp(1rem, 3vw, 2.5rem);
-}
-
-@media (min-width: 640px) {
-  .a-band--pair {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-/* Each picture keeps its outer edge on the screen's edge and dissolves everywhere else. */
-.a-band__from-left {
-  mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent), linear-gradient(to right, #000 62%, transparent 98%);
-  mask-composite: intersect;
-}
-
-.a-band__from-right {
-  mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent), linear-gradient(to left, #000 62%, transparent 98%);
-  mask-composite: intersect;
-}
-
-.a-band__wide {
-  width: 100%;
-  height: clamp(11rem, 30vw, 30rem);
-  object-fit: cover;
-  mask-image: linear-gradient(to bottom, transparent, #000 26%);
-}
-
-.a-poster[data-tone="slate"]::before,
-.a-poster[data-tone="oxblood"]::before,
-.a-poster[data-tone="navy"]::before {
-  mix-blend-mode: soft-light;
-  opacity: 0.35;
+.a-bleed {
+  margin-inline: calc(50% - 50vw);
 }
 
 .a-wrap {
   margin-inline: auto;
   width: 100%;
   max-width: 1280px;
+  padding-inline: var(--gutter);
 }
 
-/* Heavy condensed poster headline. */
+/* ── Type ── */
+
+/* Heavy condensed headline. Also used outside Asraya (About, Valora), so it is not scoped. */
 .a-display {
   font-family: var(--font-anton), Impact, "Arial Narrow Bold", sans-serif;
   font-weight: 400;
@@ -1562,7 +1399,16 @@ h2.display em {
   letter-spacing: 0.005em;
 }
 
-/* The site's serif, set against the condensed face as the profile does. */
+.a-h1 {
+  font-size: clamp(3.2rem, 9.4vw, 8.2rem);
+}
+
+.a-h2 {
+  font-size: clamp(2.5rem, 5.6vw, 4.9rem);
+  text-wrap: balance;
+}
+
+/* The site's serif, set against the condensed face. */
 .a-serif {
   font-family: var(--font-price);
   font-weight: 500;
@@ -1571,56 +1417,478 @@ h2.display em {
   font-variant-numeric: lining-nums;
 }
 
-/* The site's small-caps label, a little heavier on these pages. */
+.a-lead {
+  font-family: var(--font-price);
+  font-weight: 500;
+  font-size: clamp(1.55rem, 2.5vw, 2.2rem);
+  line-height: 1.22;
+  text-wrap: pretty;
+}
+
+/* Pull quotes and the lines that carry feeling. */
+.a-quote {
+  font-family: var(--font-price);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.8rem, 3.4vw, 3rem);
+  line-height: 1.14;
+  text-wrap: balance;
+}
+
 .a-wide {
   font-family: var(--font-sans);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.24em;
-  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  font-size: 0.74rem;
   line-height: 1.5;
 }
 
 .a-body {
   font-family: var(--font-sans);
-  font-size: 1.05rem;
-  line-height: 1.7;
+  font-size: 1.0625rem;
+  line-height: 1.72;
   color: var(--a-soft);
+  text-wrap: pretty;
+}
+@media (min-width: 1024px) {
+  .a-body {
+    font-size: 1.125rem;
+  }
 }
 
 .a-body strong,
 .a-strong {
   font-weight: 800;
-  color: var(--a-fg);
+  color: var(--a-ink);
 }
 
-.a-accent {
-  color: var(--a-accent);
+/* A short title inside a chapter: the body face, heavy, not the poster face. */
+.a-title {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: clamp(1.15rem, 1.6vw, 1.35rem);
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+  color: var(--a-ink);
+}
+
+.a-red {
+  color: var(--a-red);
+}
+
+.a-faint {
+  color: var(--a-faint);
 }
 
 .a-rule {
   border-color: var(--a-rule);
 }
 
-/* The site's one button, cut for light and dark grounds. */
-.a-poster .btn {
-  --btn-ink: var(--a-bg);
-  --btn-face: var(--a-fg);
-  --btn-edge: rgb(255 255 255 / 0.18);
-  --btn-shadow: rgb(0 0 0 / 0.45);
+/* ── Page head ── */
+
+.a-head {
+  padding-block: clamp(3rem, 8vh, 6rem) clamp(2.5rem, 6vh, 4.5rem);
 }
 
-/* Film strip, from the film and photography pages. */
-.a-film {
-  height: 3.4rem;
-  background:
-    repeating-linear-gradient(90deg, transparent 0 0.9rem, var(--a-bg) 0.9rem 1.7rem) top / 100% 0.5rem no-repeat,
-    repeating-linear-gradient(90deg, transparent 0 0.9rem, var(--a-bg) 0.9rem 1.7rem) bottom / 100% 0.5rem no-repeat,
-    var(--a-fg);
-  border-block: 0.35rem solid var(--a-fg);
+/* ── Chapters ── */
+
+/* A numbered chapter: a rule across the top; on wide screens its number and name in a sticky margin. */
+.a-chapter {
+  display: grid;
+  gap: 1.5rem;
+  border-top: 1px solid var(--a-ink);
+  padding-block: clamp(2.25rem, 5vh, 3.5rem) clamp(4rem, 10vh, 7rem);
+}
+@media (min-width: 1024px) {
+  .a-chapter {
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 4rem;
+  }
+}
+
+.a-chapter__mark {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+}
+@media (min-width: 1024px) {
+  .a-chapter__mark {
+    position: sticky;
+    top: calc(var(--a-stick, var(--nav-h)) + 1.75rem);
+    flex-direction: column;
+    gap: 0.6rem;
+    align-self: start;
+  }
+}
+
+/* Narrow screens: the heading right below already names the chapter. */
+@media (max-width: 1023px) {
+  .a-chapter__mark .a-wide {
+    display: none;
+  }
+}
+
+.a-chapter__num {
+  font-family: var(--font-anton), Impact, sans-serif;
+  font-size: 2.6rem;
+  line-height: 0.9;
+  color: var(--a-red);
+  font-variant-numeric: tabular-nums;
+}
+
+/* A long page's chapters as a bar that sticks under the site header; the one being read is in red.
+   Narrow screens scroll it sideways. */
+.a-index {
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 5;
+  margin-inline: calc(-1 * var(--gutter));
+  padding-inline: var(--gutter);
+  background: var(--a-grain), var(--a-paper);
+  border-bottom: 1px solid var(--a-rule);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.a-index::-webkit-scrollbar {
+  display: none;
+}
+.a-index ol {
+  display: flex;
+  gap: 1.6rem;
+  width: max-content;
+}
+.a-index a {
+  display: flex;
+  gap: 0.45rem;
+  padding-block: 0.95rem 0.8rem;
+  border-bottom: 2px solid transparent;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: var(--a-faint);
+  transition: color 0.2s ease-out, border-color 0.2s ease-out;
+}
+.a-index a span:first-child {
+  font-variant-numeric: tabular-nums;
+}
+@media (hover: hover) {
+  .a-index a:hover {
+    color: var(--a-ink);
+  }
+}
+.a-index a[aria-current="true"] {
+  color: var(--a-red);
+  border-color: var(--a-red);
+}
+
+/* With the bar, chapter marks and anchors stop below it. */
+.a-has-index {
+  --a-stick: calc(var(--nav-h) + 3rem);
+}
+
+/* Index rows: a ruled list of titles; each opens to its text below. */
+.a-rows > li {
+  border-top: 1px solid var(--a-rule);
+}
+.a-rows > li:last-child {
+  border-bottom: 1px solid var(--a-rule);
+}
+.a-rows summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 1.2rem;
+  cursor: pointer;
+  list-style: none;
+}
+.a-rows summary::-webkit-details-marker {
+  display: none;
+}
+@media (hover: hover) {
+  .a-rows summary:hover .a-title {
+    color: var(--a-red);
+  }
+}
+.a-rows .a-title {
+  font-size: clamp(1.15rem, 1.7vw, 1.45rem);
+  transition: color 0.2s ease-out;
+}
+.a-rows__body {
+  max-width: 40rem;
+  padding-bottom: 1.6rem;
+}
+@media (min-width: 768px) {
+  .a-rows__body {
+    margin-left: 2.25rem;
+  }
+}
+
+/* "Read more": the rest of a chapter, folded away. */
+.a-more {
+  margin-top: 1.75rem;
+}
+.a-more > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 44px;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--a-red);
+}
+.a-more > summary::-webkit-details-marker {
+  display: none;
+}
+.a-more__open,
+.a-more[open] .a-more__closed {
+  display: none;
+}
+.a-more[open] .a-more__open {
+  display: inline;
+}
+.a-more__body {
+  padding-top: 0.75rem;
+}
+
+/* The plus that turns into a minus when a fold is open. */
+.a-more__icon {
+  position: relative;
+  flex: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  color: var(--a-red);
+}
+.a-more__icon::before,
+.a-more__icon::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 0.6rem;
+  height: 1.5px;
+  background: currentColor;
+  translate: -50% -50%;
+  transition: rotate 0.25s ease-out;
+}
+.a-more__icon::after {
+  rotate: 90deg;
+}
+details[open] > summary .a-more__icon::after {
+  rotate: 0deg;
+}
+
+/* Folded text is never left hidden by the reveal motion, which cannot see it while it is closed. */
+.a-more__body [data-reveal],
+.a-rows__body [data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* The owner's photographs, toned to one warm black and white so they read as a set. */
+.a-photo img {
+  filter: grayscale(1) sepia(0.18) contrast(1.06);
+}
+
+/* Short lists (areas, materials, occasions) as small tags. */
+.a-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+.a-tags > li {
+  border: 1px solid rgb(26 24 22 / 0.28);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--a-ink);
+}
+
+/* A statement set off by a red rule on its left. */
+.a-callout {
+  border-left: 3px solid var(--a-red);
+  padding-left: clamp(1rem, 2.4vw, 1.75rem);
+}
+
+/* ── Pictures ── */
+
+.a-art {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* The picture's off-white ground is lifted to white first, so the multiply leaves no rectangle and
+   the picture takes the paper's own colour and grain. */
+.a-art--multiply {
+  mix-blend-mode: multiply;
+  filter: brightness(1.1) contrast(1.12);
+}
+
+/* Fades out before its edges, so no frame shows: for a picture that runs off its own frame. */
+.a-art--soft {
+  mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
+}
+
+/* Sinks away at its foot and its left: the statue's plinth runs off the picture there. */
+.a-art--plinth {
+  mask-image: linear-gradient(to top, transparent 3%, #000 26%), linear-gradient(to right, transparent, #000 12%);
+  mask-composite: intersect;
+}
+
+/* The cover's jigsaw of portraits, multiplied onto the paper. */
+.a-cover__collage {
+  width: calc(100% + 1.6 * var(--gutter));
+  max-width: none;
+  height: auto;
+  margin-inline: calc(-0.8 * var(--gutter));
+  mix-blend-mode: multiply;
+  filter: brightness(1.09) contrast(1.12);
+}
+@media (min-width: 1024px) {
+  .a-cover__collage {
+    width: 108%;
+    margin-inline: -2% 0;
+  }
+}
+
+/* Two pictures, each holding the screen's edge and dissolving toward the other. */
+.a-band--pair {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .a-band--pair {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.a-band__from-left {
+  mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent), linear-gradient(to right, #000 62%, transparent 98%);
+  mask-composite: intersect;
+}
+.a-band__from-right {
+  mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent), linear-gradient(to left, #000 62%, transparent 98%);
+  mask-composite: intersect;
+}
+
+/* Where the owner's field photographs will go. */
+.asraya .placeholder {
+  min-height: 0;
+  border-radius: 0;
+  background: var(--a-paper-deep);
+  box-shadow: none;
+  border: 1px dashed rgb(26 24 22 / 0.35);
+  color: var(--a-faint);
+}
+
+/* ── Drawings (components/asraya/graphics.tsx) ── */
+
+.a-network__node {
+  fill: var(--a-ink);
+}
+.a-network__node--red {
+  fill: var(--a-red);
+}
+.a-network__halo {
+  fill: none;
+  stroke: rgb(26 24 22 / 0.4);
+  stroke-width: 1.25;
+  stroke-dasharray: 3 5;
+}
+.a-network__link {
+  stroke: var(--a-red);
+  stroke-width: 1.5;
+  opacity: 0.75;
+}
+.a-network__label {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  fill: var(--a-faint);
+}
+/* The drawing scales down to about a third on phones; the labels scale back up to stay readable. */
+@media (max-width: 767px) {
+  .a-network__label {
+    font-size: 40px;
+    letter-spacing: 0.1em;
+  }
+}
+
+.a-search {
+  max-width: 34rem;
+}
+.a-search__bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border: 1px solid var(--a-ink);
+  border-radius: 999px;
+  padding: 0.65rem 1.25rem;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--a-faint);
+}
+.a-search__results {
+  margin-top: 1.25rem;
+  display: grid;
+  gap: 1.1rem;
+  padding-inline: 1.25rem;
+}
+.a-search__results li {
+  display: grid;
+  gap: 0.4rem;
+}
+.a-search__results span {
+  display: block;
+  max-width: 100%;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: rgb(26 24 22 / 0.12);
+}
+.a-search__results span:first-child {
+  height: 0.7rem;
+  background: rgb(26 24 22 / 0.22);
+}
+.a-search__results li[data-found] span:first-child {
+  background: var(--a-red);
+}
+
+/* ── Asraya's own navigation and the "next" link ── */
+
+.a-subnav a {
+  border-bottom: 2px solid transparent;
+  padding-bottom: 0.3rem;
+  transition: color 0.2s ease-out, border-color 0.2s ease-out;
+}
+.a-subnav a[aria-current="page"] {
+  border-color: var(--a-red);
+  color: var(--a-ink);
+}
+
+/* The site's one button, ink on the paper. */
+.asraya .btn {
+  --btn-ink: var(--a-paper);
+  --btn-ink-hover: #ffffff;
+  --btn-face: var(--a-ink);
+  --btn-shadows: 0 12px 24px -12px rgb(26 24 22 / 0.55);
+  --btn-pressed: inset 0 2px 6px rgb(0 0 0 / 0.45);
 }
 
 .asraya :focus-visible {
-  outline-color: currentColor;
+  outline-color: var(--a-red);
 }
 
