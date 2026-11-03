@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { AsrayaShell } from "@/components/asraya/AsrayaShell";
-import { Art, Body, Chapter, More, PageHead, Photo, Rich, Rows, Tags } from "@/components/asraya/kit";
-import { asraya, partnership } from "@/content/asraya";
+import { Together } from "@/components/asraya/illustrations";
+import { Body, Chapter, More, PageHead, Photo, Rich, Rows, Tags } from "@/components/asraya/kit";
+import { asraya, home, partnership } from "@/content/asraya";
 
 export const metadata: Metadata = {
   title: `Partnership — ${asraya.name} | Kreatif Atelier`,
@@ -20,18 +21,12 @@ export default function Page() {
 
   return (
     <AsrayaShell next={asraya.nav[3]}>
-      <PageHead label={asraya.name} title={partnership.eyebrow} />
-
-      {/* The profile's two hands, reaching for each other from the edges of the screen. */}
-      <div className="a-bleed a-band--pair mb-[clamp(3rem,7vh,5rem)]">
-        <Art name="handAsraya" blend="multiply" sizes="(min-width: 640px) 50vw, 100vw" className="a-band__from-left" />
-        <Art name="handYou" blend="multiply" sizes="(min-width: 640px) 50vw, 100vw" className="a-band__from-right" />
-      </div>
+      <PageHead label={asraya.name} title={[partnership.eyebrow]} lead={home.free.title.join(" ")} art={<Together />} />
 
       {/* 01 Personalised, not packaged */}
       <Chapter id="personalised" n={1} name={personalised.title.join(" ")}>
         <h2 id="personalised-heading" data-reveal className="a-display a-h2">
-          {personalised.title[0]} <span className="a-red">{personalised.title[1]}</span>
+          {personalised.title[0]} <span className="a-em">{personalised.title[1]}</span>
         </h2>
         <p data-reveal className="a-lead mt-6 max-w-3xl">
           {personalised.body}

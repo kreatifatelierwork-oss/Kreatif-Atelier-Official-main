@@ -1,6 +1,6 @@
 /**
- * Drawings made for the Asraya pages, in the page's own ink and red, so they read as part of the
- * paper rather than pictures laid on it. All decorative.
+ * Diagram drawings for the Asraya pages, in the page's own colours. All decorative. The network's links carry
+ * `data-a-link`, so AsrayaMotion can draw them in as the page scrolls.
  */
 
 const W = 1200;
@@ -62,12 +62,12 @@ export function Network({ state, places, className = "" }: NetworkProps) {
     <svg viewBox={`0 0 ${W} ${H}`} aria-hidden="true" focusable="false" className={`a-network block h-auto w-full ${className}`} data-state={state}>
       {joined &&
         LINKS.map(([a, b]) => (
-          <line key={`${a}-${b}`} x1={NODES[a][0]} y1={NODES[a][1]} x2={NODES[b][0]} y2={NODES[b][1]} className="a-network__link" />
+          <line key={`${a}-${b}`} x1={NODES[a][0]} y1={NODES[a][1]} x2={NODES[b][0]} y2={NODES[b][1]} className="a-network__link" pathLength={1} data-a-link />
         ))}
       {NODES.map(([x, y], i) => (
         <g key={i}>
           {!joined && <circle cx={x} cy={y} r={26} className="a-network__halo" />}
-          <circle cx={x} cy={y} r={joined && i % 4 === 0 ? 10 : 7} className={joined && i % 4 === 0 ? "a-network__node a-network__node--red" : "a-network__node"} />
+          <circle cx={x} cy={y} r={joined && i % 4 === 0 ? 10 : 7} className={joined && i % 4 === 0 ? "a-network__node a-network__node--accent" : "a-network__node"} />
         </g>
       ))}
       {!joined &&

@@ -1357,24 +1357,56 @@ h2.display em {
 /* Pre-footer: the hero's sunset arc, rising out of the footer. */
 
 /* ── Asraya ───────────────────────────────────────────────── */
-/* The Asraya pages read as a field report: one warm paper ground, ink type and one red, with the
-   profile's pictures set into the page like plates in a printed report. Chapters are numbered; on wide
-   screens their number and name sit in a left margin. Anton for page and chapter titles only,
-   Cormorant for leads and pull quotes, the site's body face for reading. Scoped to .asraya. */
+/* Asraya's design language: warm ivory pages broken by deep-teal bands, marigold and clay for emphasis, Fraunces (its
+   signature face) for the wordmark and headlines, the site's body face for reading, and drawings made for the site in
+   the same four colours (components/asraya/illustrations.tsx). Inside the site's header, footer, button and reveals.
+   Scoped to .asraya. */
 .asraya {
-  --a-paper: #f2ede4;
-  --a-paper-deep: #e7dfd1;
-  --a-ink: #1a1816;
-  /* Body copy and quiet labels; both pass AA on the paper. */
-  --a-soft: rgb(26 24 22 / 0.84);
-  --a-faint: rgb(26 24 22 / 0.7);
-  --a-red: #c2301f;
-  --a-rule: rgb(26 24 22 / 0.16);
-  --a-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .25 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
-  background: var(--a-grain), var(--a-paper);
-  color: var(--a-ink);
-  /* Plates break out of the centred column to the screen's edges. */
+  --a-ivory: #f7f2ea;
+  --a-sand: #efe5d4;
+  --a-ink: #1c2526;
+  --a-teal: #0e3b3a;
+  --a-teal-2: #155250;
+  --a-marigold: #e9a23b;
+  /* Clay is the accent for text on ivory (AA); marigold is the accent on teal and for drawn fills. */
+  --a-clay: #a8401f;
+  /* Role tokens, flipped inside a deep band. */
+  --a-bg: var(--a-ivory);
+  --a-fg: var(--a-ink);
+  --a-soft: rgb(28 37 38 / 0.84);
+  --a-faint: rgb(28 37 38 / 0.7);
+  --a-accent: var(--a-clay);
+  --a-rule: rgb(28 37 38 / 0.16);
+  --a-red: var(--a-accent);
+  background: var(--a-ivory);
+  color: var(--a-fg);
+  /* Bands break out of the centred column to the screen's edges. */
   overflow-x: clip;
+}
+
+/* On Asraya pages the site's fixed backdrop takes the ivory, so the page runs straight into the footer's sunset. */
+body:has(.asraya),
+body:has(.asraya) .backdrop {
+  background: #f7f2ea;
+}
+
+.a-band--deep {
+  --a-bg: var(--a-teal);
+  --a-fg: var(--a-ivory);
+  --a-soft: rgb(247 242 234 / 0.86);
+  --a-faint: rgb(247 242 234 / 0.74);
+  --a-accent: var(--a-marigold);
+  --a-rule: rgb(247 242 234 / 0.18);
+  --a-red: var(--a-accent);
+  background:
+    radial-gradient(120% 90% at 85% 0%, var(--a-teal-2), transparent 60%),
+    var(--a-teal);
+  color: var(--a-fg);
+}
+
+.a-band {
+  position: relative;
+  padding-block: clamp(4.5rem, 12vh, 8.5rem);
 }
 
 .a-bleed {
@@ -1390,7 +1422,7 @@ h2.display em {
 
 /* ── Type ── */
 
-/* Heavy condensed headline. Also used outside Asraya (About, Valora), so it is not scoped. */
+/* Heavy condensed headline used outside Asraya (About, Valora); on Asraya pages it becomes Fraunces. */
 .a-display {
   font-family: var(--font-anton), Impact, "Arial Narrow Bold", sans-serif;
   font-weight: 400;
@@ -1398,40 +1430,63 @@ h2.display em {
   line-height: 0.94;
   letter-spacing: 0.005em;
 }
+.asraya .a-display {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-weight: 800;
+  text-transform: none;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  font-variation-settings: "opsz" 144;
+}
+
+/* The wordmark: Fraunces at its heaviest. */
+.a-wordmark {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-weight: 900;
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+  color: var(--a-teal);
+}
 
 .a-h1 {
-  font-size: clamp(3.2rem, 9.4vw, 8.2rem);
+  font-size: clamp(3rem, 8vw, 7rem);
 }
 
 .a-h2 {
-  font-size: clamp(2.5rem, 5.6vw, 4.9rem);
+  font-size: clamp(2.3rem, 5vw, 4.4rem);
   text-wrap: balance;
 }
 
-/* The site's serif, set against the condensed face. */
+/* The emphasised half of a headline: italic, in the accent. */
+.a-em {
+  font-style: italic;
+  font-weight: 600;
+  color: var(--a-accent);
+}
+
 .a-serif {
-  font-family: var(--font-price);
+  font-family: var(--font-fraunces), Georgia, serif;
   font-weight: 500;
-  line-height: 0.98;
-  letter-spacing: -0.01em;
-  font-variant-numeric: lining-nums;
+  line-height: 1;
+  letter-spacing: -0.015em;
 }
 
 .a-lead {
-  font-family: var(--font-price);
-  font-weight: 500;
-  font-size: clamp(1.55rem, 2.5vw, 2.2rem);
-  line-height: 1.22;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(1.4rem, 2.2vw, 1.95rem);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
   text-wrap: pretty;
 }
 
-/* Pull quotes and the lines that carry feeling. */
 .a-quote {
-  font-family: var(--font-price);
+  font-family: var(--font-fraunces), Georgia, serif;
   font-style: italic;
-  font-weight: 500;
-  font-size: clamp(1.8rem, 3.4vw, 3rem);
-  line-height: 1.14;
+  font-weight: 400;
+  font-size: clamp(1.7rem, 3.1vw, 2.7rem);
+  line-height: 1.18;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
@@ -1439,7 +1494,7 @@ h2.display em {
   font-family: var(--font-sans);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.2em;
   font-size: 0.74rem;
   line-height: 1.5;
 }
@@ -1456,49 +1511,124 @@ h2.display em {
     font-size: 1.125rem;
   }
 }
-
 .a-body strong,
 .a-strong {
   font-weight: 800;
-  color: var(--a-ink);
+  color: var(--a-fg);
 }
 
-/* A short title inside a chapter: the body face, heavy, not the poster face. */
 .a-title {
   font-family: var(--font-sans);
   font-weight: 800;
-  font-size: clamp(1.15rem, 1.6vw, 1.35rem);
+  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
   line-height: 1.25;
-  letter-spacing: -0.005em;
-  color: var(--a-ink);
+  color: var(--a-fg);
 }
 
 .a-red {
-  color: var(--a-red);
+  color: var(--a-accent);
 }
-
 .a-faint {
   color: var(--a-faint);
 }
-
 .a-rule {
   border-color: var(--a-rule);
 }
 
-/* ── Page head ── */
-
-.a-head {
-  padding-block: clamp(3rem, 8vh, 6rem) clamp(2.5rem, 6vh, 4.5rem);
+/* Word-by-word scroll highlight (see AsrayaMotion): words start faint and fill in as the line passes. */
+.a-words .a-word {
+  display: inline-block;
 }
 
-/* ── Chapters ── */
+/* ── Page head: every inner page opens on a deep band with its drawing. ── */
 
-/* A numbered chapter: a rule across the top; on wide screens its number and name in a sticky margin. */
+.a-head {
+  display: grid;
+  gap: 2.5rem;
+  align-items: center;
+  padding-block: clamp(3.5rem, 9vh, 6.5rem);
+}
+@media (min-width: 900px) {
+  .a-head {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 4rem;
+  }
+}
+/* Anything after the title (the today/tomorrow contrast) spans the whole head. */
+.a-head__more {
+  grid-column: 1 / -1;
+}
+.a-head__art {
+  width: 100%;
+  max-width: 30rem;
+  justify-self: center;
+}
+
+/* ── Cards ── */
+
+.a-card {
+  border-radius: 1.5rem;
+  background: var(--a-sand);
+  padding: clamp(1.5rem, 2.6vw, 2.25rem);
+}
+.a-band--deep .a-card {
+  background: rgb(247 242 234 / 0.06);
+  border: 1px solid var(--a-rule);
+}
+/* A card that is itself a deep band: teal, with the band's flipped text colours. */
+.a-card.a-band--deep {
+  background:
+    radial-gradient(120% 90% at 85% 0%, var(--a-teal-2), transparent 60%),
+    var(--a-teal);
+}
+a.a-card {
+  display: block;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s ease-out;
+}
+@media (hover: hover) {
+  a.a-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 40px -26px rgb(14 59 58 / 0.55);
+  }
+}
+
+/* Line icons and drawings take the text colour; `.fill-accent` parts take marigold. */
+.a-icon {
+  width: 3.25rem;
+  height: 3.25rem;
+  color: var(--a-teal);
+}
+.a-band--deep .a-icon {
+  color: var(--a-ivory);
+}
+.a-art-fill {
+  fill: var(--a-marigold);
+}
+.a-art-fill--clay {
+  fill: var(--a-clay);
+}
+.a-art-fill--teal {
+  fill: var(--a-teal);
+}
+.a-art-fill--ivory {
+  fill: var(--a-ivory);
+}
+.a-art-fill--sand {
+  fill: var(--a-sand);
+}
+.a-art-stroke {
+  stroke: var(--a-marigold);
+}
+
+/* ── Chapters (inner pages) ── */
+
 .a-chapter {
   display: grid;
   gap: 1.5rem;
-  border-top: 1px solid var(--a-ink);
-  padding-block: clamp(2.25rem, 5vh, 3.5rem) clamp(4rem, 10vh, 7rem);
+  border-top: 1px solid var(--a-rule);
+  padding-block: clamp(2.5rem, 6vh, 4rem) clamp(4rem, 10vh, 7rem);
 }
 @media (min-width: 1024px) {
   .a-chapter {
@@ -1521,8 +1651,6 @@ h2.display em {
     align-self: start;
   }
 }
-
-/* Narrow screens: the heading right below already names the chapter. */
 @media (max-width: 1023px) {
   .a-chapter__mark .a-wide {
     display: none;
@@ -1530,22 +1658,23 @@ h2.display em {
 }
 
 .a-chapter__num {
-  font-family: var(--font-anton), Impact, sans-serif;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
   font-size: 2.6rem;
   line-height: 0.9;
-  color: var(--a-red);
-  font-variant-numeric: tabular-nums;
+  color: var(--a-accent);
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
-/* A long page's chapters as a bar that sticks under the site header; the one being read is in red.
-   Narrow screens scroll it sideways. */
+/* A long page's chapters as a bar that sticks under the site header; the one being read is marked. */
 .a-index {
   position: sticky;
   top: var(--nav-h);
   z-index: 5;
   margin-inline: calc(-1 * var(--gutter));
   padding-inline: var(--gutter);
-  background: var(--a-grain), var(--a-paper);
+  background: var(--a-ivory);
   border-bottom: 1px solid var(--a-rule);
   overflow-x: auto;
   scrollbar-width: none;
@@ -1569,22 +1698,22 @@ h2.display em {
   line-height: 1.2;
   white-space: nowrap;
   color: var(--a-faint);
-  transition: color 0.2s ease-out, border-color 0.2s ease-out;
+  transition:
+    color 0.2s ease-out,
+    border-color 0.2s ease-out;
 }
 .a-index a span:first-child {
   font-variant-numeric: tabular-nums;
 }
 @media (hover: hover) {
   .a-index a:hover {
-    color: var(--a-ink);
+    color: var(--a-fg);
   }
 }
 .a-index a[aria-current="true"] {
-  color: var(--a-red);
-  border-color: var(--a-red);
+  color: var(--a-clay);
+  border-color: var(--a-marigold);
 }
-
-/* With the bar, chapter marks and anchors stop below it. */
 .a-has-index {
   --a-stick: calc(var(--nav-h) + 3rem);
 }
@@ -1608,14 +1737,14 @@ h2.display em {
 .a-rows summary::-webkit-details-marker {
   display: none;
 }
-@media (hover: hover) {
-  .a-rows summary:hover .a-title {
-    color: var(--a-red);
-  }
-}
 .a-rows .a-title {
   font-size: clamp(1.15rem, 1.7vw, 1.45rem);
   transition: color 0.2s ease-out;
+}
+@media (hover: hover) {
+  .a-rows summary:hover .a-title {
+    color: var(--a-accent);
+  }
 }
 .a-rows__body {
   max-width: 40rem;
@@ -1643,7 +1772,7 @@ h2.display em {
   font-weight: 800;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--a-red);
+  color: var(--a-accent);
 }
 .a-more > summary::-webkit-details-marker {
   display: none;
@@ -1663,11 +1792,16 @@ h2.display em {
 .a-more__icon {
   position: relative;
   flex: none;
-  width: 1.6rem;
-  height: 1.6rem;
-  border: 1px solid currentColor;
+  width: 1.7rem;
+  height: 1.7rem;
   border-radius: 999px;
-  color: var(--a-red);
+  background: var(--a-sand);
+  color: var(--a-clay);
+  transition: background-color 0.2s ease-out;
+}
+.a-band--deep .a-more__icon {
+  background: rgb(247 242 234 / 0.1);
+  color: var(--a-marigold);
 }
 .a-more__icon::before,
 .a-more__icon::after {
@@ -1694,123 +1828,79 @@ details[open] > summary .a-more__icon::after {
   transform: none !important;
 }
 
-/* The owner's photographs, toned to one warm black and white so they read as a set. */
-.a-photo img {
-  filter: grayscale(1) sepia(0.18) contrast(1.06);
-}
-
-/* Short lists (areas, materials, occasions) as small tags. */
+/* Short lists as small tags. */
 .a-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
 }
 .a-tags > li {
-  border: 1px solid rgb(26 24 22 / 0.28);
   border-radius: 999px;
-  padding: 0.3rem 0.8rem;
+  background: var(--a-sand);
+  padding: 0.35rem 0.85rem;
   font-family: var(--font-sans);
   font-size: 0.86rem;
   font-weight: 600;
   line-height: 1.3;
-  color: var(--a-ink);
+  color: var(--a-fg);
+}
+.a-band--deep .a-tags > li {
+  background: rgb(247 242 234 / 0.1);
 }
 
-/* A statement set off by a red rule on its left. */
+/* A statement set off by an accent rule on its left. */
 .a-callout {
-  border-left: 3px solid var(--a-red);
+  border-left: 3px solid var(--a-marigold);
   padding-left: clamp(1rem, 2.4vw, 1.75rem);
 }
 
 /* ── Pictures ── */
 
-.a-art {
-  display: block;
+/* The cover's jigsaw of portraits, multiplied onto the ivory. */
+.a-cover__collage {
   width: 100%;
   height: auto;
-}
-
-/* The picture's off-white ground is lifted to white first, so the multiply leaves no rectangle and
-   the picture takes the paper's own colour and grain. */
-.a-art--multiply {
-  mix-blend-mode: multiply;
-  filter: brightness(1.1) contrast(1.12);
-}
-
-/* Fades out before its edges, so no frame shows: for a picture that runs off its own frame. */
-.a-art--soft {
-  mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
-}
-
-/* Sinks away at its foot and its left: the statue's plinth runs off the picture there. */
-.a-art--plinth {
-  mask-image: linear-gradient(to top, transparent 3%, #000 26%), linear-gradient(to right, transparent, #000 12%);
-  mask-composite: intersect;
-}
-
-/* The cover's jigsaw of portraits, multiplied onto the paper. */
-.a-cover__collage {
-  width: calc(100% + 1.6 * var(--gutter));
-  max-width: none;
-  height: auto;
-  margin-inline: calc(-0.8 * var(--gutter));
   mix-blend-mode: multiply;
   filter: brightness(1.09) contrast(1.12);
 }
-@media (min-width: 1024px) {
-  .a-cover__collage {
-    width: 108%;
-    margin-inline: -2% 0;
-  }
-}
 
-/* Two pictures, each holding the screen's edge and dissolving toward the other. */
-.a-band--pair {
-  display: grid;
-  grid-template-columns: 1fr;
+/* The owner's photographs, toned to one warm black and white so they read as a set. */
+.a-photo {
+  border-radius: 1.25rem;
+  overflow: hidden;
 }
-@media (min-width: 640px) {
-  .a-band--pair {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-.a-band__from-left {
-  mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent), linear-gradient(to right, #000 62%, transparent 98%);
-  mask-composite: intersect;
-}
-.a-band__from-right {
-  mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent), linear-gradient(to left, #000 62%, transparent 98%);
-  mask-composite: intersect;
+.a-photo img {
+  filter: grayscale(1) sepia(0.2) contrast(1.06);
 }
 
 /* Where the owner's field photographs will go. */
 .asraya .placeholder {
   min-height: 0;
-  border-radius: 0;
-  background: var(--a-paper-deep);
+  border-radius: 1.25rem;
+  background: var(--a-sand);
   box-shadow: none;
-  border: 1px dashed rgb(26 24 22 / 0.35);
+  border: 1px dashed rgb(28 37 38 / 0.3);
   color: var(--a-faint);
 }
 
-/* ── Drawings (components/asraya/graphics.tsx) ── */
+/* ── Drawings (components/asraya/graphics.tsx, illustrations.tsx) ── */
 
 .a-network__node {
-  fill: var(--a-ink);
+  fill: var(--a-fg);
 }
-.a-network__node--red {
-  fill: var(--a-red);
+.a-network__node--accent {
+  fill: var(--a-marigold);
 }
 .a-network__halo {
   fill: none;
-  stroke: rgb(26 24 22 / 0.4);
+  stroke: var(--a-rule);
   stroke-width: 1.25;
   stroke-dasharray: 3 5;
 }
 .a-network__link {
-  stroke: var(--a-red);
-  stroke-width: 1.5;
-  opacity: 0.75;
+  stroke: var(--a-marigold);
+  stroke-width: 1.75;
+  fill: none;
 }
 .a-network__label {
   font-family: var(--font-sans);
@@ -1820,7 +1910,6 @@ details[open] > summary .a-more__icon::after {
   text-transform: uppercase;
   fill: var(--a-faint);
 }
-/* The drawing scales down to about a third on phones; the labels scale back up to stay readable. */
 @media (max-width: 767px) {
   .a-network__label {
     font-size: 40px;
@@ -1835,9 +1924,10 @@ details[open] > summary .a-more__icon::after {
   display: flex;
   justify-content: space-between;
   gap: 1.5rem;
-  border: 1px solid var(--a-ink);
   border-radius: 999px;
-  padding: 0.65rem 1.25rem;
+  background: var(--a-ivory);
+  box-shadow: 0 10px 30px -18px rgb(14 59 58 / 0.6);
+  padding: 0.75rem 1.35rem;
   font-family: var(--font-sans);
   font-size: 0.95rem;
   color: var(--a-faint);
@@ -1846,7 +1936,7 @@ details[open] > summary .a-more__icon::after {
   margin-top: 1.25rem;
   display: grid;
   gap: 1.1rem;
-  padding-inline: 1.25rem;
+  padding-inline: 1.35rem;
 }
 .a-search__results li {
   display: grid;
@@ -1857,38 +1947,69 @@ details[open] > summary .a-more__icon::after {
   max-width: 100%;
   height: 0.45rem;
   border-radius: 999px;
-  background: rgb(26 24 22 / 0.12);
+  background: rgb(28 37 38 / 0.12);
 }
 .a-search__results span:first-child {
   height: 0.7rem;
-  background: rgb(26 24 22 / 0.22);
+  background: rgb(28 37 38 / 0.22);
 }
 .a-search__results li[data-found] span:first-child {
-  background: var(--a-red);
+  background: var(--a-marigold);
 }
 
-/* ── Asraya's own navigation and the "next" link ── */
+/* Sound waves on the "amplify" drawing: a slow pulse outward. Still for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .a-wave {
+    transform-box: fill-box;
+    transform-origin: left center;
+    animation: a-wave 3.2s cubic-bezier(0.2, 0.7, 0.3, 1) infinite;
+  }
+  .a-wave:nth-of-type(2) {
+    animation-delay: 0.4s;
+  }
+  .a-wave:nth-of-type(3) {
+    animation-delay: 0.8s;
+  }
+}
+@keyframes a-wave {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+/* ── Asraya's own navigation ── */
 
 .a-subnav a {
   border-bottom: 2px solid transparent;
   padding-bottom: 0.3rem;
-  transition: color 0.2s ease-out, border-color 0.2s ease-out;
+  transition:
+    color 0.2s ease-out,
+    border-color 0.2s ease-out;
 }
 .a-subnav a[aria-current="page"] {
-  border-color: var(--a-red);
-  color: var(--a-ink);
+  border-color: var(--a-marigold);
+  color: var(--a-fg);
 }
 
-/* The site's one button, ink on the paper. */
+/* The site's one button: deep teal on ivory, marigold on teal. */
 .asraya .btn {
-  --btn-ink: var(--a-paper);
+  --btn-ink: var(--a-ivory);
   --btn-ink-hover: #ffffff;
-  --btn-face: var(--a-ink);
-  --btn-shadows: 0 12px 24px -12px rgb(26 24 22 / 0.55);
-  --btn-pressed: inset 0 2px 6px rgb(0 0 0 / 0.45);
+  --btn-face: var(--a-teal);
+  --btn-shadows: 0 14px 28px -14px rgb(14 59 58 / 0.6);
+  --btn-pressed: inset 0 2px 6px rgb(0 0 0 / 0.35);
+}
+.asraya .a-band--deep .btn {
+  --btn-ink: var(--a-ink);
+  --btn-ink-hover: var(--a-ink);
+  --btn-face: var(--a-marigold);
+  --btn-shadows: 0 14px 28px -14px rgb(0 0 0 / 0.55);
 }
 
 .asraya :focus-visible {
-  outline-color: var(--a-red);
+  outline-color: var(--a-marigold);
 }
-

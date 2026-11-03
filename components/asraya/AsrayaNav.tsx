@@ -13,8 +13,8 @@ export function AsrayaNav() {
   return (
     <div className="pt-[var(--nav-h)]">
       <nav aria-label={asraya.navLabel} className="a-wrap a-subnav">
-        <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-3 border-b border-[color:var(--a-ink)] py-4">
-          <Link href="/asraya" className="a-serif text-[2rem] leading-none">
+        <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-3 border-b border-[color:var(--a-rule)] py-4">
+          <Link href="/asraya" className="a-wordmark text-[2rem]">
             {asraya.wordmark}
           </Link>
           <ul className="flex flex-wrap gap-x-7 gap-y-2">

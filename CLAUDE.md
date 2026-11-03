@@ -178,6 +178,15 @@ Full-spectrum creative agency, Hyderabad. Four divisions. Six service pillars.
   packaged." (owner-approved wording, `partnership.personalised`). The Google Ad Grants figure stays (Google's programme).
   Photographs: 19 by id in `docs/asraya-photo-brief.md` and `photos` in `content/asraya.ts`; fill in `src` to use one.
   Essential ones show a marked slot until supplied, optional ones are hidden; the six /tomorrow photos show only as a full set.
+- Asraya, third pass (2026-11-04, owner) — supersedes the paper/ink/red and picture notes above: new palette (ivory
+  #f7f2ea, deep teal #0e3b3a bands, marigold #e9a23b, clay #a8401f for text accents) and a signature face, Fraunces
+  (self-hosted in `app/fonts/`, OFL), for the wordmark and headlines. The statue and all other profile crops are gone;
+  only the owner's collage remains. Drawings made for the site in the same colours: `components/asraya/illustrations.tsx`
+  (service icons, Gift, Spotlight, Amplify, Together, Sunrise, Toolkit). Scroll motion in `AsrayaMotion.tsx` (network
+  links draw in, drawings assemble, statements fill word by word; off for reduced motion). /asraya has no numbered
+  chapters: it is the offer — "Premium marketing. Free for NGOs. We don't earn anything from you" (owner's direction;
+  copy in `home` in `content/asraya.ts`, written for the site, for the owner's read). Inner pages open on a teal head
+  with their drawing. Files in `public/images/profile/asraya/` are no longer referenced.
 - Heroes (2026-10-12): the home page and `/aurelius` both use the owner's galloping-horse picture
   (`public/reference/aurelius-horse.webp`) as a full-bleed hero with AURELIUS along its foot; it drifts forward on
   scroll. The crowned figure and the bust are no longer used; the text-behind-subject slide only runs for `cutout` figures.

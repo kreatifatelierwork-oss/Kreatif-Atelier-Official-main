@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AsrayaShell } from "@/components/asraya/AsrayaShell";
+import { Sunrise } from "@/components/asraya/illustrations";
 import { Chapter, PageHead, Photo, Rows, Tags, allSupplied } from "@/components/asraya/kit";
 import { asraya, tomorrow, type PhotoId } from "@/content/asraya";
 
@@ -18,16 +19,16 @@ export default function Page() {
 
   return (
     <AsrayaShell>
-      <PageHead label={asraya.name} title={tomorrow.eyebrow}>
+      <PageHead label={asraya.name} title={[tomorrow.eyebrow]} art={<Sunrise />}>
         {/* Today against tomorrow, either side of a rule. */}
-        <div className="mt-12 grid gap-10 border-t border-[color:var(--a-ink)] pt-10 md:grid-cols-2 md:gap-0">
+        <div className="mt-12 grid gap-10 border-t border-[color:var(--a-rule)] pt-10 md:grid-cols-2 md:gap-0">
           <p className="md:pr-10">
             <span className="a-display a-faint block text-[clamp(2.4rem,5vw,4rem)]">{tomorrow.today[0]}</span>
             <span className="a-lead mt-3 block">
               {asraya.name} {tomorrow.today[1]}
             </span>
           </p>
-          <p className="md:border-l md:border-[color:var(--a-ink)] md:pl-10">
+          <p className="md:border-l md:border-[color:var(--a-rule)] md:pl-10">
             <span className="a-display a-red block text-[clamp(2.4rem,5vw,4rem)]">{tomorrow.tomorrow[0]}</span>
             <span className="a-lead mt-3 block">{tomorrow.tomorrow[1]}</span>
           </p>

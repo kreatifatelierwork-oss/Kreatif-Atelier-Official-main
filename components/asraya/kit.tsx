@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Fragment } from "react";
 import { Placeholder } from "@/components/ui/Placeholder";
-import { art, photos, ui, type ArtName, type PhotoId } from "@/content/asraya";
+import { photos, ui, type PhotoId } from "@/content/asraya";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -28,41 +28,35 @@ export function Chapter({ id, n, name, children, className = "" }: ChapterProps)
   );
 }
 
-/** The page title block: a small label, the Anton title, and a lead line. */
-export function PageHead({ label, title, lead, children }: { label: string; title: React.ReactNode; lead?: React.ReactNode; children?: React.ReactNode }) {
+/**
+ * The page head: a deep teal band across the screen with a small label, the title (its second part in italic
+ * marigold), a lead line, and the page's drawing on the right.
+ */
+export function PageHead({ label, title, lead, art, children }: { label: string; title: readonly [string, string?] | readonly string[]; lead?: React.ReactNode; art?: React.ReactNode; children?: React.ReactNode }) {
+  const [first, ...rest] = title;
   return (
-    <header className="a-head">
-      <p className="a-wide a-red">{label}</p>
-      <h1 id="home-heading" className="a-display a-h1 mt-5 max-w-[14ch]">
-        {title}
-      </h1>
-      {lead && <p className="a-lead mt-7 max-w-3xl">{lead}</p>}
-      {children}
-    </header>
+    <div className="a-band--deep a-bleed">
+      <header className="a-wrap a-head">
+        <div>
+          <p className="a-wide a-red">{label}</p>
+          <h1 id="home-heading" className="a-display a-h1 mt-5">
+            {first} {rest.length > 0 && <span className="a-em">{rest.join(" ")}</span>}
+          </h1>
+          {lead && <p className="a-lead mt-7 max-w-2xl">{lead}</p>}
+        </div>
+        {art && <div className="a-head__art">{art}</div>}
+        {children && <div className="a-head__more">{children}</div>}
+      </header>
+    </div>
   );
 }
 
-type ArtProps = {
-  name: ArtName;
-  /** `multiply` sinks a light-ground picture into the paper. */
-  blend?: "none" | "multiply";
-  className?: string;
-  sizes?: string;
-};
-
-/** A picture from the Asraya profile, set into the page. */
-export function Art({ name, blend = "none", className = "", sizes = "(min-width: 1024px) 40vw, 100vw" }: ArtProps) {
-  const picture = art[name];
+/** A full-width band: `deep` is the teal statement ground, otherwise the ivory page. */
+export function Band({ deep = false, labelledBy, children, className = "" }: { deep?: boolean; labelledBy?: string; children: React.ReactNode; className?: string }) {
   return (
-    <Image
-      data-reveal
-      src={picture.src}
-      alt={picture.alt}
-      width={picture.width}
-      height={picture.height}
-      sizes={sizes}
-      className={`a-art ${blend === "none" ? "" : `a-art--${blend}`} ${className}`}
-    />
+    <section aria-labelledby={labelledBy} className={`a-band a-bleed ${deep ? "a-band--deep" : ""} ${className}`}>
+      <div className="a-wrap">{children}</div>
+    </section>
   );
 }
 

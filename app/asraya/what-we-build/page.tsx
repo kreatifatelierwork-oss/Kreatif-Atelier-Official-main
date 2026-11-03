@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { AsrayaShell } from "@/components/asraya/AsrayaShell";
 import { ChapterIndex } from "@/components/asraya/ChapterIndex";
 import { SearchSketch } from "@/components/asraya/graphics";
-import { Art, Chapter, More, PageHead, Photo, Rich, Rows, Tags } from "@/components/asraya/kit";
-import { asraya, build } from "@/content/asraya";
+import { Amplify, Toolkit } from "@/components/asraya/illustrations";
+import { Chapter, More, PageHead, Photo, Rich, Rows, Tags } from "@/components/asraya/kit";
+import { asraya, build, home } from "@/content/asraya";
 
 export const metadata: Metadata = {
   title: `What we build — ${asraya.name} | Kreatif Atelier`,
@@ -32,7 +33,7 @@ const h3 = "a-display text-[clamp(1.9rem,3.6vw,3rem)]";
 export default function Page() {
   return (
     <AsrayaShell next={asraya.nav[2]}>
-      <PageHead label={asraya.name} title={build.eyebrow} />
+      <PageHead label={asraya.name} title={["What we", "build"]} lead={home.services.lead} art={<Toolkit />} />
 
       <div className="a-has-index">
         <ChapterIndex items={chapters} label={build.eyebrow} />
@@ -85,7 +86,7 @@ export default function Page() {
           </div>
           <Rows items={reach.items} className="mt-10" />
 
-          <div className="mt-14 grid gap-10 lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-center lg:gap-14">
+          <div className="mt-14 grid gap-10 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-center lg:gap-14">
             <div>
               <h3 data-reveal className="a-quote">
                 {reach.campaign.title.join(" ")}
@@ -100,7 +101,7 @@ export default function Page() {
                 <p className="a-body max-w-xl">{reach.campaign.body}</p>
               </More>
             </div>
-            <Art name="lion" blend="multiply" sizes="(min-width: 1024px) 16rem, 70vw" className="mx-auto max-w-[16rem]" />
+            <Amplify className="mx-auto max-w-[18rem]" />
           </div>
         </Chapter>
 
