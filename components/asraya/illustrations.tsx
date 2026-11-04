@@ -5,16 +5,14 @@
  * Every scene can be played inside <Play> (components/asraya/Play.tsx): parts marked `data-d` lean towards the
  * pointer, and the classes below (`a-gift__lid`, `a-house__wall`, `a-tick`…) move to their played state when the
  * drawing is pressed, or when a linked card holding it is hovered (app/globals.css, "Playable drawings").
- * Parts marked `data-a-*` are also moved by AsrayaMotion on scroll. Without JavaScript every part sits at rest.
+ * Parts marked `data-a-*` are also moved by StoryMotion on scroll. Without JavaScript every part sits at rest.
  */
 
-const INK = "#1c2526";
+import { d, vars } from "@/components/story/art";
 
-/** A part that leans towards the pointer; deeper parts lean further. */
-export const d = (depth: number) => ({ "data-d": "", style: { "--d": depth } as React.CSSProperties });
-/** CSS variables for one part's played state (an offset, an index for staggering). */
-export const vars = (values: Record<string, number>) =>
-  Object.fromEntries(Object.entries(values).map(([key, value]) => [`--${key}`, value])) as React.CSSProperties;
+export { d, vars };
+
+const INK = "#1c2526";
 
 /** The ✦ brand star, centred on (x, y). */
 export function Star({ x, y, r, className = "a-art-fill" }: { x: number; y: number; r: number; className?: string }) {

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { PageShell } from "@/components/layout/PageShell";
 import { asraya } from "@/content/asraya";
 import { AsrayaNav } from "./AsrayaNav";
-import { AsrayaMotion } from "./AsrayaMotion";
+import { StoryMotion } from "@/components/story/StoryMotion";
 import { Network } from "./graphics";
 
 type Props = {
@@ -65,7 +65,7 @@ export function AsrayaShell({ children, next, network = true }: Props) {
           </div>
         )}
 
-        <AsrayaMotion />
+        <StoryMotion root=".asraya" />
       </div>
     </PageShell>
   );

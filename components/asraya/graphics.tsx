@@ -4,7 +4,7 @@ import { useState } from "react";
 
 /**
  * Diagram drawings for the Asraya pages, in the page's own colours. All decorative. The network's links carry
- * `data-a-link`, so AsrayaMotion can draw them in as the page scrolls; the joined network also answers the pointer.
+ * `data-a-link`, so StoryMotion can draw them in as the page scrolls; the joined network also answers the pointer.
  */
 
 const W = 1200;

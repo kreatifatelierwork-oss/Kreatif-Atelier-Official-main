@@ -3,7 +3,8 @@
 import { gsap, ScrollTrigger, SplitText, useGSAP } from "@/lib/scroll/gsap";
 
 /**
- * Scroll motion for the Asraya pages, scrubbed to the scroll (Lenis drives ScrollTrigger site-wide):
+ * Scroll motion for the story-led venture pages (Asraya, Valora), scrubbed to the scroll (Lenis drives ScrollTrigger
+ * site-wide). Works inside `root` (the page's scope class):
  * - `[data-a-link]` network links draw themselves in;
  * - drawings assemble: `[data-a-slide]` parts slide together, `[data-a-rise]` comes up, `[data-a-lift]` lifts,
  *   `[data-a-beam]` sweeps down, `[data-a-fade]` appears last;
@@ -11,11 +12,11 @@ import { gsap, ScrollTrigger, SplitText, useGSAP } from "@/lib/scroll/gsap";
  * - `[data-a-parallax]` drifts slightly against the scroll.
  * Nothing runs for reduced motion, and without JavaScript every part simply sits in its final place.
  */
-export function AsrayaMotion() {
+export function StoryMotion({ root: scope }: { root: string }) {
   useGSAP(() => {
     const mm = gsap.matchMedia();
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      const root = document.querySelector<HTMLElement>(".asraya");
+      const root = document.querySelector<HTMLElement>(scope);
       if (!root) return;
       const q = <T extends Element>(selector: string) => gsap.utils.toArray<T>(root.querySelectorAll(selector));
       // Each drawing is scrubbed from when it enters until its middle reaches the centre of the screen.

@@ -203,6 +203,18 @@ Full-spectrum creative agency, Hyderabad. Four divisions. Six service pillars.
   On wide screens with motion the section pins and slides sideways (it pins an inner `.a-journey__frame`: the bleed
   section's margins measure wrong once fixed); elsewhere it stacks. The step being read gets `data-on`, and every played
   drawing state now answers any `[data-on]` ancestor, not only a pressed `<Play>`.
+- Ventures order (2026-11-04, owner): Aurelius, Asraya, Valora, Golden Guardian Productions, Rudra Yugen (the `verticals`
+  array in `content/verticals.ts` drives the Our Ventures menu, footer and lists).
+- Valora revamp (2026-11-04, owner: "like Asraya, not Asraya's colours"; palette chosen: Night & gold, the chapter radar's
+  world). Four pages with a masthead (`ValoraNav`: swan + spaced VALORA, Overview / The ecosystem / Industry & campuses /
+  Chapter radar): `/valora`, `/valora/ecosystem`, `/valora/industry`, `/valora/chapters` (the radar, now under the
+  masthead). Copy in `content/valora.ts`, all Valora's profile wording moved from the old verticals blocks (Valora's
+  `blocks` are now empty); only labels are new. Night #0c1014, panels #141a1f, gold #d2ad64, ivory type; Cormorant
+  headlines, monospace labels (`.valora` in `app/globals.css`). Gold line-art drawings (`components/valora/art.tsx`),
+  playable; "How Valora works" and "From industry problem to student solution" are sliding stories; an ecosystem wheel
+  (`EcosystemWheel.tsx`) and a ladder to climb (`Ladder.tsx`). The footer sky is dusk on Valora pages.
+  Shared story pieces now live in `components/story/` (Play, Journey, StoryMotion, art helpers) and read role tokens
+  (`--a-fg`, `--a-accent`, `--a-rule`…) from the page scope; Asraya and Valora set their own.
 - Heroes (2026-10-12): the home page and `/aurelius` both use the owner's galloping-horse picture
   (`public/reference/aurelius-horse.webp`) as a full-bleed hero with AURELIUS along its foot; it drifts forward on
   scroll. The crowned figure and the bust are no longer used; the text-behind-subject slide only runs for `cutout` figures.
