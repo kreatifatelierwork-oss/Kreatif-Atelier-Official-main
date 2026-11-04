@@ -24,7 +24,7 @@ export function BeliefsNeu() {
             {i === 3 && (
               <li data-reveal className="mb-[var(--ds-space-5)] break-inside-avoid">
                 <div className="neu-card p-[var(--ds-space-6)]">
-                  <Play label={aurelius.play.art.quill}>
+                  <Play>
                     <Quill />
                   </Play>
                 </div>

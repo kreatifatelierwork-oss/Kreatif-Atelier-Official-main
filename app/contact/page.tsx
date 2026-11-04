@@ -5,7 +5,6 @@ import { Play } from "@/components/aurelius/Play";
 import { PageHero } from "@/components/layout/PageHero";
 import { PageShell } from "@/components/layout/PageShell";
 import { Label } from "@/components/ui/Heading";
-import { aurelius } from "@/content/aurelius";
 import { contactPage } from "@/content/pages";
 import { NeuButton } from "@/components/design/NeuButton";
 import { contact, mailtoHref, site } from "@/content/site";
@@ -30,7 +29,7 @@ export default function Page() {
         aside={
           // Wide screens only: on a phone the form comes first.
           <div className="mx-auto hidden w-full max-w-[24rem] lg:block">
-            <Play label={aurelius.play.art.envelope}>
+            <Play>
               <Envelope />
             </Play>
           </div>

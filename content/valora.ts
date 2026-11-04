@@ -27,20 +27,6 @@ export const valora = {
     description:
       "Valora is an industry-connected student capability ecosystem under the aegis of Kreatif Atelier, turning academic potential into professional capability.",
   },
-  ui: {
-    play: "Tap to play",
-    reset: "Tap to reset",
-    /** What pressing each drawing does, for screen readers. */
-    art: {
-      constellation: "Light up the network",
-      bridge: "Build the bridge",
-      orbit: "Turn the ecosystem",
-      launch: "Launch",
-      profile: "Fill in the profile",
-      hub: "Connect the faculty",
-      evidence: "Lay out the evidence",
-    },
-  },
 } as const;
 
 /* ── /valora ─────────────────────────────────────────────── */

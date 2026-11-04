@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Play, type PlayHints } from "@/components/story/Play";
+import { Play } from "@/components/story/Play";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/scroll/gsap";
 
 export type StoryStep = { title: string; body: string; art: React.ReactNode; behind?: readonly string[] };
@@ -18,7 +18,6 @@ type JourneyProps = {
   close?: string;
   /** The small label over each step's `behind` tags. */
   behindLabel?: string;
-  hints: PlayHints;
 };
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -29,7 +28,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
  * elsewhere they stack. Either way, the step being read gets `data-on`, which plays its drawing. Colours come from the
  * page's scope (`.asraya`, `.valora`) through the shared role tokens.
  */
-export function Journey({ id, label, title, lead, steps, close, behindLabel, hints }: JourneyProps) {
+export function Journey({ id, label, title, lead, steps, close, behindLabel }: JourneyProps) {
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -103,7 +102,7 @@ export function Journey({ id, label, title, lead, steps, close, behindLabel, hin
                 <p aria-hidden="true" className="a-journey__num">
                   {pad(i + 1)}
                 </p>
-                <Play label={step.title} hints={hints} className="a-journey__art">
+                <Play auto={false} className="a-journey__art">
                   {step.art}
                 </Play>
                 <h3 className="a-display mt-4 text-[clamp(1.5rem,1.9vw,1.85rem)]">{step.title}</h3>

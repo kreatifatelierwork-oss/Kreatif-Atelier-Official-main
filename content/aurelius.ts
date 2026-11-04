@@ -171,18 +171,6 @@ export const pillars = [
 
 export const aurelius = {
   name: "Aurelius",
-  /** The playable drawings (components/aurelius/art.tsx): the hint under each, and what pressing it does. */
-  play: {
-    play: "Tap to play",
-    reset: "Tap to reset",
-    art: {
-      balance: "Balance creative and business",
-      gears: "Set the parts working together",
-      redirect: "Redirect the spend",
-      quill: "Write the point of view",
-      envelope: "Send the brief",
-    },
-  },
   byline: "a Kreatif Atelier company",
   tagline: "We make the work. And we make sure it lands.",
   support: "Strategy, creative, media and technology—connected to move brands forward.",

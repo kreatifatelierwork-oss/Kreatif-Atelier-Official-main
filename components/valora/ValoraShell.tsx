@@ -48,7 +48,7 @@ export function ValoraShell({ children, next, cta = true, wide = false }: Props)
                   <Button href="/valora/chapters">{valora.radarCta}</Button>
                 </div>
               </div>
-              <Play label={valora.ui.art.launch} className="mx-auto max-w-[26rem]">
+              <Play className="mx-auto max-w-[26rem]">
                 <Launch />
               </Play>
             </div>

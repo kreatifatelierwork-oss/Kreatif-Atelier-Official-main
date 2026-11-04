@@ -1,4 +1,5 @@
 import { ModeMark } from "@/components/aurelius/art";
+import { Play } from "@/components/aurelius/Play";
 import { Section } from "@/components/design/Section";
 import { FloatCluster } from "@/components/design/FloatCluster";
 import { SectionHeader } from "@/components/design/SectionHeader";
@@ -25,7 +26,9 @@ export function AttentionNeu() {
         {attention.modes.map((mode, i) => (
           <li key={mode.title} data-reveal className="au-mode neu-card relative p-[var(--ds-space-7)]">
             <span className="absolute top-[var(--ds-space-6)] right-[var(--ds-space-6)] w-[clamp(4.5rem,7.5vw,6.5rem)]">
-              <ModeMark mode={MODES[i]} />
+              <Play>
+                <ModeMark mode={MODES[i]} />
+              </Play>
             </span>
             <h3 className="ds-display ds-gradient-text">{mode.title}</h3>
             <p className="ds-body mt-[var(--ds-space-3)]">{mode.body}</p>

@@ -38,7 +38,7 @@ export default function Page() {
             <Button href="/valora/chapters">{valora.radarCta}</Button>
           </div>
         </div>
-        <Play label={valora.ui.art.constellation}>
+        <Play>
           <Constellation />
         </Play>
       </header>
@@ -60,7 +60,7 @@ export default function Page() {
       <Band labelledBy="gap-heading">
         <WithArt
           art={
-            <Play label={valora.ui.art.bridge}>
+            <Play>
               <Bridge />
             </Play>
           }
@@ -112,7 +112,6 @@ export default function Page() {
         id="works"
         label={works.label}
         title={works.title}
-        hints={valora.ui}
         steps={works.steps.map((step) => {
           const Art = valoraArt[step.art];
           return { ...step, art: <Art /> };
@@ -138,7 +137,9 @@ export default function Page() {
             return (
               <li key={item.href} data-reveal>
                 <Link href={item.href} className="a-card group h-full">
-                  <Art className="mx-auto max-w-[15rem]" />
+                  <Play className="mx-auto max-w-[15rem]">
+                    <Art />
+                  </Play>
                   <span className="a-display mt-6 flex items-baseline justify-between gap-4 text-[clamp(1.6rem,2.4vw,2rem)]">
                     {item.title}
                     <span aria-hidden="true" className="a-red transition-transform duration-300 group-hover:translate-x-1.5">

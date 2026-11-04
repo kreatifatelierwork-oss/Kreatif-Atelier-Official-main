@@ -1,29 +1,55 @@
 "use client";
 
-import { useRef, useState } from "react";
-
-export type PlayHints = { play: string; reset: string };
+import { useEffect, useRef } from "react";
+import { config } from "@/lib/config";
 
 type PlayProps = {
-  /** What pressing does, said to screen readers ("Open the gift"). */
-  label: string;
-  /** The visible hint under the drawing, from the venture's content file. */
-  hints: PlayHints;
   children: React.ReactNode;
   className?: string;
+  /** Play on its own when in view. Off where something else decides (a story step being read sets `data-on`). */
+  auto?: boolean;
 };
 
 /**
- * Makes one of a venture page's drawings (Asraya, Valora) something to play with:
+ * Brings one of a venture page's drawings (Asraya, Valora, Aurelius) to life:
+ * - it plays on its own: once it is in view `data-on` is set and the drawing's CSS moves to its played state; it holds,
+ *   rests and plays again while it stays on screen, and resets when it leaves (timings in `config.drawings`);
  * - the pointer leans it: parts marked `data-d` (with a `--d` depth) drift towards the pointer, and `--px`/`--py`
- *   (−1…1 across the drawing) are there for parts that turn or rise with it;
- * - pressing (click, tap, Enter, Space) plays it: `data-on` is set and each drawing's own CSS moves to its played
- *   state; pressing again puts it back.
- * Reduced motion keeps the played states but drops the lean (see `.a-play` in app/globals.css).
+ *   (−1…1 across the drawing) are there for parts that turn or rise with it.
+ * Decorative only (the drawings are aria-hidden), so nothing here takes focus. Reduced motion shows the played state,
+ * still, without the lean or the loop.
  */
-export function Play({ label, hints, children, className = "" }: PlayProps) {
-  const ref = useRef<HTMLButtonElement>(null);
-  const [on, setOn] = useState(false);
+export function Play({ children, className = "", auto = true }: PlayProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !auto) return;
+    const set = (on: boolean) => (on ? el.setAttribute("data-on", "") : el.removeAttribute("data-on"));
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      set(true);
+      return;
+    }
+    const { threshold, delay, hold, rest } = config.drawings;
+    let timer: number | undefined;
+    const cycle = (on: boolean) => {
+      set(on);
+      timer = window.setTimeout(() => cycle(!on), on ? hold : rest);
+    };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        window.clearTimeout(timer);
+        if (entry.isIntersecting) timer = window.setTimeout(() => cycle(true), delay);
+        else set(false);
+      },
+      { threshold },
+    );
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(timer);
+    };
+  }, [auto]);
 
   const lean = (event: React.PointerEvent) => {
     const el = ref.current;
@@ -32,27 +58,14 @@ export function Play({ label, hints, children, className = "" }: PlayProps) {
     el.style.setProperty("--px", (((event.clientX - box.left) / box.width) * 2 - 1).toFixed(3));
     el.style.setProperty("--py", (((event.clientY - box.top) / box.height) * 2 - 1).toFixed(3));
   };
-  const rest = () => {
+  const settle = () => {
     ref.current?.style.setProperty("--px", "0");
     ref.current?.style.setProperty("--py", "0");
   };
 
   return (
-    <button
-      ref={ref}
-      type="button"
-      aria-label={label}
-      aria-pressed={on}
-      data-on={on || undefined}
-      onClick={() => setOn((value) => !value)}
-      onPointerMove={lean}
-      onPointerLeave={rest}
-      className={`a-play ${className}`}
-    >
+    <div ref={ref} onPointerMove={lean} onPointerLeave={settle} className={`a-play ${className}`}>
       {children}
-      <span aria-hidden="true" className="a-play__hint">
-        <span className="a-play__star">✦</span> {on ? hints.reset : hints.play}
-      </span>
-    </button>
+    </div>
   );
 }

@@ -22,7 +22,7 @@ export default function Page() {
         title={industry.head.title}
         lead={industry.head.lead}
         art={
-          <Play label={valora.ui.art.bridge}>
+          <Play>
             <Bridge />
           </Play>
         }
@@ -33,7 +33,6 @@ export default function Page() {
         id="flow"
         label={flow.label}
         title={flow.title}
-        hints={valora.ui}
         steps={flow.steps.map((step) => {
           const Art = valoraArt[step.art];
           return { ...step, art: <Art /> };
@@ -56,7 +55,7 @@ export default function Page() {
       <Band labelledBy="project-heading">
         <WithArt
           art={
-            <Play label={valora.ui.art.evidence}>
+            <Play>
               <Evidence />
             </Play>
           }
@@ -83,7 +82,7 @@ export default function Page() {
       <Band labelledBy="chapters-heading">
         <WithArt
           art={
-            <Play label={valora.ui.art.constellation}>
+            <Play>
               <Constellation />
             </Play>
           }

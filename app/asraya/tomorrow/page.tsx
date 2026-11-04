@@ -4,7 +4,7 @@ import { ServiceIcon, Sunrise } from "@/components/asraya/illustrations";
 import { Play } from "@/components/asraya/Play";
 import { Ripple } from "@/components/asraya/Ripple";
 import { Chapter, More, PageHead, Photo, Tags, WithArt, allSupplied } from "@/components/asraya/kit";
-import { asraya, tomorrow, ui, type PhotoId } from "@/content/asraya";
+import { asraya, tomorrow, type PhotoId } from "@/content/asraya";
 
 export const metadata: Metadata = {
   title: `Tomorrow — ${asraya.name} | Kreatif Atelier`,
@@ -22,7 +22,7 @@ export default function Page() {
   return (
     <AsrayaShell>
       <PageHead label={asraya.name} title={[tomorrow.eyebrow]} art={
-          <Play label={ui.art.sunrise}>
+          <Play>
             <Sunrise />
           </Play>
         }>

@@ -2,7 +2,6 @@ import { Balance } from "@/components/aurelius/art";
 import { Play } from "@/components/aurelius/Play";
 import { Section } from "@/components/design/Section";
 import { SectionHeader } from "@/components/design/SectionHeader";
-import { aurelius } from "@/content/aurelius";
 import { positioning } from "@/content/home";
 
 /** Why Aurelius exists: the headline over a scale that comes level when played, beside the argument. */
@@ -13,7 +12,7 @@ export function PositioningNeu() {
       <div className="grid gap-[var(--ds-space-7)] lg:grid-cols-2 lg:items-center">
         <div>
           <SectionHeader id={id} label={positioning.marker} headline={positioning.headline} />
-          <Play label={aurelius.play.art.balance} className="mt-[var(--ds-space-6)] max-w-[24rem]">
+          <Play className="mt-[var(--ds-space-6)] max-w-[24rem]">
             <Balance />
           </Play>
         </div>

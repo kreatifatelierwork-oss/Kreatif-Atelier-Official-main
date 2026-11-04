@@ -4,7 +4,6 @@ import { NeuButton } from "@/components/design/NeuButton";
 import { Section } from "@/components/design/Section";
 import { StepWire } from "@/components/design/StepWire";
 import { loopSteps } from "@/content/approach";
-import { aurelius } from "@/content/aurelius";
 import { measurement } from "@/content/home";
 
 /** Measure → understand → redirect, and the loop as separate steps on a wire that draws round and back to the start. */
@@ -38,7 +37,7 @@ export function MeasurementNeu() {
             <NeuButton href={measurement.cta.href}>{measurement.cta.label}</NeuButton>
           </div>
           {/* The loop in one picture: a line that is read, then redirected. */}
-          <Play label={aurelius.play.art.redirect} className="mt-[var(--ds-space-5)] max-w-[28rem]">
+          <Play className="mt-[var(--ds-space-5)] max-w-[28rem]">
             <Redirect />
           </Play>
         </div>

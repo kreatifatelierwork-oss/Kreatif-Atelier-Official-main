@@ -8,7 +8,7 @@ import { Journey } from "@/components/asraya/Journey";
 import { Band, Tags } from "@/components/asraya/kit";
 import { Play } from "@/components/asraya/Play";
 import { Button } from "@/components/ui/Button";
-import { asraya, home, ui } from "@/content/asraya";
+import { asraya, home } from "@/content/asraya";
 
 export const metadata: Metadata = { ...asraya.meta, alternates: { canonical: "/asraya/" } };
 
@@ -64,7 +64,7 @@ export default function Page() {
             </p>
             <Tags items={free.points} className="mt-9" />
           </div>
-          <Play label={ui.art.gift} className="mx-auto max-w-[26rem]">
+          <Play className="mx-auto max-w-[26rem]">
             <Gift />
           </Play>
         </div>
@@ -105,7 +105,7 @@ export default function Page() {
               {network.line}
             </h2>
           </div>
-          <Play label={ui.art.amplify} className="mx-auto max-w-[22rem]">
+          <Play className="mx-auto max-w-[22rem]">
             <Amplify />
           </Play>
         </div>
@@ -145,7 +145,9 @@ export default function Page() {
             return (
               <li key={item.href} data-reveal>
                 <Link href={item.href} className="a-card group h-full">
-                  <Art className="mx-auto max-w-[15rem]" />
+                  <Play className="mx-auto max-w-[15rem]">
+                    <Art />
+                  </Play>
                   <span className="a-display mt-6 flex items-baseline justify-between gap-4 text-[clamp(1.6rem,2.4vw,2rem)]">
                     {item.title}
                     <span aria-hidden="true" className="a-red transition-transform duration-300 group-hover:translate-x-1.5">

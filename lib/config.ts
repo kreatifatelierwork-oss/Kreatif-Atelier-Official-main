@@ -30,6 +30,12 @@ export const config = {
    * scroll window it draws over (ScrollTrigger start/end), with scrub smoothing in seconds.
    */
   stepWire: { sag: 14, start: "top 78%", end: "bottom 60%", scrub: 0.6 },
+  /**
+   * The venture pages' drawings (components/story/Play.tsx): each plays on its own once this much of it is on screen,
+   * holds its played state, rests, and plays again while it stays in view (times in ms). The Asraya pond drops a stone
+   * every `rippleEvery` ms while it is in view.
+   */
+  drawings: { threshold: 0.45, delay: 300, hold: 5200, rest: 1500, rippleEvery: 1700 },
   /** About page: the opening card rises by this much (% of its height) and fades to this opacity as you scroll on. */
   about: { drift: { rise: 18, fade: 0.35 } },
   /** Services mega menu: hover must rest this long on a row before it becomes active (no flicker on diagonal moves). */

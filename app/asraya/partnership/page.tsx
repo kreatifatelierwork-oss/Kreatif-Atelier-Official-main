@@ -3,7 +3,7 @@ import { AsrayaShell } from "@/components/asraya/AsrayaShell";
 import { Checklist, Growth, Puzzle, Together } from "@/components/asraya/illustrations";
 import { Play } from "@/components/asraya/Play";
 import { Body, Chapter, More, PageHead, Photo, Rich, Rows, Tags, WithArt } from "@/components/asraya/kit";
-import { asraya, home, partnership, ui } from "@/content/asraya";
+import { asraya, home, partnership } from "@/content/asraya";
 
 export const metadata: Metadata = {
   title: `Partnership — ${asraya.name} | Kreatif Atelier`,
@@ -23,7 +23,7 @@ export default function Page() {
   return (
     <AsrayaShell next={asraya.nav[3]}>
       <PageHead label={asraya.name} title={[partnership.eyebrow]} lead={home.free.title.join(" ")} art={
-          <Play label={ui.art.together}>
+          <Play>
             <Together />
           </Play>
         } />
@@ -32,7 +32,7 @@ export default function Page() {
       <Chapter id="personalised" n={1} name={personalised.title.join(" ")}>
         <WithArt
           art={
-            <Play label={ui.art.puzzle}>
+            <Play>
               <Puzzle />
             </Play>
           }
@@ -62,7 +62,7 @@ export default function Page() {
       <Chapter id="needs" n={2} name={needs.title}>
         <WithArt
           art={
-            <Play label={ui.art.checklist}>
+            <Play>
               <Checklist />
             </Play>
           }
@@ -87,7 +87,7 @@ export default function Page() {
       <Chapter id="model" n={3} name={model.title.join(" ")}>
         <WithArt
           art={
-            <Play label={ui.art.growth}>
+            <Play>
               <Growth />
             </Play>
           }

@@ -415,26 +415,4 @@ export const ui = {
   more: "Read more",
   less: "Show less",
   photoPending: "Photograph to be supplied",
-  /** The hint under a drawing that can be played (components/asraya/Play.tsx). */
-  play: "Tap to play",
-  reset: "Tap to reset",
-  /** What pressing each drawing does, for screen readers. */
-  art: {
-    gift: "Open the gift",
-    spotlight: "Light every house",
-    amplify: "Turn up the sound",
-    together: "Bring the two together",
-    sunrise: "Let the sun rise",
-    toolkit: "Build the website",
-    stamp: "Stamp the brand",
-    search: "Search",
-    press: "Spread the papers",
-    clapper: "Call action",
-    bunting: "Celebrate",
-    paperwork: "Lay out the paperwork",
-    puzzle: "Fit the pieces together",
-    checklist: "Tick the list",
-    growth: "Let it grow",
-    ripple: "Drop a stone in the water",
-  },
 } as const;

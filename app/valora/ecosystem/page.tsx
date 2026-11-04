@@ -22,7 +22,7 @@ export default function Page() {
         title={ecosystem.head.title}
         lead={ecosystem.head.lead}
         art={
-          <Play label={valora.ui.art.orbit}>
+          <Play>
             <Orbit />
           </Play>
         }
@@ -38,7 +38,7 @@ export default function Page() {
       <Band labelledBy="profile-heading">
         <WithArt
           art={
-            <Play label={valora.ui.art.profile}>
+            <Play>
               <ProfileCard />
             </Play>
           }
@@ -66,7 +66,7 @@ export default function Page() {
       <Band labelledBy="faculty-heading">
         <WithArt
           art={
-            <Play label={valora.ui.art.hub}>
+            <Play>
               <Hub />
             </Play>
           }

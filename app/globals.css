@@ -1961,10 +1961,10 @@ details[open] > summary .a-more__icon::after {
 .a-search__row {
   transition: translate 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.a-play[data-on] .a-search__row {
+[data-on] .a-search__row {
   translate: 0 3.5rem;
 }
-.a-play[data-on] .a-search__row[data-found] {
+[data-on] .a-search__row[data-found] {
   translate: 0 -7rem;
 }
 .a-play .a-search {
@@ -2028,10 +2028,11 @@ details[open] > summary .a-more__icon::after {
   outline-color: var(--a-marigold);
 }
 
-/* ── Playable drawings (components/asraya/Play.tsx, illustrations.tsx) ──
-   The pointer leans a drawing (`data-d` parts drift by their `--d` depth); pressing it plays it (`data-on`), and so
-   does any `[data-on]` around it (a story step being read). A linked card plays its drawing on hover. Parts move with the individual translate/rotate/scale properties, so they
-   compose with the scroll motion's transforms instead of fighting them. */
+/* ── Playable drawings (components/story/Play.tsx, illustrations.tsx) ──
+   A drawing plays on its own once it is in view (`data-on`, set by <Play>), and so does any drawing inside a
+   `[data-on]` (a story step being read); a linked card also plays its drawing on hover. The pointer leans it (`data-d`
+   parts drift by their `--d` depth). Parts move with the individual translate/rotate/scale properties, so they compose
+   with the scroll motion's transforms instead of fighting them. */
 
 .a-play {
   --px: 0;
@@ -2039,44 +2040,6 @@ details[open] > summary .a-more__icon::after {
   position: relative;
   display: block;
   width: 100%;
-  border-radius: 1.5rem;
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-.a-play:focus-visible {
-  outline: 2px solid var(--a-marigold);
-  outline-offset: 6px;
-}
-.a-play__hint {
-  opacity: 0.75;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  margin-top: 0.9rem;
-  font-family: var(--font-sans);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--a-faint);
-  transition: color 0.2s ease-out;
-}
-.a-play__star {
-  color: var(--a-accent);
-  transition: rotate 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-@media (hover: hover) {
-  .a-play:hover .a-play__hint {
-    color: var(--a-fg);
-  }
-  .a-play:hover .a-play__star {
-    rotate: 90deg;
-  }
-}
-.a-play[data-on] .a-play__star {
-  rotate: 180deg;
 }
 
 /* Every moving part: one easing, a little longer for the big moves. */
@@ -3822,7 +3785,7 @@ body:has(.valora) .ft-sky__glow {
   transition-delay: 1s;
 }
 
-/* Small marks: played by their card's hover (and focus, for the venture links). */
+/* Small marks: they play on their own in view, and on their card's hover (and focus, for the venture links). */
 .au-mark {
   display: block;
   width: 100%;
@@ -3840,27 +3803,27 @@ body:has(.valora) .ft-sky__glow {
 .au-key {
   transform-origin: 30% 50%;
 }
-.au-mode:hover .au-key {
+:is(.au-mode:hover, [data-on]) .au-key {
   rotate: -90deg;
 }
 .au-coin {
   translate: 0 -6px;
 }
-.au-mode:hover .au-coin {
+:is(.au-mode:hover, [data-on]) .au-coin {
   translate: 0 24px;
   scale: 0.9;
 }
 .au-leaves {
   transform-origin: 50% 100%;
 }
-:is(.au-venture:hover, .au-venture:focus-visible) .au-leaves {
+:is(.au-venture:hover, .au-venture:focus-visible, [data-on]) .au-leaves {
   rotate: calc(var(--side) * -8deg);
 }
-:is(.au-venture:hover, .au-venture:focus-visible) .au-star {
+:is(.au-venture:hover, .au-venture:focus-visible, [data-on]) .au-star {
   rotate: 90deg;
   scale: 1.15;
 }
-:is(.au-venture:hover, .au-venture:focus-visible) .au-toss {
+:is(.au-venture:hover, .au-venture:focus-visible, [data-on]) .au-toss {
   translate: 0 -10px;
   rotate: -12deg;
 }
@@ -3872,16 +3835,16 @@ body:has(.valora) .ft-sky__glow {
   [data-on] .au-gear--rev {
     animation-direction: reverse;
   }
-  .au-mode:hover .au-heart {
+  :is(.au-mode:hover, [data-on]) .au-heart {
     animation: au-beat 0.9s ease-in-out infinite;
   }
-  :is(.au-venture:hover, .au-venture:focus-visible) .au-reel {
+  :is(.au-venture:hover, .au-venture:focus-visible, [data-on]) .au-reel {
     animation: au-spin 2.4s linear infinite;
   }
-  :is(.au-venture:hover, .au-venture:focus-visible) .au-orbits {
+  :is(.au-venture:hover, .au-venture:focus-visible, [data-on]) .au-orbits {
     animation: au-spin 6s linear infinite;
   }
-  :is(.au-venture:hover, .au-venture:focus-visible) .au-wave {
+  :is(.au-venture:hover, .au-venture:focus-visible, [data-on]) .au-wave {
     animation: au-pulse 1.2s ease-out calc(var(--i) * 0.15s) infinite;
   }
 }

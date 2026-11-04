@@ -5,7 +5,7 @@ import { SearchSketch } from "@/components/asraya/graphics";
 import { Amplify, Bunting, Clapper, Paperwork, Press, Stamp, Toolkit } from "@/components/asraya/illustrations";
 import { Play } from "@/components/asraya/Play";
 import { Chapter, More, PageHead, Photo, Rich, Rows, Tags, WithArt } from "@/components/asraya/kit";
-import { asraya, build, home, ui } from "@/content/asraya";
+import { asraya, build, home } from "@/content/asraya";
 
 export const metadata: Metadata = {
   title: `What we build — ${asraya.name} | Kreatif Atelier`,
@@ -35,7 +35,7 @@ export default function Page() {
   return (
     <AsrayaShell next={asraya.nav[2]}>
       <PageHead label={asraya.name} title={["What we", "build"]} lead={home.services.lead} art={
-          <Play label={ui.art.toolkit}>
+          <Play>
             <Toolkit />
           </Play>
         } />
@@ -47,7 +47,7 @@ export default function Page() {
         <Chapter id="branding" n={1} name={chapters[0].name} className="!border-t-0">
           <WithArt
             art={
-              <Play label={ui.art.stamp}>
+              <Play>
                 <Stamp />
               </Play>
             }
@@ -75,7 +75,7 @@ export default function Page() {
               {digital.lead}
             </p>
             <div data-reveal>
-              <Play label={ui.art.search}>
+              <Play>
                 <SearchSketch query={digital.search} />
               </Play>
             </div>
@@ -114,7 +114,7 @@ export default function Page() {
                 <p className="a-body max-w-xl">{reach.campaign.body}</p>
               </More>
             </div>
-            <Play label={ui.art.amplify} className="mx-auto max-w-[18rem]">
+            <Play className="mx-auto max-w-[18rem]">
               <Amplify />
             </Play>
           </div>
@@ -124,7 +124,7 @@ export default function Page() {
         <Chapter id="story" n={4} name={chapters[3].name}>
           <WithArt
             art={
-              <Play label={ui.art.press}>
+              <Play>
                 <Press />
               </Play>
             }
@@ -160,7 +160,7 @@ export default function Page() {
         <Chapter id="seen" n={5} name={chapters[4].name}>
           <WithArt
             art={
-              <Play label={ui.art.clapper}>
+              <Play>
                 <Clapper />
               </Play>
             }
@@ -195,7 +195,7 @@ export default function Page() {
         <Chapter id="moments" n={6} name={chapters[5].name}>
           <WithArt
             art={
-              <Play label={ui.art.bunting}>
+              <Play>
                 <Bunting />
               </Play>
             }
@@ -234,7 +234,7 @@ export default function Page() {
         <Chapter id="anything" n={7} name={chapters[6].name}>
           <WithArt
             art={
-              <Play label={ui.art.paperwork}>
+              <Play>
                 <Paperwork />
               </Play>
             }

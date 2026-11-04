@@ -39,7 +39,7 @@ export function AureliusMain() {
               About <span className="ds-emphasis block text-ds-muted">{aurelius.name}</span>
             </h2>
             {/* Strategy, creative, media and technology as one machine. */}
-            <Play label={aurelius.play.art.gears} className="mt-[var(--ds-space-6)] max-w-[22rem]">
+            <Play className="mt-[var(--ds-space-6)] max-w-[22rem]">
               <Gears />
             </Play>
           </div>

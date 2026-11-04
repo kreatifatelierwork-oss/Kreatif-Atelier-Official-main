@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { ui } from "@/content/asraya";
+import { useEffect, useRef, useState } from "react";
+import { config } from "@/lib/config";
 
 type Ring = { id: number; x: number; y: number };
 
@@ -18,35 +18,91 @@ const PEOPLE: [number, number, number, string][] = [
 ];
 
 /**
- * It starts with you: still water with people round its edge and the ✦ at its centre. Every touch drops a stone where
- * it lands and rings run out across the water (Enter or Space drops one in the middle). Decorative; the button says
- * what it does.
+ * It starts with you: still water with people round its edge and the ✦ at its centre. While it is in view a stone drops
+ * somewhere on the water every so often and rings run out from it; a click drops one where it lands. Decorative.
+ * Reduced motion: the water stays still.
  */
 export function Ripple({ className = "" }: { className?: string }) {
+  const root = useRef<HTMLDivElement>(null);
   const svg = useRef<SVGSVGElement>(null);
   const next = useRef(0);
   const [rings, setRings] = useState<Ring[]>([]);
 
-  const drop = (event: React.MouseEvent) => {
-    const box = svg.current?.getBoundingClientRect();
-    // A keyboard press has no position (detail 0): drop it in the middle.
-    const x = box && event.detail > 0 ? ((event.clientX - box.left) / box.width) * W : W / 2;
-    const y = box && event.detail > 0 ? ((event.clientY - box.top) / box.height) * H : 150;
+  const dropAt = (x: number, y: number) => {
     const id = next.current++;
     setRings((all) => [...all.slice(-5), { id, x, y }]);
     window.setTimeout(() => setRings((all) => all.filter((ring) => ring.id !== id)), 2600);
   };
 
+  const drop = (event: React.MouseEvent) => {
+    const box = svg.current?.getBoundingClientRect();
+    if (!box) return;
+    dropAt(((event.clientX - box.left) / box.width) * W, ((event.clientY - box.top) / box.height) * H);
+  };
+
+  // On its own: a stone somewhere on the water every `rippleEvery` ms while the pond is on screen.
+  useEffect(() => {
+    const el = root.current;
+    if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let timer: number | undefined;
+    let k = 0;
+    const spots = [
+      [200, 150],
+      [130, 168],
+      [270, 140],
+      [176, 128],
+      [242, 172],
+    ];
+    const tick = () => {
+      const [x, y] = spots[k++ % spots.length];
+      dropAt(x, y);
+      timer = window.setTimeout(tick, config.drawings.rippleEvery);
+    };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        window.clearTimeout(timer);
+        if (entry.isIntersecting) timer = window.setTimeout(tick, config.drawings.delay);
+      },
+      { threshold: config.drawings.threshold },
+    );
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(timer);
+    };
+  }, []);
+
   return (
-    <button type="button" aria-label={ui.art.ripple} onClick={drop} className={`a-play ${className}`}>
-      <svg ref={svg} viewBox={`0 0 ${W} ${H}`} aria-hidden="true" focusable="false" className="a-scene block h-auto w-full" fill="none" stroke="#1c2526" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+    <div ref={root} onClick={drop} className={`a-play ${className}`}>
+      <svg
+        ref={svg}
+        viewBox={`0 0 ${W} ${H}`}
+        aria-hidden="true"
+        focusable="false"
+        className="a-scene block h-auto w-full"
+        fill="none"
+        stroke="#1c2526"
+        strokeWidth={3}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <ellipse cx="200" cy="150" rx="176" ry="78" className="a-art-fill--sand" />
         <ellipse cx="200" cy="150" rx="120" ry="48" stroke="#0e3b3a" strokeOpacity="0.18" strokeWidth="2" />
         <ellipse cx="200" cy="150" rx="66" ry="24" stroke="#0e3b3a" strokeOpacity="0.24" strokeWidth="2" />
         {rings.map((ring) => (
           <g key={ring.id}>
             {[0, 1, 2].map((k) => (
-              <ellipse key={k} cx={ring.x} cy={ring.y} rx={150 - k * 40} ry={56 - k * 15} stroke="#e9a23b" strokeWidth={4 - k} className="a-ripple" style={{ animationDelay: `${k * 0.18}s` }} />
+              <ellipse
+                key={k}
+                cx={ring.x}
+                cy={ring.y}
+                rx={150 - k * 40}
+                ry={56 - k * 15}
+                stroke="#e9a23b"
+                strokeWidth={4 - k}
+                className="a-ripple"
+                style={{ animationDelay: `${k * 0.18}s` }}
+              />
             ))}
           </g>
         ))}
@@ -62,9 +118,6 @@ export function Ripple({ className = "" }: { className?: string }) {
           </g>
         ))}
       </svg>
-      <span aria-hidden="true" className="a-play__hint">
-        <span className="a-play__star">✦</span> {ui.play}
-      </span>
-    </button>
+    </div>
   );
 }

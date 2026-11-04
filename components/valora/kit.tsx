@@ -1,10 +1,7 @@
-import { Play as StoryPlay } from "@/components/story/Play";
 import { valora } from "@/content/valora";
 
-/** The shared playable drawing, with Valora's hint wording. */
-export function Play(props: { label: string; children: React.ReactNode; className?: string }) {
-  return <StoryPlay hints={valora.ui} {...props} />;
-}
+/** The shared drawing that plays on its own (components/story/Play.tsx). */
+export { Play } from "@/components/story/Play";
 
 /** A full-width band: `panel` is the raised night panel, otherwise the page's own night. */
 export function Band({ panel = false, labelledBy, children, className = "" }: { panel?: boolean; labelledBy?: string; children: React.ReactNode; className?: string }) {
