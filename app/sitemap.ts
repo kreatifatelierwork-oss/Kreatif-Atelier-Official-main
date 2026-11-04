@@ -16,6 +16,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page("/approach/", 0.7),
     page("/about/kreatif-atelier/", 0.6),
     ...verticals.filter((v) => v.slug !== "aurelius").map((v) => page(`/${v.slug}/`, 0.6)),
+    page("/valora/ecosystem/", 0.6),
+    page("/valora/industry/", 0.6),
     page("/valora/chapters/", 0.6),
     page("/asraya/what-we-build/", 0.5),
     page("/asraya/partnership/", 0.5),

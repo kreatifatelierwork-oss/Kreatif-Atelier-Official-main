@@ -163,6 +163,66 @@ Full-spectrum creative agency, Hyderabad. Four divisions. Six service pillars.
   `app/globals.css`. The profile's photographs and collages are not reproduced; the pages are typographic.
   Exception (2026-10-12): the `/asraya` cover carries the owner's jigsaw collage of black-and-white portraits
   (`public/reference/asraya-collage.webp`), multiplied onto the paper ground beside the wordmark.
+- Asraya redesign (2026-11-04, owner): the four Asraya pages are a "field report" on one warm paper ground — ink, one red
+  (#c2301f), no kraft/slate/oxblood/blue/navy grounds. Numbered chapters (`Chapter` in `components/asraya/kit.tsx`) with the
+  number and name in a sticky left margin; lists as ruled rows; Anton only for page and chapter titles, Cormorant for leads
+  and quotes, 18px body. /asraya/what-we-build has a sticky chapter bar (`ChapterIndex.tsx`). Only profile pictures whose
+  ground sinks into the paper stay (collage, statue, lamp and houses, lion, the two hands); the speaker, keyboard door,
+  camera, golden hand and teacher were dropped as looking pasted on. In their place, drawings made for the site
+  (`components/asraya/graphics.tsx`): NGOs scattered apart (Hyderabad, Warangal) on /asraya, the same network joined under
+  the closing CTA, and a search sketch. Dashed `<Photo>` slots mark where the owner's field photographs will go.
+- Asraya, second pass (2026-11-04, owner): "content heavy — tell the story". Each chapter now leads with a picture, a
+  headline and one line; the rest of the copy is folded under "Read more" (`More`), and service lists are titles that
+  open (`Rows`, native `<details>`, still real HTML text). Prices removed from all Asraya pages by the owner's instruction
+  (costs, ₹25,000 fee, "the build costs nothing", the eleventh-month give-back): Partnership opens on "Personalised, not
+  packaged." (owner-approved wording, `partnership.personalised`). The Google Ad Grants figure stays (Google's programme).
+  Photographs: 19 by id in `docs/asraya-photo-brief.md` and `photos` in `content/asraya.ts`; fill in `src` to use one.
+  Essential ones show a marked slot until supplied, optional ones are hidden; the six /tomorrow photos show only as a full set.
+- Asraya, third pass (2026-11-04, owner) — supersedes the paper/ink/red and picture notes above: new palette (ivory
+  #f7f2ea, deep teal #0e3b3a bands, marigold #e9a23b, clay #a8401f for text accents) and a signature face, Fraunces
+  (self-hosted in `app/fonts/`, OFL), for the wordmark and headlines. The statue and all other profile crops are gone;
+  only the owner's collage remains. Drawings made for the site in the same colours: `components/asraya/illustrations.tsx`
+  (service icons, Gift, Spotlight, Amplify, Together, Sunrise, Toolkit). Scroll motion in `AsrayaMotion.tsx` (network
+  links draw in, drawings assemble, statements fill word by word; off for reduced motion). /asraya has no numbered
+  chapters: it is the offer — "Premium marketing. Free for NGOs. We don't earn anything from you" (owner's direction;
+  copy in `home` in `content/asraya.ts`, written for the site, for the owner's read). Inner pages open on a teal head
+  with their drawing. Files in `public/images/profile/asraya/` are no longer referenced.
+- Asraya, fourth pass (2026-11-04, owner: "more artifacts, make them interactive"): every drawing can be played.
+  `<Play>` (`components/asraya/Play.tsx`) is a button that leans the drawing towards the pointer (`data-d` parts) and
+  toggles `data-on`, which moves each drawing to its played state (CSS "Playable drawings" in `app/globals.css`, using
+  translate/rotate/scale so it composes with the scroll motion). New drawings: Stamp, Press, Clapper, Bunting, Paperwork
+  (What we build chapters), Puzzle, Checklist, Growth (Partnership), `Ripple.tsx` (Tomorrow: each tap sends rings across
+  the water), six initiative icons. The joined network lights a node's links and neighbours under the pointer. Explore
+  cards play their drawing on hover. The wordmark is "Asraya" with its capital A in Cormorant italic (`Wordmark` in kit).
+  The cover collage's drift is on the image itself: a moved wrapper isolates it and its multiply blend shows white.
+- Asraya, fifth pass (2026-11-04, owner): the wordmark "Asraya" is set whole in Cormorant bold italic, one colour (teal on
+  ivory, ivory on teal); Fraunces stays for headlines. /asraya tells a supporter's story in place of the funding/reach
+  cards: `Journey.tsx` with eight steps from "Someone hears your name" to "Then they bring others", each with its own
+  drawing (`journey-art.tsx`) and the services behind it as tags ("What makes it happen") — donor engagement told without
+  naming it. Copy in `home.journey` (written for the site from the profile's own lines; no figures; for the owner's read).
+  On wide screens with motion the section pins and slides sideways (it pins an inner `.a-journey__frame`: the bleed
+  section's margins measure wrong once fixed); elsewhere it stacks. The step being read gets `data-on`, and every played
+  drawing state now answers any `[data-on]` ancestor, not only a pressed `<Play>`.
+- Ventures order (2026-11-04, owner): Aurelius, Asraya, Valora, Golden Guardian Productions, Rudra Yugen (the `verticals`
+  array in `content/verticals.ts` drives the Our Ventures menu, footer and lists).
+- Valora revamp (2026-11-04, owner: "like Asraya, not Asraya's colours"; palette chosen: Night & gold, the chapter radar's
+  world). Four pages with a masthead (`ValoraNav`: swan + spaced VALORA, Overview / The ecosystem / Industry & campuses /
+  Chapter radar): `/valora`, `/valora/ecosystem`, `/valora/industry`, `/valora/chapters` (the radar, now under the
+  masthead). Copy in `content/valora.ts`, all Valora's profile wording moved from the old verticals blocks (Valora's
+  `blocks` are now empty); only labels are new. Night #0c1014, panels #141a1f, gold #d2ad64, ivory type; Cormorant
+  headlines, monospace labels (`.valora` in `app/globals.css`). Gold line-art drawings (`components/valora/art.tsx`),
+  playable; "How Valora works" and "From industry problem to student solution" are sliding stories; an ecosystem wheel
+  (`EcosystemWheel.tsx`) and a ladder to climb (`Ladder.tsx`). The footer sky is dusk on Valora pages.
+  Shared story pieces now live in `components/story/` (Play, Journey, StoryMotion, art helpers) and read role tokens
+  (`--a-fg`, `--a-accent`, `--a-rule`…) from the page scope; Asraya and Valora set their own.
+- Aurelius drawings (2026-11-04, owner: "more interactive, appropriate illustrations, fill the empty space"): maroon line
+  work with cream and polished-gold fills (`components/aurelius/art.tsx`, styles "Aurelius drawings" in `app/globals.css`),
+  playable through the shared `<Play>` (`components/aurelius/Play.tsx`, labels in `aurelius.play`). Placed where the
+  /aurelius page (also the home page) and Contact had spare room: a scale that comes level under Positioning ("we hold
+  both ends"), a quill in the shorter first column of What we believe, a line redirected after it is read under
+  Measurement (also on /approach), four gears turning together under About Aurelius, and an envelope beside the Contact
+  title (wide screens only). Own / Buy / Keep cards carry a key, a coin and a heart that play on hover; each venture card
+  has a small drawn mark (not a logo) that plays on hover.
 - Heroes (2026-10-12): the home page and `/aurelius` both use the owner's galloping-horse picture
   (`public/reference/aurelius-horse.webp`) as a full-bleed hero with AURELIUS along its foot; it drifts forward on
   scroll. The crowned figure and the bust are no longer used; the text-behind-subject slide only runs for `cutout` figures.

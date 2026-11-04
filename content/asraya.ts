@@ -1,17 +1,17 @@
 /**
  * Asraya — the social division of Kreatif Atelier. All copy here comes from the Asraya company
  * profile (31 pages), in the profile's own order. `**double asterisks**` mark the words the profile
- * sets in bold. Figures (fees, costs, the Ad Grants amount) are the profile's own.
+ * sets in bold. The Ad Grants amount is the profile's own; Asraya's own prices are left out by the owner's instruction.
  */
 
 export const asraya = {
   name: "Asraya",
-  wordmark: "asraya",
+  wordmark: "Asraya",
   aegis: "under the Aegis of Kreatif Atelier",
   tagline: "Communicating impact. Amplifying change.",
   promise: "You do the work. We make sure people know about it.",
   nav: [
-    { label: "The why", href: "/asraya" },
+    { label: "Overview", href: "/asraya" },
     { label: "What we build", href: "/asraya/what-we-build" },
     { label: "Partnership", href: "/asraya/partnership" },
     { label: "Tomorrow", href: "/asraya/tomorrow" },
@@ -33,65 +33,7 @@ export const asraya = {
   },
 } as const;
 
-/** Artwork from the Asraya company profile (the owner's Canva file), cropped from its pages. The statue is a true cut-out. */
-export const art = {
-  statue: { src: "/images/profile/asraya/statue.webp", width: 1200, height: 1266, alt: "A marble statue of a seated thinker, working on a laptop" },
-  speaker: { src: "/images/profile/asraya/speaker.webp", width: 1000, height: 1134, alt: "A speaker at a lectern in front of a crowd, in silhouette" },
-  houses: { src: "/images/profile/asraya/houses.webp", width: 1358, height: 1399, alt: "A desk lamp lighting one small house among many unlit ones" },
-  door: { src: "/images/profile/asraya/door.webp", width: 1400, height: 1370, alt: "A small figure standing before a keyboard key that opens like a door onto social media" },
-  lion: { src: "/images/profile/asraya/lion.webp", width: 1130, height: 1159, alt: "A cat walking through a door and coming out the other side as a lion" },
-  camera: { src: "/images/profile/asraya/camera.webp", width: 1600, height: 634, alt: "A film camera throwing a red beam across volunteers serving food" },
-  offering: { src: "/images/profile/asraya/offering.webp", width: 1500, height: 668, alt: "A golden hand holding two children" },
-  handAsraya: { src: "/images/profile/asraya/hand-asraya.webp", width: 1600, height: 746, alt: "A hand made of words — the things Asraya builds — reaching out" },
-  handYou: { src: "/images/profile/asraya/hand-you.webp", width: 1600, height: 746, alt: "A hand made of words — invisibility, neglect, silence — reaching back" },
-  teacher: { src: "/images/profile/asraya/teacher.webp", width: 1800, height: 1527, alt: "A young woman sitting in a circle of children, smiling" },
-} as const;
-export type ArtName = keyof typeof art;
-
 /* ── /asraya ──────────────────────────────────────────────── */
-
-export const why = {
-  title: "The why",
-  question: "Why is a digital marketing company starting a social initiative?",
-  body: [
-    "We build brands for a living. Websites, identity systems, campaigns, films. Work that helps businesses grow. We are good at it. But at some point we started asking whether any of it matters outside a balance sheet. **Asraya is our answer.**",
-    "Along the way we kept meeting organisations doing real work on the ground. Women's safety. Education. Healthcare. Environment. Serious people solving serious problems, with almost nothing behind them. And almost none of them could afford the one thing that would let more people find them — a proper website, a brand that looks like the work behind it, a film that tells their story the way it deserves. Not because their work is small. Because every rupee they have goes where it should.",
-    "So a proposal reaches a board, the board says no, and the organisation stays invisible for another year. Meanwhile the funding goes to whoever looked more professional. That is the problem we can actually fix. It happens to be the only thing we know how to do well.",
-    "Asraya is the social division of Kreatif Atelier, built to give NGOs everything we know how to build. Brand identity, website, content, SEO, advertising, PR, film, campaigns. The full weight of our team behind organisations who have never had it. No shortcuts, no lesser version because it is for a cause.",
-    "And not one organisation at a time. Everyone we work with joins a network, so NGOs stop working in isolation and start finding each other. Shared learning, shared partners, shared strength.",
-    "We are starting with women's safety, education, healthcare, environment, livelihood and skill development, child welfare, disability and inclusion, and animal welfare.",
-    "**If we can help a hundred organisations be seen, heard and connected to each other, that is a better thing to have built than a hundred campaigns.**",
-  ],
-} as const;
-
-export const gap = {
-  kicker: "The distance between the work being done and the people who never hear about it.",
-  title: ["The", "visibility", "gap"],
-  left: [
-    "Somewhere right now, an organisation is running a shelter, teaching a classroom, getting a woman to safety.",
-    "Ten people know about it. Maybe fifty. Not because the work is small. Because nobody outside that room has any way of finding out it happened. Almost no digital presence. Nothing to search for, nothing to share, nothing that holds together.",
-    "If you went looking for them tonight, you would find a phone number & a few scattered posts from 3 years ago.",
-  ],
-  right: [
-    "**The work is real. The record of it does not exist. That is the gap.** On one side, years of genuine impact. On the other, a donor, a volunteer, a corporate partner, a journalist — people who would care if they knew, and who never will.",
-    "Two organisations can do identical work and live entirely different lives. One is known. One is not. Nothing about the work itself explains the difference. It is not a gap in effort, or in quality, or in commitment. It is a gap in who knows.",
-    "And it is the reason so much good work in this country stays exactly where it started.",
-  ],
-} as const;
-
-export const problem = {
-  title: ["The", "communication", "problem"],
-  subtitle: "Why NGOs struggle to communicate their impact",
-  beats: [
-    "An organisation in Hyderabad solves a problem that an organisation in Warangal is still struggling with. Neither knows the other exists.",
-    "One has a donor relationship that would fit another's cause perfectly. One has a volunteer network sitting idle. One has already fought a battle the other is about to walk into blindly.",
-    "None of it gets shared. Not because anyone is unwilling — because there is no room where these conversations happen.",
-    "So every organisation starts from zero. Every lesson gets learned twice. Every door gets knocked on separately.",
-    "The sector is full of people solving the same problems in isolation, a few hundred kilometres apart.",
-    "**That is the 2nd gap.** Not just being unseen by the outside world — being unseen by each other.",
-  ],
-  close: "A network changes that. Shared learning, shared partners, shared strength. One organisation's contact becomes another's opportunity. One organisation's mistake becomes everyone's warning.",
-} as const;
 
 export const visibility = {
   title: ["What", "visibility", "can do"],
@@ -106,19 +48,119 @@ export const visibility = {
   close: "None of this changes the work. It changes how far the work reaches.",
 } as const;
 
-export const closes = {
-  title: "exists to close the gap",
-  lead: "We take everything a brand needs to be seen — and we build it for NGOs.",
-  items: [
-    "**Identity**, **positioning**, a **profile document** that argues your case instead of listing your activities. What a stranger sees before they meet you.",
-    "A **website** built properly, content that keeps working, **search visibility** so people looking for help actually find you.",
-    "**Advertising** and **campaigns** that put you in front of donors, volunteers and the people you serve.",
-    "**PR and Media**, so your work reaches beyond the room it happens in.",
-    "**Your story, told well.** Films, photography, beneficiary stories. Impact that people can feel, not just read about.",
-    "Every **organisation** we work with **joins** the others. NGOs stop working in isolation & start finding each other — shared **learning**, shared **partners**, shared **strength**.",
-  ],
-  standard: "**Same team** that builds for our **commercial clients**. Same standard. No lesser version as it's **for a cause**.",
-  given: "All of it, given to someone who needs it and has never had access to it.",
+/**
+ * The /asraya page (2026-11-04, owner's direction): "we provide free services, we don't earn anything from you — all
+ * the premium multinational-brand marketing, offered to NGOs for better funding and better reach". Written for the
+ * site from that brief and from the profile's own lines; for the owner's read.
+ */
+export const home = {
+  free: {
+    label: "Free for NGOs",
+    title: ["Premium marketing.", "Free for NGOs."],
+    statement:
+      "We don't earn anything from you. The brand, marketing and media work that multinational brands pay for — we give it to NGOs, so your work wins better funding and reaches more people.",
+    points: ["No fees", "Better funding", "Better reach"],
+  },
+  services: {
+    label: "What you get",
+    title: ["Everything a brand needs", "to be seen."],
+    lead: "We take everything a brand needs to be seen — and we build it for NGOs. Same team, same standard as our commercial clients.",
+    items: [
+      { icon: "identity", title: "Brand identity", body: "Positioning, a logo and identity system, and a profile document that argues your case." },
+      { icon: "website", title: "Website", body: "Built properly — fast, clear, on any device, with a way to donate or volunteer." },
+      { icon: "search", title: "Search visibility", body: "So the people looking for you, and for help, actually find you." },
+      { icon: "ads", title: "Advertising", body: "Campaigns in front of donors and volunteers, including the Google Ad Grants account eligible NGOs can claim." },
+      { icon: "press", title: "PR & media", body: "Your story taken to the journalists who cover your cause, so your work reaches beyond the room." },
+      { icon: "film", title: "Film & photography", body: "Impact films, documentaries and beneficiary stories, shot by our production team." },
+      { icon: "campaign", title: "Campaigns & events", body: "Launches, awareness drives and moments on the ground, planned and captured." },
+      { icon: "network", title: "The Asraya network", body: "NGOs stop working alone and start finding each other: shared learning, partners and strength." },
+    ],
+    link: { label: "See everything we build", href: "/asraya/what-we-build" },
+  },
+  /**
+   * The story of how a stranger becomes a supporter, told step by step without naming it: each step is something
+   * Asraya builds (`behind`). Written for the site from the profile's own lines (visibility, digital); no figures.
+   * For the owner's read.
+   */
+  journey: {
+    label: "A supporter's story",
+    title: ["From a stranger", "to someone who stays."],
+    lead: "Nobody gives to an organisation they have never heard of. Every person who supports you walked the same road to get there.",
+    behindLabel: "What makes it happen",
+    steps: [
+      {
+        art: "word",
+        title: "Someone hears your name.",
+        body: "A friend shares a post. A journalist runs your story. A banner at an event catches an eye.",
+        behind: ["PR & media", "Campaigns & events"],
+      },
+      {
+        art: "lookup",
+        title: "They look you up.",
+        body: "That evening they search for you — and you are there, with a site that works on their phone.",
+        behind: ["Search visibility", "Website"],
+      },
+      {
+        art: "clarity",
+        title: "They understand you in thirty seconds.",
+        body: "One line says what you stand for. Your colours, your words and your profile all say the same thing.",
+        behind: ["Positioning", "Brand identity"],
+      },
+      {
+        art: "screen",
+        title: "They see the work.",
+        body: "Not quotes on gradients — the people your work has changed, telling it themselves.",
+        behind: ["Film & photography", "Social media"],
+      },
+      {
+        art: "door",
+        title: "They trust what they see.",
+        body: "Being findable, consistent and clear is how a stranger decides you are real.",
+        behind: ["Profile document", "Press material"],
+      },
+      {
+        art: "jar",
+        title: "They give.",
+        body: "The way to donate or volunteer is right there. Nobody has to hunt for it.",
+        behind: ["Website", "Advertising"],
+      },
+      {
+        art: "letter",
+        title: "And they hear back.",
+        body: "Field stories, updates and a year designed properly keep them close to the work they made possible.",
+        behind: ["Field stories", "Annual reports"],
+      },
+      {
+        art: "gather",
+        title: "Then they bring others.",
+        body: "People share what they are proud to be part of. Somewhere, someone hears your name.",
+        behind: ["Social media", "The Asraya network"],
+      },
+    ],
+    close: "None of this changes the work. It changes how far the work reaches.",
+  },
+  network: {
+    label: "The gap we close",
+    line: "The work is real. The record of it does not exist.",
+    close: "A network changes that. Shared learning, shared partners, shared strength.",
+  },
+  steps: {
+    label: "How it works",
+    title: "Three steps. No invoice.",
+    items: [
+      { icon: "people", title: "Tell us your story", body: "Your history, your work, your people — and whatever you already have: photos, reports, posts." },
+      { icon: "website", title: "We build everything", body: "The full weight of our team behind you. No shortcuts, no lesser version because it is for a cause." },
+      { icon: "campaign", title: "You focus on changing lives", body: "We'll focus on making sure the right people know." },
+    ],
+  },
+  explore: {
+    label: "More about Asraya",
+    items: [
+      { href: "/asraya/what-we-build", title: "What we build", body: "Branding, digital, reach, PR, film and campaigns, service by service.", art: "toolkit" },
+      { href: "/asraya/partnership", title: "Partnership", body: "Personalised, not packaged — and what we need from you.", art: "together" },
+      { href: "/asraya/tomorrow", title: "Tomorrow", body: "Six initiatives we are building towards.", art: "sunrise" },
+    ],
+  },
 } as const;
 
 /* ── /asraya/what-we-build ────────────────────────────────── */
@@ -229,24 +271,13 @@ export const build = {
 
 export const partnership = {
   eyebrow: "Partnership",
-  costs: {
-    title: ["What it", "normally", "costs"],
-    rows: [
-      { figure: "₹1.3 crore", label: "Other market", body: "What a comparable agency charges an NGO for the same eleven practices. Midpoint per practice; the full stack lands near ₹1.3 crore." },
-      { figure: "₹44.6 lakh", label: "Kreatif Atelier", body: "Our own Master Price List v2.0 — the same rates a paying commercial client is quoted. Roughly a third of market, and still ₹44.6 lakh for the Asraya build." },
-    ],
-    close: "This is the number an NGO cannot raise. It is also the number Asraya absorbs in full.",
+  /** By the owner's instruction (2026-11-04) the Asraya pages carry no prices: the costs, the fee and the give-back are
+   *  replaced by this. Owner-approved wording. */
+  personalised: {
+    title: ["Personalised,", "not packaged."],
+    body: "Every partnership is shaped around your organisation — your cause, your stage, what you already have and what you need next. We scope the work together, so you get the services that move your work forward.",
   },
   changes: {
-    title: ["What", "Asraya", "changes"],
-    lead: "One fee. Everything included.",
-    fee: "₹25,000",
-    feeLine: "Three practices or eleven — same ₹25,000. No tiers, no line items to cut. Brand, website, content, SEO, analytics, CRM, PR, film and Ad Grants ship as one stack or not at all.",
-    points: [
-      { title: "The build costs nothing.", body: "Kreatif Atelier absorbs the full ₹44.6 lakh. The fee only keeps it alive — hosting, security, updates, and monthly management of the Ad Grants account so it's never suspended." },
-      { title: "And in the eleventh month, it comes back.", body: "A portion of what the NGO has paid is returned as a donation to its own work. The fee funds the infrastructure for a year; the year ends with money going back into the field." },
-    ],
-    market: "The market asks what an NGO can afford. Asraya asks nothing upfront — and gives back at the end.",
     presence: [
       "**We will build your organisation a complete digital presence.** Not a website. A full profile — how you look, how you're found, how you're read, how your work is documented and how your impact is measured.",
       "When a donor, a journalist or a CSR committee searches for you, they will find an organisation that looks the size of the work it does. **The things that are normally out of reach are included.**",
@@ -304,33 +335,39 @@ export const tomorrow = {
   areasLabel: "Potential areas include:",
   initiatives: [
     {
+      icon: "safety",
       title: "Women's Safety Initiative",
       body: "A long-term initiative focused on improving awareness, access to resources and everyday safety for women.",
       areas: ["Safety awareness campaigns", "Self-defence education", "Emergency-resource awareness", "Safety technology", "Community programs", "Educational initiatives"],
       note: "The objective is not simply to talk about women's safety, but to develop practical systems that can help women feel safer and better equipped.",
     },
     {
+      icon: "animal",
       title: "Animal Welfare & Protection",
       body: "Extending our work beyond human-focused causes.",
       areas: ["Animal rescue", "Adoption awareness", "Stray animal welfare", "Responsible pet ownership", "Veterinary support", "Animal-rights awareness"],
       note: "Because compassion should not have boundaries.",
     },
     {
+      icon: "elder",
       title: "Elder Care & Dignity",
       body: "Supporting initiatives focused on elderly people who are vulnerable, isolated or without adequate support.",
       areas: ["Companionship", "Basic necessities", "Community engagement", "Awareness", "Support networks", "Dignity-focused programs"],
     },
     {
+      icon: "education",
       title: "Child & Education Initiatives",
       body: "Supporting organizations and initiatives working to give children better access to education, opportunity and protection.",
       areas: ["Education access", "Learning resources", "Mentorship", "Digital literacy", "Awareness programs", "Child welfare"],
     },
     {
+      icon: "community",
       title: "Community Support",
       body: "Building initiatives that respond to practical needs within underserved communities.",
       areas: ["Food & essentials", "Education", "Employment awareness", "Skill development", "Community campaigns", "Access to resources"],
     },
     {
+      icon: "environment",
       title: "Environment & Sustainability",
       body: "Supporting causes that protect the environments in which communities, animals and future generations depend.",
       areas: ["Environmental awareness", "Clean-up initiatives", "Tree plantation", "Waste reduction", "Sustainable practices", "Community participation"],
@@ -339,4 +376,43 @@ export const tomorrow = {
   every: ["Every organization has a story.", "Every cause has a need.", "Every community has people willing to help."],
   found: "Sometimes, they simply haven't found each other yet. That's where we want to begin.",
   starts: "But it starts with you.",
+} as const;
+
+/* ── Photographs ──────────────────────────────────────────── */
+
+/**
+ * The owner's field photographs, by the ids in docs/asraya-photo-brief.md. Until a `src` is filled in, an essential
+ * photo shows a marked slot and an optional one is left out. Fill in `src` (a file in /public/images/asraya/), its
+ * `width`, `height` and `alt`, and the page picks it up. All of them are toned to warm black and white on the page.
+ */
+type Photo = { label: string; essential: boolean; src?: string; width?: number; height?: number; alt?: string };
+
+export const photos = {
+  A1: { label: "NGO team at work in the field", essential: true },
+  A2: { label: "The unseen work: a shelter, a night class", essential: true },
+  A3: { label: "A city NGO worker", essential: true },
+  A4: { label: "A village NGO worker", essential: true },
+  A5: { label: "Our crew filming at an NGO", essential: false },
+  B1: { label: "NGO material in use: signboard, ID cards, profile", essential: true },
+  B2: { label: "Staff updating their page", essential: false },
+  B3: { label: "An awareness campaign on the street", essential: true },
+  B4: { label: "A beneficiary interview being filmed", essential: true },
+  B5: { label: "An NGO event or launch", essential: false },
+  C1: { label: "An NGO founder and our team, planning", essential: true },
+  C2: { label: "Walking into a community with NGO staff", essential: false },
+  C3: { label: "Volunteers signing up", essential: false },
+  D1: { label: "Women's safety session", essential: true },
+  D2: { label: "Animal rescue", essential: true },
+  D3: { label: "An elder with a companion", essential: true },
+  D4: { label: "Children learning", essential: true },
+  D5: { label: "Essentials being handed out", essential: false },
+  D6: { label: "Tree planting or a clean-up", essential: false },
+} satisfies Record<string, Photo> as Record<string, Photo>;
+export type PhotoId = keyof typeof photos;
+
+/** Shared words on the pages. */
+export const ui = {
+  more: "Read more",
+  less: "Show less",
+  photoPending: "Photograph to be supplied",
 } as const;

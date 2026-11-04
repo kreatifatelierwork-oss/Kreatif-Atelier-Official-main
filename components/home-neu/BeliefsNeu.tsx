@@ -1,3 +1,6 @@
+import { Fragment } from "react";
+import { Quill } from "@/components/aurelius/art";
+import { Play } from "@/components/aurelius/Play";
 import { Knob } from "@/components/design/NeuButton";
 import { Section } from "@/components/design/Section";
 import { SectionHeader } from "@/components/design/SectionHeader";
@@ -6,7 +9,7 @@ import { aurelius, practiceHref, practices } from "@/content/aurelius";
 
 /**
  * What we believe: Aurelius's point of view in its own words, one line per practice (the profile's lines,
- * as on each practice page), as raised cards that lead to that practice. Content beyond the service list.
+ * as on each practice page), as raised cards that lead to that practice, with the playable quill in the first column.
  */
 export function BeliefsNeu() {
   const id = "beliefs-heading";
@@ -15,16 +18,28 @@ export function BeliefsNeu() {
     <Section id="beliefs" labelledBy={id}>
       <SectionHeader id={id} label={beliefs.label} headline={beliefs.headline} />
       <ul className="mt-[var(--ds-space-7)] gap-[var(--ds-space-5)] sm:columns-2 lg:columns-3">
-        {practices.map((p) => (
-          <li key={p.slug} data-reveal className="mb-[var(--ds-space-5)] break-inside-avoid">
-            <SmartLink href={practiceHref(p.slug)} className="neu-card group flex flex-col gap-[var(--ds-space-5)] p-[var(--ds-space-6)]">
-              <blockquote className="ds-emphasis text-[length:var(--ds-text-2xl)] leading-[var(--ds-leading-heading)] text-ds-text">{p.pov[0]}</blockquote>
-              <span className="flex items-center justify-between gap-[var(--ds-space-3)]">
-                <span className="ds-label">{p.name}</span>
-                <Knob />
-              </span>
-            </SmartLink>
-          </li>
+        {practices.map((p, i) => (
+          <Fragment key={p.slug}>
+            {/* The quill takes the shorter first column's spare room (after the third card, where that column ends). */}
+            {i === 3 && (
+              <li data-reveal className="mb-[var(--ds-space-5)] break-inside-avoid">
+                <div className="neu-card p-[var(--ds-space-6)]">
+                  <Play>
+                    <Quill />
+                  </Play>
+                </div>
+              </li>
+            )}
+            <li data-reveal className="mb-[var(--ds-space-5)] break-inside-avoid">
+              <SmartLink href={practiceHref(p.slug)} className="neu-card group flex flex-col gap-[var(--ds-space-5)] p-[var(--ds-space-6)]">
+                <blockquote className="ds-emphasis text-[length:var(--ds-text-2xl)] leading-[var(--ds-leading-heading)] text-ds-text">{p.pov[0]}</blockquote>
+                <span className="flex items-center justify-between gap-[var(--ds-space-3)]">
+                  <span className="ds-label">{p.name}</span>
+                  <Knob />
+                </span>
+              </SmartLink>
+            </li>
+          </Fragment>
         ))}
       </ul>
     </Section>

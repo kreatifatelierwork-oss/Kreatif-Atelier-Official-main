@@ -1,169 +1,166 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { AsrayaShell } from "@/components/asraya/AsrayaShell";
-import { Art, Body, Poster, Rich } from "@/components/asraya/kit";
-import { asraya, closes, gap, problem, visibility, why } from "@/content/asraya";
+import { Network } from "@/components/asraya/graphics";
+import { Amplify, Gift, ServiceIcon, Sunrise, Together, Toolkit, type IconName } from "@/components/asraya/illustrations";
+import { Journey } from "@/components/asraya/Journey";
+import { Band, Tags } from "@/components/asraya/kit";
+import { Play } from "@/components/asraya/Play";
+import { Button } from "@/components/ui/Button";
+import { asraya, home } from "@/content/asraya";
 
 export const metadata: Metadata = { ...asraya.meta, alternates: { canonical: "/asraya/" } };
 
-/** Asraya, part one: the cover, the why, the two gaps, what visibility does, and what Asraya is. */
+const { free, services, network, steps, explore } = home;
+const exploreArt = { toolkit: Toolkit, together: Together, sunrise: Sunrise } as const;
+
+/**
+ * Asraya's main page: premium marketing, free for NGOs. The cover, the offer, what an NGO gets, a supporter's story
+ * (how a stranger comes to give, step by step), the gap it closes, how it works, and the way into the other three pages.
+ */
 export default function Page() {
   return (
-    <AsrayaShell next={asraya.nav[1]}>
-      {/* Cover */}
-      <Poster tone="paper" labelledBy="home-heading" className="a-cover !pt-[clamp(2.5rem,6vh,4.5rem)] !pb-[clamp(2.5rem,5vh,3.5rem)]">
-        {/* Wide screens: wordmark and promise down the left, the jigsaw filling the right two thirds.
-            Narrow screens: wordmark, jigsaw edge to edge, then the promise. */}
-        <div className="grid gap-y-6 lg:grid-cols-[minmax(0,4fr)_minmax(0,9fr)] lg:grid-rows-[1fr_auto] lg:gap-x-4">
-          <h1 id="home-heading" className="a-serif relative z-10 text-[clamp(5.5rem,23vw,8rem)] leading-[0.8] font-normal tracking-[-0.03em] lg:self-center lg:text-[clamp(6.5rem,10.6vw,11rem)]">
+    <AsrayaShell next={asraya.nav[1]} network={false}>
+      {/* Cover: the wordmark and promise in their own column, the jigsaw of portraits in the other — no overlap. */}
+      <header className="grid items-center gap-x-12 gap-y-10 pt-[clamp(2.5rem,6vh,4rem)] pb-[clamp(3.5rem,9vh,6rem)] lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+        <div>
+          <p className="a-wide a-red">{asraya.aegis}</p>
+          <h1 id="home-heading" className="a-wordmark mt-5 text-[clamp(4.6rem,19vw,8.6rem)] lg:text-[clamp(5rem,8.4vw,8.6rem)]">
             {asraya.wordmark}
           </h1>
-          {/* Multiplied onto the poster, so the picture's white paper takes the poster's own colour. */}
+          <p className="a-display mt-8 max-w-md text-[clamp(1.7rem,3vw,2.4rem)] leading-[1.08]">{asraya.promise}</p>
+          <p className="a-wide a-faint mt-5">{asraya.tagline}</p>
+          <div className="mt-9">
+            <Button href={asraya.cta.href}>{asraya.cta.button}</Button>
+          </div>
+        </div>
+        {/* The drift sits on the picture itself: a moved wrapper would isolate it and break the multiply onto the ivory. */}
+        <div>
           <Image
+            data-a-parallax="22"
             src={asraya.cover.src}
             alt={asraya.cover.alt}
             width={asraya.cover.width}
             height={asraya.cover.height}
             priority
             decoding="sync"
-            sizes="(min-width: 1024px) 72vw, 110vw"
-            className="a-cover__collage lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center"
+            sizes="(min-width: 1024px) 56vw, 100vw"
+            className="a-cover__collage"
           />
-          <div className="relative z-10 border-t a-rule pt-6 lg:col-start-1 lg:row-start-2 lg:self-end">
-            <p className="a-display text-[clamp(1.9rem,6vw,3rem)] lg:text-[clamp(1.8rem,2.6vw,2.6rem)]">{asraya.promise}</p>
-            <p className="a-wide a-accent mt-6">
-              {asraya.aegis}
-              <span className="mt-2 block text-[color:var(--a-fg)]">{asraya.tagline}</span>
-            </p>
-          </div>
         </div>
-      </Poster>
+      </header>
 
-      {/* The why */}
-      <Poster tone="slate" labelledBy="why-heading">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
-          <div className="lg:sticky lg:top-[calc(var(--nav-h)+2rem)] lg:self-start">
-            <h2 id="why-heading" data-reveal className="a-display text-[clamp(4rem,11vw,9.5rem)]">
-              {why.title}
-            </h2>
-            <p data-reveal className="a-wide a-accent mt-6 max-w-sm">
-              {why.question}
-            </p>
-            <Art name="statue" sizes="(min-width: 1024px) 34vw, 80vw" className="a-art--plinth mt-8 max-w-[24rem]" />
-          </div>
-          <Body paragraphs={why.body} />
-        </div>
-      </Poster>
-
-      {/* The visibility gap */}
-      <Poster tone="paper" labelledBy="gap-heading">
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-20">
-          <p data-reveal className="a-display a-accent max-w-md text-[clamp(1.5rem,2.6vw,2.2rem)]">
-            {gap.kicker}
-          </p>
-          <h2 id="gap-heading" data-reveal className="lg:text-right">
-            <span className="a-wide block text-[1rem]">{gap.title[0]}</span>
-            <span className="a-serif block text-[clamp(3.4rem,9vw,8rem)] uppercase">{gap.title[1]}</span>
-            <span className="a-display block text-[clamp(4.5rem,13vw,11rem)] leading-[0.85]">{gap.title[2]}</span>
-          </h2>
-        </div>
-        <div className="mt-14 grid gap-12 border-t a-rule pt-12 lg:grid-cols-2 lg:gap-20">
-          <Body paragraphs={gap.left} />
-          <Body paragraphs={gap.right} />
-        </div>
-      </Poster>
-
-      {/* The communication problem */}
-      <Poster tone="kraft" labelledBy="problem-heading">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:items-end lg:gap-16">
+      {/* The offer */}
+      <Band deep labelledBy="free-heading">
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:gap-16">
           <div>
-        <h2 id="problem-heading" data-reveal>
-          <span className="a-display block text-[clamp(3rem,7vw,6rem)]">{problem.title[0]}</span>
-          <span className="a-serif block text-[clamp(3.4rem,11vw,9.5rem)] leading-[0.86] lowercase">{problem.title[1]}</span>
-          <span className="a-display block text-[clamp(3rem,7vw,6rem)]">{problem.title[2]}</span>
+            <p className="a-wide a-red">{free.label}</p>
+            <h2 id="free-heading" data-reveal className="a-display a-h2 mt-5">
+              {free.title[0]} <span className="a-em block">{free.title[1]}</span>
+            </h2>
+            <p data-a-words className="a-lead mt-8 max-w-2xl !text-[clamp(1.5rem,2.5vw,2.2rem)]">
+              {free.statement}
+            </p>
+            <Tags items={free.points} className="mt-9" />
+          </div>
+          <Play className="mx-auto max-w-[26rem]">
+            <Gift />
+          </Play>
+        </div>
+      </Band>
+
+      {/* What you get */}
+      <Band labelledBy="services-heading">
+        <p className="a-wide a-red">{services.label}</p>
+        <h2 id="services-heading" data-reveal className="a-display a-h2 mt-5 max-w-4xl">
+          {services.title[0]} <span className="a-em">{services.title[1]}</span>
         </h2>
-        <p data-reveal className="a-serif mt-6 max-w-md text-[clamp(1.5rem,2.4vw,2rem)] font-bold">
-          {problem.subtitle}
+        <p data-reveal className="a-lead mt-6 max-w-3xl">
+          {services.lead}
         </p>
-          </div>
-          <Art name="speaker" blend="multiply" sizes="(min-width: 1024px) 30vw, 70vw" className="mx-auto max-w-[18rem] lg:max-w-none" />
-        </div>
-        <ol className="mt-14 grid gap-x-16 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
-          {problem.beats.map((beat, i) => (
-            <li key={beat} data-reveal className={`a-body border-t a-rule pt-5 ${i % 3 === 1 ? "lg:mt-16" : i % 3 === 2 ? "lg:mt-32" : ""}`}>
-              <span className="a-display a-accent mb-3 block text-[1.6rem]">{String(i + 1).padStart(2, "0")}</span>
-              <Rich text={beat} />
-            </li>
-          ))}
-        </ol>
-        <p data-reveal className="a-serif mx-auto mt-16 max-w-4xl text-center text-[clamp(1.5rem,2.6vw,2.2rem)] leading-snug">
-          {problem.close}
-        </p>
-      </Poster>
-
-      {/* What visibility can do */}
-      <Poster tone="paper" labelledBy="visibility-heading">
-        <div className="grid gap-14 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-20">
-          <div>
-            <h2 id="visibility-heading" data-reveal>
-              <span className="a-display block text-[clamp(3rem,7.5vw,6.5rem)]">{visibility.title[0]}</span>
-              <span className="a-serif inline text-[clamp(3rem,7.5vw,6.5rem)] uppercase">{visibility.title[1]} </span>
-              <span className="a-display inline text-[clamp(1.8rem,3.4vw,3rem)]">{visibility.title[2]}</span>
-            </h2>
-            <dl className="mt-12 grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
-              {visibility.items.map((item) => (
-                <div key={item.title} data-reveal>
-                  <dt className="a-display text-[1.7rem]">{item.title}</dt>
-                  <dd className="a-body mt-3 text-[0.96rem]">{item.body}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-          <div className="flex flex-col justify-between gap-10">
-            <Art name="houses" blend="multiply" sizes="(min-width: 1024px) 38vw, 90vw" />
-            <p data-reveal className="a-display text-[clamp(2.8rem,6vw,5.4rem)] lg:text-right">
-              {visibility.close}
-            </p>
-          </div>
-        </div>
-      </Poster>
-
-      {/* Asraya exists to close the gap */}
-      <Poster tone="red" labelledBy="closes-heading">
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-20">
-          <h2 id="closes-heading" data-reveal>
-            <span className="a-serif a-accent block text-[clamp(3.6rem,9vw,7.5rem)] tracking-[0.02em] uppercase">{asraya.name}</span>
-            <span className="a-display mt-2 block text-[clamp(2rem,4.6vw,3.8rem)]">{closes.title}</span>
-          </h2>
-          <p data-reveal className="a-display self-end text-[clamp(1.9rem,3.6vw,3rem)]">
-            {closes.lead}
-          </p>
-        </div>
-        <ul className="mt-14 grid gap-px overflow-hidden border a-rule bg-[color:var(--a-rule)] md:grid-cols-2 lg:grid-cols-3">
-          {closes.items.map((item) => (
-            <li key={item} className="a-body bg-[color:var(--a-bg)] p-7 md:p-8">
-              <p data-reveal>
-                <Rich text={item} />
-              </p>
+        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {services.items.map((item) => (
+            <li key={item.title} data-reveal className="a-card a-card--lift">
+              <ServiceIcon name={item.icon as IconName} />
+              <h3 className="a-title mt-5">{item.title}</h3>
+              <p className="a-body mt-2 !text-[1rem] !leading-relaxed">{item.body}</p>
             </li>
           ))}
         </ul>
-        <div className="mt-12 grid gap-8 lg:grid-cols-2 lg:gap-20">
-          <p data-reveal className="a-body max-w-md">
-            <Rich text={closes.standard} />
-          </p>
-          <p data-reveal className="a-display text-[clamp(2.2rem,4.6vw,3.8rem)] lg:text-right">
-            {asraya.promise}
-          </p>
+        <div data-reveal className="mt-10">
+          <Button href={services.link.href}>{services.link.label}</Button>
         </div>
-      </Poster>
+      </Band>
 
-      {/* All of it, given */}
-      <Poster tone="paper">
-        <p data-reveal className="a-display a-accent max-w-5xl text-[clamp(3rem,9vw,8rem)]">
-          {closes.given}
+      {/* A supporter's story: how a stranger becomes someone who stays, and what we build at every step. */}
+      <Journey />
+
+      {/* The gap we close: organisations working alone, drawn into one network as you scroll */}
+      <Band deep labelledBy="network-heading">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)]">
+          <div>
+            <p className="a-wide a-red">{network.label}</p>
+            <h2 id="network-heading" data-a-words className="a-display a-h2 mt-5">
+              {network.line}
+            </h2>
+          </div>
+          <Play className="mx-auto max-w-[22rem]">
+            <Amplify />
+          </Play>
+        </div>
+        <div className="mt-12">
+          <Network state="joined" />
+        </div>
+        <p data-reveal className="a-quote mt-10 max-w-3xl">
+          {network.close}
         </p>
-      </Poster>
+      </Band>
+
+      {/* How it works */}
+      <Band labelledBy="steps-heading">
+        <p className="a-wide a-red">{steps.label}</p>
+        <h2 id="steps-heading" data-reveal className="a-display a-h2 mt-5">
+          {steps.title}
+        </h2>
+        <ol className="mt-12 grid gap-4 md:grid-cols-3">
+          {steps.items.map((step) => (
+            <li key={step.title} data-reveal className="a-card a-card--lift">
+              <ServiceIcon name={step.icon as IconName} />
+              <h3 className="a-display mt-5 text-[clamp(1.5rem,2.2vw,1.9rem)]">{step.title}</h3>
+              <p className="a-body mt-3 !text-[1rem]">{step.body}</p>
+            </li>
+          ))}
+        </ol>
+      </Band>
+
+      {/* More about Asraya */}
+      <Band labelledBy="explore-heading" className="!pt-0">
+        <h2 id="explore-heading" className="a-wide a-red">
+          {explore.label}
+        </h2>
+        <ul className="mt-6 grid gap-4 md:grid-cols-3">
+          {explore.items.map((item) => {
+            const Art = exploreArt[item.art];
+            return (
+              <li key={item.href} data-reveal>
+                <Link href={item.href} className="a-card group h-full">
+                  <Play className="mx-auto max-w-[15rem]">
+                    <Art />
+                  </Play>
+                  <span className="a-display mt-6 flex items-baseline justify-between gap-4 text-[clamp(1.6rem,2.4vw,2rem)]">
+                    {item.title}
+                    <span aria-hidden="true" className="a-red transition-transform duration-300 group-hover:translate-x-1.5">
+                      →
+                    </span>
+                  </span>
+                  <span className="a-body mt-2 block !text-[1rem]">{item.body}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </Band>
     </AsrayaShell>
   );
 }

@@ -59,3 +59,17 @@ export const anton = localFont({
   preload: false,
   fallback: ["Impact", "Haettenschweiler", "Arial Narrow Bold", "sans-serif"],
 });
+
+// Asraya's signature face (a venture may add one): a warm, soft, heavy serif for its wordmark and headlines.
+// Fraunces, SIL Open Font License, from @fontsource-variable/fraunces 5.1.0 (latin, weight axis).
+export const fraunces = localFont({
+  src: [
+    { path: "./fonts/fraunces-latin-wght-normal.woff2", weight: "100 900", style: "normal" },
+    { path: "./fonts/fraunces-latin-wght-italic.woff2", weight: "100 900", style: "italic" },
+  ],
+  variable: "--font-fraunces",
+  display: "swap",
+  // Only the Asraya pages use it.
+  preload: false,
+  fallback: ["Georgia", "Times New Roman", "serif"],
+});

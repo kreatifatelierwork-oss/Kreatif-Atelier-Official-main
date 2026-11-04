@@ -1,3 +1,5 @@
+import { Redirect } from "@/components/aurelius/art";
+import { Play } from "@/components/aurelius/Play";
 import { NeuButton } from "@/components/design/NeuButton";
 import { Section } from "@/components/design/Section";
 import { StepWire } from "@/components/design/StepWire";
@@ -34,6 +36,10 @@ export function MeasurementNeu() {
           <div data-reveal className="mt-[var(--ds-space-3)]">
             <NeuButton href={measurement.cta.href}>{measurement.cta.label}</NeuButton>
           </div>
+          {/* The loop in one picture: a line that is read, then redirected. */}
+          <Play className="mt-[var(--ds-space-5)] max-w-[28rem]">
+            <Redirect />
+          </Play>
         </div>
         <StepWire steps={loopSteps} loop label={measurement.marker} />
       </div>

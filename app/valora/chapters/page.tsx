@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { PageShell } from "@/components/layout/PageShell";
 import { ValoraRadar } from "@/components/valora/ValoraRadar";
+import { ValoraShell } from "@/components/valora/ValoraShell";
 import { valoraRadar } from "@/content/verticals";
 
 export const metadata: Metadata = { ...valoraRadar.meta, alternates: { canonical: "/valora/chapters/" } };
 
-/** Valora's chapter radar, inside the site's header and footer. */
+/** Valora's chapter radar, the fourth Valora page, under the Valora masthead. */
 export default function Page() {
   return (
-    <PageShell>
+    <ValoraShell cta={false} wide>
       <ValoraRadar />
-    </PageShell>
+    </ValoraShell>
   );
 }
