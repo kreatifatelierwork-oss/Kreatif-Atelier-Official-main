@@ -215,6 +215,14 @@ Full-spectrum creative agency, Hyderabad. Four divisions. Six service pillars.
   (`EcosystemWheel.tsx`) and a ladder to climb (`Ladder.tsx`). The footer sky is dusk on Valora pages.
   Shared story pieces now live in `components/story/` (Play, Journey, StoryMotion, art helpers) and read role tokens
   (`--a-fg`, `--a-accent`, `--a-rule`…) from the page scope; Asraya and Valora set their own.
+- Aurelius drawings (2026-11-04, owner: "more interactive, appropriate illustrations, fill the empty space"): maroon line
+  work with cream and polished-gold fills (`components/aurelius/art.tsx`, styles "Aurelius drawings" in `app/globals.css`),
+  playable through the shared `<Play>` (`components/aurelius/Play.tsx`, labels in `aurelius.play`). Placed where the
+  /aurelius page (also the home page) and Contact had spare room: a scale that comes level under Positioning ("we hold
+  both ends"), a quill in the shorter first column of What we believe, a line redirected after it is read under
+  Measurement (also on /approach), four gears turning together under About Aurelius, and an envelope beside the Contact
+  title (wide screens only). Own / Buy / Keep cards carry a key, a coin and a heart that play on hover; each venture card
+  has a small drawn mark (not a logo) that plays on hover.
 - Heroes (2026-10-12): the home page and `/aurelius` both use the owner's galloping-horse picture
   (`public/reference/aurelius-horse.webp`) as a full-bleed hero with AURELIUS along its foot; it drifts forward on
   scroll. The crowned figure and the bust are no longer used; the text-behind-subject slide only runs for `cutout` figures.

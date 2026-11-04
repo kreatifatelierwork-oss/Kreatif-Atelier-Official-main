@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import { Envelope } from "@/components/aurelius/art";
 import { ContactForm } from "@/components/aurelius/ContactForm";
+import { Play } from "@/components/aurelius/Play";
 import { PageHero } from "@/components/layout/PageHero";
 import { PageShell } from "@/components/layout/PageShell";
 import { Label } from "@/components/ui/Heading";
+import { aurelius } from "@/content/aurelius";
 import { contactPage } from "@/content/pages";
 import { NeuButton } from "@/components/design/NeuButton";
 import { contact, mailtoHref, site } from "@/content/site";
@@ -20,7 +23,19 @@ export default function Page() {
 
   return (
     <PageShell theme="aurelius">
-      <PageHero eyebrow={[...contactPage.eyebrow]} title={contactPage.title} lead={contactPage.lead} />
+      <PageHero
+        eyebrow={[...contactPage.eyebrow]}
+        title={contactPage.title}
+        lead={contactPage.lead}
+        aside={
+          // Wide screens only: on a phone the form comes first.
+          <div className="mx-auto hidden w-full max-w-[24rem] lg:block">
+            <Play label={aurelius.play.art.envelope}>
+              <Envelope />
+            </Play>
+          </div>
+        }
+      />
       <section className="px-[var(--gutter)] pb-[clamp(5rem,12vh,9rem)]">
         <div className="mx-auto grid w-full max-w-[1280px] gap-14 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:gap-20">
           <ContactForm />

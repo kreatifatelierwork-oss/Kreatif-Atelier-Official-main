@@ -3669,3 +3669,245 @@ body:has(.valora) .ft-sky__glow {
     var(--ft-ground) 97%
   );
 }
+
+/* ── Aurelius drawings (components/aurelius/art.tsx) ──
+   Maroon line work with cream and polished-gold fills. The playable scenes use the shared <Play>, which reads these role
+   tokens; the small marks play when their card is hovered. */
+.theme-aurelius {
+  --a-fg: var(--au-maroon-900);
+  --a-faint: #6e4a44;
+  --a-accent: var(--au-gold-ink);
+  --a-marigold: var(--au-gold-500);
+  --a-rule: rgb(94 26 23 / 0.14);
+}
+.au-f-cream {
+  fill: var(--au-cream-50);
+}
+.au-f-sand {
+  fill: var(--au-cream-200);
+}
+.au-f-maroon {
+  fill: var(--au-maroon-700);
+}
+.au-f-gold {
+  fill: url(#au-metal);
+}
+.au-f-shadow {
+  fill: rgb(94 26 23 / 0.12);
+}
+.au-f-glass {
+  fill: rgb(247 227 161 / 0.35);
+}
+
+.au-art :is(.au-beam, .au-pan, .au-pivot, .au-glint, .au-old, .au-new, .au-turn, .au-lens, .au-ink, .au-quill, .au-letter, .au-flap,
+  .au-seal, .au-env) {
+  transition:
+    translate 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
+    rotate 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
+    scale 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.5s ease-out,
+    stroke-dashoffset 0.9s ease-out;
+}
+.au-art :is(.au-pivot, .au-glint, .au-turn, .au-seal) {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+[data-on] .au-glint {
+  scale: 1.35;
+  rotate: 45deg;
+}
+
+/* Balance: leaning to creative at rest, level when played; the pointer tips it. The pans hang from the beam's ends. */
+@property --au-tilt {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+.au-balance {
+  --au-tilt: calc(-9deg + var(--px, 0) * 5deg);
+  transition: --au-tilt 0.9s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+[data-on] .au-balance {
+  --au-tilt: calc(var(--px, 0) * 3deg);
+}
+.au-beam {
+  transform-box: view-box;
+  transform-origin: 200px 85px;
+  rotate: var(--au-tilt);
+  transition: none !important;
+}
+.au-pan--l {
+  translate: 0 calc(sin(var(--au-tilt)) * -130px);
+  transition: none !important;
+}
+.au-pan--r {
+  translate: 0 calc(sin(var(--au-tilt)) * 130px);
+  transition: none !important;
+}
+[data-on] .au-pivot {
+  scale: 1.2;
+}
+
+/* Gears: played, all four turn, each at its own speed and way round. */
+.au-gear {
+  transform-box: view-box;
+}
+
+/* Redirect: the lens slides to the turning point, the old path fades, the new one is drawn in gold. */
+.au-new {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+[data-on] .au-new {
+  stroke-dashoffset: 0;
+  transition-delay: 0.45s;
+}
+[data-on] .au-old {
+  opacity: 0.2;
+}
+[data-on] .au-lens {
+  translate: 104px 60px;
+}
+[data-on] .au-turn {
+  scale: 1.5;
+}
+
+/* Quill: the line is inked as the quill crosses the page. */
+.au-ink {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+[data-on] .au-ink {
+  stroke-dashoffset: 0;
+  transition-duration: 1.3s;
+  transition-timing-function: linear;
+}
+[data-on] .au-quill {
+  translate: 150px -4px;
+  transition-duration: 1.3s;
+  transition-timing-function: linear;
+}
+
+/* Envelope: the letter goes in, the flap closes, the seal is set, and it lifts a little, ready to go. */
+.au-letter {
+  translate: 0 -10px;
+}
+.au-flap {
+  transform-box: view-box;
+  transform-origin: 200px 140px;
+  scale: 1 -1;
+}
+.au-seal {
+  opacity: 0;
+  scale: 0.4;
+}
+[data-on] .au-letter {
+  translate: 0 70px;
+  opacity: 0;
+  transition:
+    translate 0.6s cubic-bezier(0.5, 0, 0.7, 1),
+    opacity 0.2s linear 0.45s;
+}
+[data-on] .au-flap {
+  scale: 1 1;
+  transition-delay: 0.45s;
+}
+[data-on] .au-seal {
+  opacity: 1;
+  scale: 1;
+  transition-delay: 0.85s;
+}
+[data-on] .au-env {
+  translate: 0 -10px;
+  transition-delay: 1s;
+}
+
+/* Small marks: played by their card's hover (and focus, for the venture links). */
+.au-mark {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.au-mark :is(.au-key, .au-coin, .au-heart, .au-leaves, .au-star, .au-toss, .au-reel, .au-orbits) {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    translate 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    rotate 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    scale 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.au-key {
+  transform-origin: 30% 50%;
+}
+.au-mode:hover .au-key {
+  rotate: -90deg;
+}
+.au-coin {
+  translate: 0 -6px;
+}
+.au-mode:hover .au-coin {
+  translate: 0 24px;
+  scale: 0.9;
+}
+.au-leaves {
+  transform-origin: 50% 100%;
+}
+:is(.au-venture:hover, .au-venture:focus-visible) .au-leaves {
+  rotate: calc(var(--side) * -8deg);
+}
+:is(.au-venture:hover, .au-venture:focus-visible) .au-star {
+  rotate: 90deg;
+  scale: 1.15;
+}
+:is(.au-venture:hover, .au-venture:focus-visible) .au-toss {
+  translate: 0 -10px;
+  rotate: -12deg;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-on] .au-gear {
+    animation: au-spin calc(var(--ratio) * 9s) linear infinite;
+  }
+  [data-on] .au-gear--rev {
+    animation-direction: reverse;
+  }
+  .au-mode:hover .au-heart {
+    animation: au-beat 0.9s ease-in-out infinite;
+  }
+  :is(.au-venture:hover, .au-venture:focus-visible) .au-reel {
+    animation: au-spin 2.4s linear infinite;
+  }
+  :is(.au-venture:hover, .au-venture:focus-visible) .au-orbits {
+    animation: au-spin 6s linear infinite;
+  }
+  :is(.au-venture:hover, .au-venture:focus-visible) .au-wave {
+    animation: au-pulse 1.2s ease-out calc(var(--i) * 0.15s) infinite;
+  }
+}
+@keyframes au-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes au-beat {
+  0%,
+  100% {
+    scale: 1;
+  }
+  30% {
+    scale: 1.18;
+  }
+  50% {
+    scale: 0.96;
+  }
+}
+@keyframes au-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
