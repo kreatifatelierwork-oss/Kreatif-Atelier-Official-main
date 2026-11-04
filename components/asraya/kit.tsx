@@ -168,3 +168,23 @@ export function Tags({ items, className = "" }: { items: readonly string[]; clas
     </ul>
   );
 }
+
+/** The Asraya wordmark: its capital A set apart in Cormorant's italic, the rest in heavy Fraunces. Reads as one word. */
+export function Wordmark({ word }: { word: string }) {
+  return (
+    <>
+      <span className="a-wordmark__cap">{word.charAt(0)}</span>
+      {word.slice(1)}
+    </>
+  );
+}
+
+/** A chapter's opening: its heading and lead on the left, its playable drawing on the right (below it on phones). */
+export function WithArt({ art, children, className = "" }: { art: React.ReactNode; children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,19rem)] md:items-center md:gap-14 ${className}`}>
+      <div className="min-w-0">{children}</div>
+      <div className="mx-auto w-full max-w-[19rem] md:max-w-none">{art}</div>
+    </div>
+  );
+}

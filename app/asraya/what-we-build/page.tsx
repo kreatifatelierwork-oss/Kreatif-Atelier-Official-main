@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { AsrayaShell } from "@/components/asraya/AsrayaShell";
 import { ChapterIndex } from "@/components/asraya/ChapterIndex";
 import { SearchSketch } from "@/components/asraya/graphics";
-import { Amplify, Toolkit } from "@/components/asraya/illustrations";
-import { Chapter, More, PageHead, Photo, Rich, Rows, Tags } from "@/components/asraya/kit";
-import { asraya, build, home } from "@/content/asraya";
+import { Amplify, Bunting, Clapper, Paperwork, Press, Stamp, Toolkit } from "@/components/asraya/illustrations";
+import { Play } from "@/components/asraya/Play";
+import { Chapter, More, PageHead, Photo, Rich, Rows, Tags, WithArt } from "@/components/asraya/kit";
+import { asraya, build, home, ui } from "@/content/asraya";
 
 export const metadata: Metadata = {
   title: `What we build — ${asraya.name} | Kreatif Atelier`,
@@ -33,25 +34,35 @@ const h3 = "a-display text-[clamp(1.9rem,3.6vw,3rem)]";
 export default function Page() {
   return (
     <AsrayaShell next={asraya.nav[2]}>
-      <PageHead label={asraya.name} title={["What we", "build"]} lead={home.services.lead} art={<Toolkit />} />
+      <PageHead label={asraya.name} title={["What we", "build"]} lead={home.services.lead} art={
+          <Play label={ui.art.toolkit}>
+            <Toolkit />
+          </Play>
+        } />
 
       <div className="a-has-index">
         <ChapterIndex items={chapters} label={build.eyebrow} />
 
         {/* 01 How you look */}
         <Chapter id="branding" n={1} name={chapters[0].name} className="!border-t-0">
-          <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] md:items-end md:gap-12">
-            <div>
-              <h2 id="branding-heading" data-reveal className="a-display a-h2">
-                {build.title.join(" ")}
-              </h2>
-              <p data-reveal className="a-quote mt-6">
-                {build.lead}
-              </p>
-            </div>
+          <WithArt
+            art={
+              <Play label={ui.art.stamp}>
+                <Stamp />
+              </Play>
+            }
+          >
+            <h2 id="branding-heading" data-reveal className="a-display a-h2">
+              {build.title.join(" ")}
+            </h2>
+            <p data-reveal className="a-quote mt-6">
+              {build.lead}
+            </p>
+          </WithArt>
+          <div className="mt-10 grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)] md:items-start md:gap-12">
+            <Rows items={build.brand} numbered />
             <Photo id="B1" className="aspect-[4/5]" sizes="(min-width: 768px) 30vw, 100vw" />
           </div>
-          <Rows items={build.brand} numbered className="mt-10" />
         </Chapter>
 
         {/* 02 Where you're found */}
@@ -64,7 +75,9 @@ export default function Page() {
               {digital.lead}
             </p>
             <div data-reveal>
-              <SearchSketch query={digital.search} />
+              <Play label={ui.art.search}>
+                <SearchSketch query={digital.search} />
+              </Play>
             </div>
           </div>
           <div className="mt-10">
@@ -101,18 +114,28 @@ export default function Page() {
                 <p className="a-body max-w-xl">{reach.campaign.body}</p>
               </More>
             </div>
-            <Amplify className="mx-auto max-w-[18rem]" />
+            <Play label={ui.art.amplify} className="mx-auto max-w-[18rem]">
+              <Amplify />
+            </Play>
           </div>
         </Chapter>
 
         {/* 04 Your work is a story */}
         <Chapter id="story" n={4} name={chapters[3].name}>
-          <h2 id="story-heading" data-reveal className="a-display a-h2">
-            {story.title.join(" ")}
-          </h2>
-          <p data-reveal className="a-quote mt-6">
-            {story.lead}
-          </p>
+          <WithArt
+            art={
+              <Play label={ui.art.press}>
+                <Press />
+              </Play>
+            }
+          >
+            <h2 id="story-heading" data-reveal className="a-display a-h2">
+              {story.title.join(" ")}
+            </h2>
+            <p data-reveal className="a-quote mt-6">
+              {story.lead}
+            </p>
+          </WithArt>
           <p data-reveal className="a-body mt-8 max-w-[40rem]">
             {story.body}
           </p>
@@ -135,13 +158,21 @@ export default function Page() {
 
         {/* 05 How it's seen */}
         <Chapter id="seen" n={5} name={chapters[4].name}>
-          <h2 id="seen-heading" data-reveal>
-            <span className="a-lead block max-w-2xl">{seen.lead}</span>
-            <span className="a-display a-red mt-2 block text-[clamp(4.5rem,13vw,10rem)] leading-[0.85]">{seen.word}</span>
-          </h2>
-          <p data-reveal className="a-wide a-faint mt-6">
-            {seen.list}
-          </p>
+          <WithArt
+            art={
+              <Play label={ui.art.clapper}>
+                <Clapper />
+              </Play>
+            }
+          >
+            <h2 id="seen-heading" data-reveal>
+              <span className="a-lead block max-w-2xl">{seen.lead}</span>
+              <span className="a-display a-red mt-2 block text-[clamp(4.5rem,11vw,9rem)] leading-[0.85]">{seen.word}</span>
+            </h2>
+            <p data-reveal className="a-wide a-faint mt-6">
+              {seen.list}
+            </p>
+          </WithArt>
           <div className="mt-10">
             <Photo id="B4" className="aspect-[16/9]" />
           </div>
@@ -162,10 +193,18 @@ export default function Page() {
 
         {/* 06 The moments */}
         <Chapter id="moments" n={6} name={chapters[5].name}>
-          <h2 id="moments-heading" data-reveal className="a-display a-h2">
-            {moments.title[0]} <span className="a-red">{moments.title[1]}</span>
-          </h2>
-          <Tags items={moments.tags} className="mt-6" />
+          <WithArt
+            art={
+              <Play label={ui.art.bunting}>
+                <Bunting />
+              </Play>
+            }
+          >
+            <h2 id="moments-heading" data-reveal className="a-display a-h2">
+              {moments.title[0]} <span className="a-red">{moments.title[1]}</span>
+            </h2>
+            <Tags items={moments.tags} className="mt-6" />
+          </WithArt>
           <p data-reveal className="a-quote mt-8 max-w-3xl">
             {moments.reason.lead} <span className="a-red">{`${moments.reason.words[0]}, ${moments.reason.words[1]} ${moments.reason.words[2]}`}</span>{" "}
             {moments.reason.tail}
@@ -193,12 +232,20 @@ export default function Page() {
 
         {/* 07 Anything else */}
         <Chapter id="anything" n={7} name={chapters[6].name}>
-          <h2 id="anything-heading" data-reveal className="a-display a-h2">
-            {anything.nameIt[0]} <span className="a-red">{anything.nameIt[1]}</span>
-          </h2>
-          <p data-reveal className="a-lead mt-6 max-w-3xl">
-            {anything.title}
-          </p>
+          <WithArt
+            art={
+              <Play label={ui.art.paperwork}>
+                <Paperwork />
+              </Play>
+            }
+          >
+            <h2 id="anything-heading" data-reveal className="a-display a-h2">
+              {anything.nameIt[0]} <span className="a-red">{anything.nameIt[1]}</span>
+            </h2>
+            <p data-reveal className="a-lead mt-6 max-w-3xl">
+              {anything.title}
+            </p>
+          </WithArt>
           <p data-reveal className="a-body mt-4 max-w-3xl">
             <Rich text={anything.whatever} />
           </p>

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { AsrayaShell } from "@/components/asraya/AsrayaShell";
-import { Together } from "@/components/asraya/illustrations";
-import { Body, Chapter, More, PageHead, Photo, Rich, Rows, Tags } from "@/components/asraya/kit";
-import { asraya, home, partnership } from "@/content/asraya";
+import { Checklist, Growth, Puzzle, Together } from "@/components/asraya/illustrations";
+import { Play } from "@/components/asraya/Play";
+import { Body, Chapter, More, PageHead, Photo, Rich, Rows, Tags, WithArt } from "@/components/asraya/kit";
+import { asraya, home, partnership, ui } from "@/content/asraya";
 
 export const metadata: Metadata = {
   title: `Partnership — ${asraya.name} | Kreatif Atelier`,
@@ -21,16 +22,28 @@ export default function Page() {
 
   return (
     <AsrayaShell next={asraya.nav[3]}>
-      <PageHead label={asraya.name} title={[partnership.eyebrow]} lead={home.free.title.join(" ")} art={<Together />} />
+      <PageHead label={asraya.name} title={[partnership.eyebrow]} lead={home.free.title.join(" ")} art={
+          <Play label={ui.art.together}>
+            <Together />
+          </Play>
+        } />
 
       {/* 01 Personalised, not packaged */}
       <Chapter id="personalised" n={1} name={personalised.title.join(" ")}>
-        <h2 id="personalised-heading" data-reveal className="a-display a-h2">
-          {personalised.title[0]} <span className="a-em">{personalised.title[1]}</span>
-        </h2>
-        <p data-reveal className="a-lead mt-6 max-w-3xl">
-          {personalised.body}
-        </p>
+        <WithArt
+          art={
+            <Play label={ui.art.puzzle}>
+              <Puzzle />
+            </Play>
+          }
+        >
+          <h2 id="personalised-heading" data-reveal className="a-display a-h2">
+            {personalised.title[0]} <span className="a-em">{personalised.title[1]}</span>
+          </h2>
+          <p data-reveal className="a-lead mt-6 max-w-3xl">
+            {personalised.body}
+          </p>
+        </WithArt>
         <div className="mt-10">
           <Photo id="C1" className="aspect-[16/9]" />
         </div>
@@ -47,9 +60,17 @@ export default function Page() {
 
       {/* 02 What we need from you: seven asks to scan, each opening to its detail. */}
       <Chapter id="needs" n={2} name={needs.title}>
-        <h2 id="needs-heading" data-reveal className="a-display a-h2">
-          {needs.title}
-        </h2>
+        <WithArt
+          art={
+            <Play label={ui.art.checklist}>
+              <Checklist />
+            </Play>
+          }
+        >
+          <h2 id="needs-heading" data-reveal className="a-display a-h2">
+            {needs.title}
+          </h2>
+        </WithArt>
         <Rows items={needs.items} numbered className="mt-10" />
         <div className="mt-10">
           <Photo id="C2" />
@@ -64,12 +85,20 @@ export default function Page() {
 
       {/* 03 The partnership model */}
       <Chapter id="model" n={3} name={model.title.join(" ")}>
-        <h2 id="model-heading" data-reveal className="a-display a-h2">
-          {model.title[0]} <span className="a-red">{model.title[1]}</span> {model.title[2]}
-        </h2>
-        <p data-reveal className="a-quote a-callout mt-8 max-w-3xl">
-          {model.statement}
-        </p>
+        <WithArt
+          art={
+            <Play label={ui.art.growth}>
+              <Growth />
+            </Play>
+          }
+        >
+          <h2 id="model-heading" data-reveal className="a-display a-h2">
+            {model.title[0]} <span className="a-red">{model.title[1]}</span> {model.title[2]}
+          </h2>
+          <p data-reveal className="a-quote a-callout mt-8 max-w-3xl">
+            {model.statement}
+          </p>
+        </WithArt>
         <More>
           <Body paragraphs={model.body} />
         </More>
@@ -91,9 +120,9 @@ export default function Page() {
         </div>
         <ul className="mt-10 grid gap-px border border-[color:var(--a-rule)] bg-[color:var(--a-rule)] sm:grid-cols-2 lg:grid-cols-3">
           {measures.items.map((item) => (
-            <li key={item.title} data-reveal className="bg-[color:var(--a-paper)] p-6 md:p-7">
+            <li key={item.title} data-reveal className="a-measure bg-[color:var(--a-ivory)] p-6 md:p-7">
               <h3 className="a-title flex items-end gap-3">
-                <span aria-hidden="true" className="a-red text-[2.6rem] leading-[0.9] font-normal">
+                <span aria-hidden="true" className="a-measure__piece a-red text-[2.6rem] leading-[0.9] font-normal">
                   {item.piece}
                 </span>
                 {item.title}

@@ -1,6 +1,10 @@
+"use client";
+
+import { useState } from "react";
+
 /**
  * Diagram drawings for the Asraya pages, in the page's own colours. All decorative. The network's links carry
- * `data-a-link`, so AsrayaMotion can draw them in as the page scrolls.
+ * `data-a-link`, so AsrayaMotion can draw them in as the page scrolls; the joined network also answers the pointer.
  */
 
 const W = 1200;
@@ -58,16 +62,49 @@ type NetworkProps = {
 export function Network({ state, places, className = "" }: NetworkProps) {
   const joined = state === "joined";
   const named = [3, 9];
+  // The node under the pointer, and a counter so each visit sends a fresh ring.
+  const [hot, setHot] = useState<number | null>(null);
+  const [visits, setVisits] = useState(0);
+  const near = new Set(hot === null ? [] : LINKS.flatMap(([a, b]) => (a === hot ? [b] : b === hot ? [a] : [])));
+  const enter = (i: number) => {
+    setHot(i);
+    setVisits((n) => n + 1);
+  };
+
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} aria-hidden="true" focusable="false" className={`a-network block h-auto w-full ${className}`} data-state={state}>
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      aria-hidden="true"
+      focusable="false"
+      className={`a-network block h-auto w-full ${className}`}
+      data-state={state}
+      data-hot={hot ?? undefined}
+      onPointerLeave={() => setHot(null)}
+    >
       {joined &&
         LINKS.map(([a, b]) => (
-          <line key={`${a}-${b}`} x1={NODES[a][0]} y1={NODES[a][1]} x2={NODES[b][0]} y2={NODES[b][1]} className="a-network__link" pathLength={1} data-a-link />
+          <line
+            key={`${a}-${b}`}
+            x1={NODES[a][0]}
+            y1={NODES[a][1]}
+            x2={NODES[b][0]}
+            y2={NODES[b][1]}
+            className={`a-network__link ${a === hot || b === hot ? "is-hot" : ""}`}
+            pathLength={1}
+            data-a-link
+          />
         ))}
+      {joined && hot !== null && <circle key={visits} cx={NODES[hot][0]} cy={NODES[hot][1]} r={70} className="a-network__pulse" />}
       {NODES.map(([x, y], i) => (
         <g key={i}>
           {!joined && <circle cx={x} cy={y} r={26} className="a-network__halo" />}
-          <circle cx={x} cy={y} r={joined && i % 4 === 0 ? 10 : 7} className={joined && i % 4 === 0 ? "a-network__node a-network__node--accent" : "a-network__node"} />
+          <circle
+            cx={x}
+            cy={y}
+            r={joined && i % 4 === 0 ? 10 : 7}
+            className={`a-network__node ${joined && i % 4 === 0 ? "a-network__node--accent" : ""} ${i === hot ? "is-hot" : near.has(i) ? "is-near" : ""}`}
+          />
+          {joined && <circle cx={x} cy={y} r={30} className="a-network__hit" onPointerEnter={() => enter(i)} onClick={() => enter(i)} />}
         </g>
       ))}
       {!joined &&
@@ -83,24 +120,25 @@ export function Network({ state, places, className = "" }: NetworkProps) {
   );
 }
 
-/** A search for "your ngo..": the bar, then results as grey lines with one found and marked in red. */
+/** A search for "your ngo..": the bar, then results as grey lines. Played (inside <Play>), the NGO's result rises to the top in marigold. */
 export function SearchSketch({ query, className = "" }: { query: string; className?: string }) {
   const rows = [0.72, 0.58, 0.66];
+  // Spans throughout, so it can sit inside the <Play> button.
   return (
-    <div aria-hidden="true" className={`a-search ${className}`}>
-      <p className="a-search__bar">
+    <span aria-hidden="true" className={`a-search block ${className}`}>
+      <span className="a-search__bar">
         <span>{query}</span>
         <span>⌕</span>
-      </p>
-      <ol className="a-search__results">
+      </span>
+      <span className="a-search__results">
         {rows.map((width, i) => (
-          <li key={i} data-found={i === 0 || undefined}>
+          <span key={i} className="a-search__row" data-found={i === rows.length - 1 || undefined}>
             <span style={{ width: `${width * 100}%` }} />
             <span style={{ width: `${(width + 0.2) * 100}%` }} />
             <span style={{ width: `${(width - 0.05) * 100}%` }} />
-          </li>
+          </span>
         ))}
-      </ol>
-    </div>
+      </span>
+    </span>
   );
 }

@@ -4,9 +4,10 @@ import Link from "next/link";
 import { AsrayaShell } from "@/components/asraya/AsrayaShell";
 import { Network } from "@/components/asraya/graphics";
 import { Amplify, Gift, ServiceIcon, Spotlight, Sunrise, Together, Toolkit, type IconName } from "@/components/asraya/illustrations";
-import { Band, Tags } from "@/components/asraya/kit";
+import { Band, Tags, Wordmark } from "@/components/asraya/kit";
+import { Play } from "@/components/asraya/Play";
 import { Button } from "@/components/ui/Button";
-import { asraya, home, visibility } from "@/content/asraya";
+import { asraya, home, ui, visibility } from "@/content/asraya";
 
 export const metadata: Metadata = { ...asraya.meta, alternates: { canonical: "/asraya/" } };
 
@@ -26,7 +27,7 @@ export default function Page() {
         <div>
           <p className="a-wide a-red">{asraya.aegis}</p>
           <h1 id="home-heading" className="a-wordmark mt-5 text-[clamp(4.6rem,19vw,8.6rem)] lg:text-[clamp(5rem,8.4vw,8.6rem)]">
-            {asraya.wordmark}
+            <Wordmark word={asraya.wordmark} />
           </h1>
           <p className="a-display mt-8 max-w-md text-[clamp(1.7rem,3vw,2.4rem)] leading-[1.08]">{asraya.promise}</p>
           <p className="a-wide a-faint mt-5">{asraya.tagline}</p>
@@ -34,8 +35,10 @@ export default function Page() {
             <Button href={asraya.cta.href}>{asraya.cta.button}</Button>
           </div>
         </div>
-        <div data-a-parallax="22">
+        {/* The drift sits on the picture itself: a moved wrapper would isolate it and break the multiply onto the ivory. */}
+        <div>
           <Image
+            data-a-parallax="22"
             src={asraya.cover.src}
             alt={asraya.cover.alt}
             width={asraya.cover.width}
@@ -61,7 +64,9 @@ export default function Page() {
             </p>
             <Tags items={free.points} className="mt-9" />
           </div>
-          <Gift className="mx-auto max-w-[26rem]" />
+          <Play label={ui.art.gift} className="mx-auto max-w-[26rem]">
+            <Gift />
+          </Play>
         </div>
       </Band>
 
@@ -76,7 +81,7 @@ export default function Page() {
         </p>
         <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {services.items.map((item) => (
-            <li key={item.title} data-reveal className="a-card">
+            <li key={item.title} data-reveal className="a-card a-card--lift">
               <ServiceIcon name={item.icon as IconName} />
               <h3 className="a-title mt-5">{item.title}</h3>
               <p className="a-body mt-2 !text-[1rem] !leading-relaxed">{item.body}</p>
@@ -97,7 +102,9 @@ export default function Page() {
               {outcomes.funding.title}. <span className="a-em">{outcomes.reach.title}.</span>
             </h2>
           </div>
-          <Spotlight className="mx-auto max-w-[24rem]" />
+          <Play label={ui.art.spotlight} className="mx-auto max-w-[24rem]">
+            <Spotlight />
+          </Play>
         </div>
         <div className="mt-12 grid gap-4 md:grid-cols-2">
           {[outcomes.funding, outcomes.reach].map((group, g) => (
@@ -128,7 +135,9 @@ export default function Page() {
               {network.line}
             </h2>
           </div>
-          <Amplify className="mx-auto max-w-[22rem]" />
+          <Play label={ui.art.amplify} className="mx-auto max-w-[22rem]">
+            <Amplify />
+          </Play>
         </div>
         <div className="mt-12">
           <Network state="joined" />
@@ -146,7 +155,7 @@ export default function Page() {
         </h2>
         <ol className="mt-12 grid gap-4 md:grid-cols-3">
           {steps.items.map((step) => (
-            <li key={step.title} data-reveal className="a-card">
+            <li key={step.title} data-reveal className="a-card a-card--lift">
               <ServiceIcon name={step.icon as IconName} />
               <h3 className="a-display mt-5 text-[clamp(1.5rem,2.2vw,1.9rem)]">{step.title}</h3>
               <p className="a-body mt-3 !text-[1rem]">{step.body}</p>

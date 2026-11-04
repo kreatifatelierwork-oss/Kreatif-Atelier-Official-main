@@ -5,6 +5,7 @@ import { asraya } from "@/content/asraya";
 import { AsrayaNav } from "./AsrayaNav";
 import { AsrayaMotion } from "./AsrayaMotion";
 import { Network } from "./graphics";
+import { Wordmark } from "./kit";
 
 type Props = {
   children: React.ReactNode;
@@ -31,7 +32,7 @@ export function AsrayaShell({ children, next, network = true }: Props) {
               {asraya.cta.lead} <span className="a-em">{asraya.cta.emphasis}</span>
             </h2>
             <p data-reveal className="a-wordmark mt-8 text-[clamp(2.6rem,5vw,3.8rem)] !text-[color:var(--a-ivory)]">
-              {asraya.wordmark}
+              <Wordmark word={asraya.wordmark} />
             </p>
             <p data-reveal className="a-wide a-faint mt-3">
               {asraya.tagline}

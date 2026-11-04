@@ -6,7 +6,7 @@
 
 export const asraya = {
   name: "Asraya",
-  wordmark: "asraya",
+  wordmark: "Asraya",
   aegis: "under the Aegis of Kreatif Atelier",
   tagline: "Communicating impact. Amplifying change.",
   promise: "You do the work. We make sure people know about it.",
@@ -279,33 +279,39 @@ export const tomorrow = {
   areasLabel: "Potential areas include:",
   initiatives: [
     {
+      icon: "safety",
       title: "Women's Safety Initiative",
       body: "A long-term initiative focused on improving awareness, access to resources and everyday safety for women.",
       areas: ["Safety awareness campaigns", "Self-defence education", "Emergency-resource awareness", "Safety technology", "Community programs", "Educational initiatives"],
       note: "The objective is not simply to talk about women's safety, but to develop practical systems that can help women feel safer and better equipped.",
     },
     {
+      icon: "animal",
       title: "Animal Welfare & Protection",
       body: "Extending our work beyond human-focused causes.",
       areas: ["Animal rescue", "Adoption awareness", "Stray animal welfare", "Responsible pet ownership", "Veterinary support", "Animal-rights awareness"],
       note: "Because compassion should not have boundaries.",
     },
     {
+      icon: "elder",
       title: "Elder Care & Dignity",
       body: "Supporting initiatives focused on elderly people who are vulnerable, isolated or without adequate support.",
       areas: ["Companionship", "Basic necessities", "Community engagement", "Awareness", "Support networks", "Dignity-focused programs"],
     },
     {
+      icon: "education",
       title: "Child & Education Initiatives",
       body: "Supporting organizations and initiatives working to give children better access to education, opportunity and protection.",
       areas: ["Education access", "Learning resources", "Mentorship", "Digital literacy", "Awareness programs", "Child welfare"],
     },
     {
+      icon: "community",
       title: "Community Support",
       body: "Building initiatives that respond to practical needs within underserved communities.",
       areas: ["Food & essentials", "Education", "Employment awareness", "Skill development", "Community campaigns", "Access to resources"],
     },
     {
+      icon: "environment",
       title: "Environment & Sustainability",
       body: "Supporting causes that protect the environments in which communities, animals and future generations depend.",
       areas: ["Environmental awareness", "Clean-up initiatives", "Tree plantation", "Waste reduction", "Sustainable practices", "Community participation"],
@@ -349,4 +355,30 @@ export const photos = {
 export type PhotoId = keyof typeof photos;
 
 /** Shared words on the pages. */
-export const ui = { more: "Read more", less: "Show less", photoPending: "Photograph to be supplied" } as const;
+export const ui = {
+  more: "Read more",
+  less: "Show less",
+  photoPending: "Photograph to be supplied",
+  /** The hint under a drawing that can be played (components/asraya/Play.tsx). */
+  play: "Tap to play",
+  reset: "Tap to reset",
+  /** What pressing each drawing does, for screen readers. */
+  art: {
+    gift: "Open the gift",
+    spotlight: "Light every house",
+    amplify: "Turn up the sound",
+    together: "Bring the two together",
+    sunrise: "Let the sun rise",
+    toolkit: "Build the website",
+    stamp: "Stamp the brand",
+    search: "Search",
+    press: "Spread the papers",
+    clapper: "Call action",
+    bunting: "Celebrate",
+    paperwork: "Lay out the paperwork",
+    puzzle: "Fit the pieces together",
+    checklist: "Tick the list",
+    growth: "Let it grow",
+    ripple: "Drop a stone in the water",
+  },
+} as const;

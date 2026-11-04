@@ -187,6 +187,14 @@ Full-spectrum creative agency, Hyderabad. Four divisions. Six service pillars.
   chapters: it is the offer — "Premium marketing. Free for NGOs. We don't earn anything from you" (owner's direction;
   copy in `home` in `content/asraya.ts`, written for the site, for the owner's read). Inner pages open on a teal head
   with their drawing. Files in `public/images/profile/asraya/` are no longer referenced.
+- Asraya, fourth pass (2026-11-04, owner: "more artifacts, make them interactive"): every drawing can be played.
+  `<Play>` (`components/asraya/Play.tsx`) is a button that leans the drawing towards the pointer (`data-d` parts) and
+  toggles `data-on`, which moves each drawing to its played state (CSS "Playable drawings" in `app/globals.css`, using
+  translate/rotate/scale so it composes with the scroll motion). New drawings: Stamp, Press, Clapper, Bunting, Paperwork
+  (What we build chapters), Puzzle, Checklist, Growth (Partnership), `Ripple.tsx` (Tomorrow: each tap sends rings across
+  the water), six initiative icons. The joined network lights a node's links and neighbours under the pointer. Explore
+  cards play their drawing on hover. The wordmark is "Asraya" with its capital A in Cormorant italic (`Wordmark` in kit).
+  The cover collage's drift is on the image itself: a moved wrapper isolates it and its multiply blend shows white.
 - Heroes (2026-10-12): the home page and `/aurelius` both use the owner's galloping-horse picture
   (`public/reference/aurelius-horse.webp`) as a full-bleed hero with AURELIUS along its foot; it drifts forward on
   scroll. The crowned figure and the bust are no longer used; the text-behind-subject slide only runs for `cutout` figures.
