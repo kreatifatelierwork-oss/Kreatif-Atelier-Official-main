@@ -77,10 +77,66 @@ export const home = {
     ],
     link: { label: "See everything we build", href: "/asraya/what-we-build" },
   },
-  outcomes: {
-    label: "Why it matters",
-    funding: { title: "Better funding", items: ["Donations", "Credibility", "Partnerships"] },
-    reach: { title: "Better reach", items: ["Awareness", "Volunteers", "And it lasts"] },
+  /**
+   * The story of how a stranger becomes a supporter, told step by step without naming it: each step is something
+   * Asraya builds (`behind`). Written for the site from the profile's own lines (visibility, digital); no figures.
+   * For the owner's read.
+   */
+  journey: {
+    label: "A supporter's story",
+    title: ["From a stranger", "to someone who stays."],
+    lead: "Nobody gives to an organisation they have never heard of. Every person who supports you walked the same road to get there.",
+    behindLabel: "What makes it happen",
+    steps: [
+      {
+        art: "word",
+        title: "Someone hears your name.",
+        body: "A friend shares a post. A journalist runs your story. A banner at an event catches an eye.",
+        behind: ["PR & media", "Campaigns & events"],
+      },
+      {
+        art: "lookup",
+        title: "They look you up.",
+        body: "That evening they search for you — and you are there, with a site that works on their phone.",
+        behind: ["Search visibility", "Website"],
+      },
+      {
+        art: "clarity",
+        title: "They understand you in thirty seconds.",
+        body: "One line says what you stand for. Your colours, your words and your profile all say the same thing.",
+        behind: ["Positioning", "Brand identity"],
+      },
+      {
+        art: "screen",
+        title: "They see the work.",
+        body: "Not quotes on gradients — the people your work has changed, telling it themselves.",
+        behind: ["Film & photography", "Social media"],
+      },
+      {
+        art: "door",
+        title: "They trust what they see.",
+        body: "Being findable, consistent and clear is how a stranger decides you are real.",
+        behind: ["Profile document", "Press material"],
+      },
+      {
+        art: "jar",
+        title: "They give.",
+        body: "The way to donate or volunteer is right there. Nobody has to hunt for it.",
+        behind: ["Website", "Advertising"],
+      },
+      {
+        art: "letter",
+        title: "And they hear back.",
+        body: "Field stories, updates and a year designed properly keep them close to the work they made possible.",
+        behind: ["Field stories", "Annual reports"],
+      },
+      {
+        art: "gather",
+        title: "Then they bring others.",
+        body: "People share what they are proud to be part of. Somewhere, someone hears your name.",
+        behind: ["Social media", "The Asraya network"],
+      },
+    ],
     close: "None of this changes the work. It changes how far the work reaches.",
   },
   network: {

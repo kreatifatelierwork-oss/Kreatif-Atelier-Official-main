@@ -3,21 +3,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { AsrayaShell } from "@/components/asraya/AsrayaShell";
 import { Network } from "@/components/asraya/graphics";
-import { Amplify, Gift, ServiceIcon, Spotlight, Sunrise, Together, Toolkit, type IconName } from "@/components/asraya/illustrations";
-import { Band, Tags, Wordmark } from "@/components/asraya/kit";
+import { Amplify, Gift, ServiceIcon, Sunrise, Together, Toolkit, type IconName } from "@/components/asraya/illustrations";
+import { Journey } from "@/components/asraya/Journey";
+import { Band, Tags } from "@/components/asraya/kit";
 import { Play } from "@/components/asraya/Play";
 import { Button } from "@/components/ui/Button";
-import { asraya, home, ui, visibility } from "@/content/asraya";
+import { asraya, home, ui } from "@/content/asraya";
 
 export const metadata: Metadata = { ...asraya.meta, alternates: { canonical: "/asraya/" } };
 
-const { free, services, outcomes, network, steps, explore } = home;
-const outcome = (title: string) => visibility.items.find((item) => item.title === title)!;
+const { free, services, network, steps, explore } = home;
 const exploreArt = { toolkit: Toolkit, together: Together, sunrise: Sunrise } as const;
 
 /**
- * Asraya's main page: premium marketing, free for NGOs. The cover, the offer, what an NGO gets, why it matters,
- * the gap it closes, how it works, and the way into the other three pages.
+ * Asraya's main page: premium marketing, free for NGOs. The cover, the offer, what an NGO gets, a supporter's story
+ * (how a stranger comes to give, step by step), the gap it closes, how it works, and the way into the other three pages.
  */
 export default function Page() {
   return (
@@ -27,7 +27,7 @@ export default function Page() {
         <div>
           <p className="a-wide a-red">{asraya.aegis}</p>
           <h1 id="home-heading" className="a-wordmark mt-5 text-[clamp(4.6rem,19vw,8.6rem)] lg:text-[clamp(5rem,8.4vw,8.6rem)]">
-            <Wordmark word={asraya.wordmark} />
+            {asraya.wordmark}
           </h1>
           <p className="a-display mt-8 max-w-md text-[clamp(1.7rem,3vw,2.4rem)] leading-[1.08]">{asraya.promise}</p>
           <p className="a-wide a-faint mt-5">{asraya.tagline}</p>
@@ -93,38 +93,8 @@ export default function Page() {
         </div>
       </Band>
 
-      {/* Why it matters: better funding, better reach */}
-      <Band labelledBy="outcomes-heading" className="!pt-0">
-        <div className="grid items-end gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
-          <div>
-            <p className="a-wide a-red">{outcomes.label}</p>
-            <h2 id="outcomes-heading" data-reveal className="a-display a-h2 mt-5">
-              {outcomes.funding.title}. <span className="a-em">{outcomes.reach.title}.</span>
-            </h2>
-          </div>
-          <Play label={ui.art.spotlight} className="mx-auto max-w-[24rem]">
-            <Spotlight />
-          </Play>
-        </div>
-        <div className="mt-12 grid gap-4 md:grid-cols-2">
-          {[outcomes.funding, outcomes.reach].map((group, g) => (
-            <div key={group.title} data-reveal className={`a-card ${g === 0 ? "a-band--deep" : ""}`}>
-              <h3 className="a-display text-[clamp(1.7rem,2.6vw,2.2rem)]">{group.title}</h3>
-              <dl className="mt-6 grid gap-5">
-                {group.items.map((title) => (
-                  <div key={title} className="border-t a-rule pt-4">
-                    <dt className="a-title">{title}</dt>
-                    <dd className="a-body mt-1 !text-[1rem]">{outcome(title).body}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          ))}
-        </div>
-        <p data-reveal className="a-quote mt-14 max-w-3xl">
-          {outcomes.close}
-        </p>
-      </Band>
+      {/* A supporter's story: how a stranger becomes someone who stays, and what we build at every step. */}
+      <Journey />
 
       {/* The gap we close: organisations working alone, drawn into one network as you scroll */}
       <Band deep labelledBy="network-heading">

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Wordmark } from "@/components/asraya/kit";
 import { asraya } from "@/content/asraya";
 
 const clean = (path: string) => (path.length > 1 ? path.replace(/\/$/, "") : path);
@@ -16,7 +15,7 @@ export function AsrayaNav() {
       <nav aria-label={asraya.navLabel} className="a-wrap a-subnav">
         <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-3 border-b border-[color:var(--a-rule)] py-4">
           <Link href="/asraya" className="a-wordmark text-[2rem]">
-            <Wordmark word={asraya.wordmark} />
+            {asraya.wordmark}
           </Link>
           <ul className="flex flex-wrap gap-x-7 gap-y-2">
             {asraya.nav.map((item, i) => (

@@ -11,13 +11,13 @@
 const INK = "#1c2526";
 
 /** A part that leans towards the pointer; deeper parts lean further. */
-const d = (depth: number) => ({ "data-d": "", style: { "--d": depth } as React.CSSProperties });
+export const d = (depth: number) => ({ "data-d": "", style: { "--d": depth } as React.CSSProperties });
 /** CSS variables for one part's played state (an offset, an index for staggering). */
-const vars = (values: Record<string, number>) =>
+export const vars = (values: Record<string, number>) =>
   Object.fromEntries(Object.entries(values).map(([key, value]) => [`--${key}`, value])) as React.CSSProperties;
 
 /** The ✦ brand star, centred on (x, y). */
-function Star({ x, y, r, className = "a-art-fill" }: { x: number; y: number; r: number; className?: string }) {
+export function Star({ x, y, r, className = "a-art-fill" }: { x: number; y: number; r: number; className?: string }) {
   const k = r * 0.16;
   return (
     <path
@@ -28,7 +28,7 @@ function Star({ x, y, r, className = "a-art-fill" }: { x: number; y: number; r: 
 }
 
 /** Small stars that sit at rest around a point and fly outward when played. `hidden` ones only appear then. */
-function Burst({ stars, hidden = false }: { stars: readonly [number, number, number, number, number, string?][]; hidden?: boolean }) {
+export function Burst({ stars, hidden = false }: { stars: readonly [number, number, number, number, number, string?][]; hidden?: boolean }) {
   return (
     <g stroke="none">
       {stars.map(([x, y, r, bx, by, fill = "a-art-fill"], i) => (
@@ -199,8 +199,8 @@ export function ServiceIcon({ name, className = "" }: { name: IconName; classNam
 
 /* ── Scenes ────────────────────────────────────────────────── */
 
-type SceneProps = { className?: string };
-const scene = (className: string) => ({
+export type SceneProps = { className?: string };
+export const scene = (className: string) => ({
   "aria-hidden": true as const,
   focusable: "false" as const,
   className: `a-scene block h-auto w-full ${className}`,

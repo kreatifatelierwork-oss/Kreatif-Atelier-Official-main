@@ -1439,27 +1439,14 @@ body:has(.asraya) .backdrop {
   font-variation-settings: "opsz" 144;
 }
 
-/* The wordmark: Fraunces at its heaviest. */
+/* The wordmark: the whole word in Cormorant's bold italic, in one colour — the one place Asraya's second face appears. */
 .a-wordmark {
-  font-family: var(--font-fraunces), Georgia, serif;
-  font-weight: 900;
-  line-height: 0.82;
-  letter-spacing: -0.045em;
-  color: var(--a-teal);
-}
-
-/* Its capital A in a second face: Cormorant's tall italic, in the accent, against the heavy Fraunces. */
-.a-wordmark__cap {
   font-family: var(--font-cormorant), Georgia, serif;
   font-style: italic;
   font-weight: 700;
-  font-size: 1.12em;
-  letter-spacing: -0.02em;
-  margin-right: 0.02em;
-  color: var(--a-clay);
-}
-.a-band--deep .a-wordmark__cap {
-  color: var(--a-marigold);
+  line-height: 0.86;
+  letter-spacing: -0.03em;
+  color: var(--a-teal);
 }
 
 .a-h1 {
@@ -2042,8 +2029,8 @@ details[open] > summary .a-more__icon::after {
 }
 
 /* ── Playable drawings (components/asraya/Play.tsx, illustrations.tsx) ──
-   The pointer leans a drawing (`data-d` parts drift by their `--d` depth); pressing it plays it (`data-on`).
-   A linked card plays its drawing on hover. Parts move with the individual translate/rotate/scale properties, so they
+   The pointer leans a drawing (`data-d` parts drift by their `--d` depth); pressing it plays it (`data-on`), and so
+   does any `[data-on]` around it (a story step being read). A linked card plays its drawing on hover. Parts move with the individual translate/rotate/scale properties, so they
    compose with the scroll motion's transforms instead of fighting them. */
 
 .a-play {
@@ -2062,6 +2049,7 @@ details[open] > summary .a-more__icon::after {
   outline-offset: 6px;
 }
 .a-play__hint {
+  opacity: 0.75;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2119,7 +2107,7 @@ details[open] > summary .a-more__icon::after {
 }
 
 /* Played: written once for a pressed drawing and for a hovered card that holds one. */
-.a-play[data-on] .a-burst,
+[data-on] .a-burst,
 a.a-card:hover .a-burst {
   translate: calc(var(--bx) * 1px) calc(var(--by) * 1px);
   rotate: 45deg;
@@ -2129,7 +2117,7 @@ a.a-card:hover .a-burst {
   opacity: 0;
   scale: 0.2;
 }
-.a-play[data-on] .a-burst--hidden,
+[data-on] .a-burst--hidden,
 a.a-card:hover .a-burst--hidden {
   opacity: 1;
   transition-delay: calc(var(--i) * 70ms + 0.15s);
@@ -2146,12 +2134,12 @@ a.a-card:hover .a-burst--hidden {
   scale: 1 0;
   opacity: 0;
 }
-.a-play[data-on] .a-gift__lid,
+[data-on] .a-gift__lid,
 a.a-card:hover .a-gift__lid {
   rotate: -26deg;
   translate: -4px -26px;
 }
-.a-play[data-on] .a-gift__glow,
+[data-on] .a-gift__glow,
 a.a-card:hover .a-gift__glow {
   scale: 1;
   opacity: 0.22;
@@ -2163,7 +2151,7 @@ a.a-card:hover .a-gift__glow {
   transform-origin: 200px 10px;
   rotate: calc(var(--px) * -16deg);
 }
-.a-play[data-on] .a-spot__beam,
+[data-on] .a-spot__beam,
 a.a-card:hover .a-spot__beam {
   scale: 2.7 1;
 }
@@ -2171,11 +2159,11 @@ a.a-card:hover .a-spot__beam {
 .a-house__win {
   transition-delay: calc(var(--i) * 90ms) !important;
 }
-.a-play[data-on] .a-house__wall,
+[data-on] .a-house__wall,
 a.a-card:hover .a-house__wall {
   fill: var(--a-marigold);
 }
-.a-play[data-on] .a-house__win,
+[data-on] .a-house__win,
 a.a-card:hover .a-house__win {
   fill: var(--a-ivory);
 }
@@ -2190,7 +2178,7 @@ a.a-card:hover .a-house__win {
   transform-box: view-box;
   transform-origin: 160px 150px;
 }
-.a-play[data-on] .a-amp__waves,
+[data-on] .a-amp__waves,
 a.a-card:hover .a-amp__waves {
   scale: 1.22;
 }
@@ -2201,7 +2189,7 @@ a.a-card:hover .a-amp__waves {
   transform-box: fill-box;
   transform-origin: center;
 }
-.a-play[data-on] .a-together__star,
+[data-on] .a-together__star,
 a.a-card:hover .a-together__star {
   scale: 1.7;
   rotate: 90deg;
@@ -2215,11 +2203,11 @@ a.a-card:hover .a-together__star {
   transform-box: view-box;
   transform-origin: 200px 214px;
 }
-.a-play[data-on] .a-sun,
+[data-on] .a-sun,
 a.a-card:hover .a-sun {
   translate: 0 calc(-40px + var(--py) * 8px);
 }
-.a-play[data-on] .a-sun__night,
+[data-on] .a-sun__night,
 a.a-card:hover .a-sun__night {
   opacity: 0.25;
 }
@@ -2232,21 +2220,21 @@ a.a-card:hover .a-sun__night {
 .a-tk__like {
   scale: 0;
 }
-.a-play[data-on] .a-tk__hero,
+[data-on] .a-tk__hero,
 a.a-card:hover .a-tk__hero {
   fill: var(--a-clay);
 }
-.a-play[data-on] .a-tk__phone,
+[data-on] .a-tk__phone,
 a.a-card:hover .a-tk__phone {
   translate: 0 -16px;
   rotate: 5deg;
 }
-.a-play[data-on] .a-tk__like,
+[data-on] .a-tk__like,
 a.a-card:hover .a-tk__like {
   scale: 1;
   transition-delay: 0.2s;
 }
-.a-play[data-on] .a-spin,
+[data-on] .a-spin,
 a.a-card:hover .a-spin {
   rotate: 90deg;
   scale: 1.2;
@@ -2257,12 +2245,12 @@ a.a-card:hover .a-spin {
   opacity: 0;
   scale: 0.8;
 }
-.a-play[data-on] .a-stamp__print {
+[data-on] .a-stamp__print {
   opacity: 1;
   scale: 1;
   transition-delay: 0.32s;
 }
-.a-play[data-on] .a-stamp__tool {
+[data-on] .a-stamp__tool {
   animation: a-stamp 0.9s cubic-bezier(0.5, 0, 0.3, 1);
 }
 @keyframes a-stamp {
@@ -2277,7 +2265,7 @@ a.a-card:hover .a-spin {
   transform-box: view-box;
   transform-origin: 200px 270px;
 }
-.a-play[data-on] .a-press__sheet {
+[data-on] .a-press__sheet {
   rotate: calc(var(--r) * 1deg);
   translate: calc(var(--tx) * 1px) 0;
 }
@@ -2291,12 +2279,12 @@ a.a-card:hover .a-spin {
 .a-clap__flash {
   opacity: 0;
 }
-.a-play[data-on] .a-clap__arm {
+[data-on] .a-clap__arm {
   rotate: 0deg;
   transition-duration: 0.18s;
   transition-timing-function: cubic-bezier(0.6, 0, 1, 1);
 }
-.a-play[data-on] .a-clap__flash {
+[data-on] .a-clap__flash {
   opacity: 1;
   transition-delay: 0.16s;
 }
@@ -2311,7 +2299,7 @@ a.a-card:hover .a-spin {
 }
 
 /* Paperwork: played, the pieces spread apart. */
-.a-play[data-on] .a-spread {
+[data-on] .a-spread {
   translate: calc(var(--bx) * 1px) calc(var(--by) * 1px);
 }
 .a-id {
@@ -2336,11 +2324,11 @@ a.a-card:hover .a-spin {
   opacity: 0;
   scale: 0.3;
 }
-.a-play[data-on] .a-puz {
+[data-on] .a-puz {
   translate: 0 0;
   rotate: 0deg;
 }
-.a-play[data-on] .a-puz__seam {
+[data-on] .a-puz__seam {
   opacity: 1;
   scale: 1;
   transition-delay: 0.45s;
@@ -2351,11 +2339,11 @@ a.a-card:hover .a-spin {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
 }
-.a-play[data-on] .a-tick {
+[data-on] .a-tick {
   stroke-dashoffset: 0;
   transition-delay: calc(var(--i) * 0.14s);
 }
-.a-play[data-on] .a-pencil {
+[data-on] .a-pencil {
   translate: -10px 30px;
   rotate: -8deg;
 }
@@ -2379,10 +2367,10 @@ a.a-card:hover .a-spin {
   opacity: 0;
   scale: 0;
 }
-.a-play[data-on] .a-grow__stem {
+[data-on] .a-grow__stem {
   scale: 1;
 }
-.a-play[data-on] .a-leaf {
+[data-on] .a-leaf {
   opacity: 1;
   scale: 1;
   transition-delay: calc(var(--i) * 0.12s + 0.2s);
@@ -2477,27 +2465,27 @@ a.a-card:hover .a-spin {
 
 /* Motion that runs on its own only plays when motion is welcome; reduced motion keeps every state but drops the lean. */
 @media (prefers-reduced-motion: no-preference) {
-  .a-play[data-on] .a-hop,
+  [data-on] .a-hop,
   a.a-card:hover .a-hop {
     animation: a-hop 0.55s cubic-bezier(0.3, 0, 0.4, 1) calc(var(--i) * 0.09s) infinite alternate;
   }
-  .a-play[data-on] .a-together__ring {
+  [data-on] .a-together__ring {
     animation: a-ring 1.8s cubic-bezier(0.2, 0.7, 0.3, 1) infinite;
   }
-  .a-play[data-on] .a-together__ring--late {
+  [data-on] .a-together__ring--late {
     animation-delay: 0.9s;
   }
-  .a-play[data-on] .a-sun__rays,
+  [data-on] .a-sun__rays,
   a.a-card:hover .a-sun__rays {
     animation: a-turn 14s linear infinite;
   }
-  .a-play[data-on] .a-flag {
+  [data-on] .a-flag {
     animation: a-flutter 0.5s ease-in-out calc(var(--i) * 0.06s) infinite alternate;
   }
-  .a-play[data-on] .a-confetti {
+  [data-on] .a-confetti {
     animation: a-fall 1.6s cubic-bezier(0.3, 0, 0.6, 1) calc(var(--i) * 0.13s) infinite;
   }
-  .a-play[data-on] .a-id {
+  [data-on] .a-id {
     animation: a-swing 1.4s ease-in-out infinite alternate;
   }
 }
@@ -2505,7 +2493,7 @@ a.a-card:hover .a-spin {
   .a-play [data-d] {
     translate: none;
   }
-  .a-play[data-on] .a-confetti {
+  [data-on] .a-confetti {
     opacity: 1;
   }
   .a-scene * {
@@ -2576,4 +2564,306 @@ a.a-card:hover .a-spin {
     translate: 0 -6px;
     color: var(--a-marigold);
   }
+}
+
+/* ── Supporter's story drawings (components/asraya/journey-art.tsx) ── */
+
+.a-scene :is(.a-word__bubble, .a-word__head, .a-look__typed, .a-look__pin, .a-look__ring, .a-clar__mess, .a-clar__clean,
+  .a-clar__hand, .a-screen__bar, .a-screen__play, .a-screen__heart, .a-door__panel, .a-door__light, .a-jar__level, .a-jar__heart,
+  .a-letter__card, .a-letter__flap, .a-gather__link, .a-gather__friend) {
+  transition:
+    translate 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+    rotate 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+    scale 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.5s ease-out,
+    fill 0.5s ease-out,
+    stroke-dashoffset 0.6s ease-out;
+}
+.a-scene :is(.a-word__bubble, .a-look__pin, .a-look__ring, .a-screen__play, .a-screen__heart, .a-jar__heart, .a-gather__friend) {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Word: the bubble speaks up and the listener lights. */
+.a-word__bubble {
+  scale: 0.86;
+  transform-origin: 30% 100% !important;
+}
+[data-on] .a-word__bubble {
+  scale: 1.06;
+  translate: 0 -6px;
+}
+[data-on] .a-word__head {
+  fill: var(--a-marigold);
+  transition-delay: 0.3s;
+}
+
+/* Lookup: the search fills in, the pin drops and rings. */
+.a-look__typed {
+  transform-box: fill-box;
+  transform-origin: 0 50%;
+  scale: 0.3 1;
+}
+.a-look__ring {
+  opacity: 0;
+  scale: 0.4;
+}
+[data-on] .a-look__typed {
+  scale: 1;
+}
+.a-look__pin {
+  transform-origin: 50% 100% !important;
+}
+[data-on] .a-look__ring {
+  opacity: 1;
+  scale: 1.2;
+  transition-delay: 0.45s;
+}
+
+/* Clarity: the muddle fades and the clear page comes through; the second hand runs round. */
+.a-clar__clean {
+  opacity: 0;
+}
+[data-on] .a-clar__mess {
+  opacity: 0.08;
+}
+[data-on] .a-clar__clean {
+  opacity: 1;
+  transition-delay: 0.25s;
+}
+.a-clar__hand {
+  transform-box: view-box;
+  transform-origin: 318px 70px;
+}
+[data-on] .a-clar__hand {
+  rotate: 270deg;
+  transition-duration: 1.2s;
+}
+
+/* Screen: the film runs — the play button gives way, the bar fills, a heart comes up. */
+.a-screen__bar {
+  transform-box: fill-box;
+  transform-origin: 0 50%;
+  scale: 0.08 1;
+}
+.a-screen__heart {
+  opacity: 0;
+  scale: 0.3;
+}
+[data-on] .a-screen__bar {
+  scale: 1;
+  transition-duration: 1.6s;
+  transition-timing-function: linear;
+}
+[data-on] .a-screen__play {
+  opacity: 0;
+  scale: 0.6;
+}
+[data-on] .a-screen__heart {
+  opacity: 1;
+  scale: 1;
+  transition-delay: 0.9s;
+}
+
+/* Door: it swings open on its hinge and the light falls across the floor. */
+.a-door__panel {
+  transform-box: view-box;
+  transform-origin: 148px 160px;
+}
+.a-door__light {
+  opacity: 0;
+}
+[data-on] .a-door__panel {
+  scale: 0.22 1;
+}
+[data-on] .a-door__light {
+  opacity: 0.5;
+  transition-delay: 0.3s;
+}
+
+/* Jar: a heart drops in and the jar fills. */
+.a-jar__level {
+  transform-box: view-box;
+  transform-origin: 200px 276px;
+  scale: 1 0.35;
+}
+[data-on] .a-jar__level {
+  scale: 1 0.95;
+  transition-delay: 0.45s;
+  transition-duration: 1s;
+}
+[data-on] .a-jar__heart {
+  translate: 0 90px;
+  opacity: 0;
+  transition:
+    translate 0.6s cubic-bezier(0.5, 0, 0.9, 0.6),
+    opacity 0.2s ease-in 0.45s;
+}
+
+/* Letter: the flap lifts and the letter rises out. */
+.a-letter__flap {
+  transform-box: view-box;
+  transform-origin: 200px 130px;
+}
+[data-on] .a-letter__flap {
+  scale: 1 -0.75;
+}
+[data-on] .a-letter__card {
+  translate: 0 -70px;
+  transition-delay: 0.3s;
+}
+
+/* Gather: the links reach out and more people arrive. */
+.a-gather__link {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.a-gather__friend {
+  opacity: 0;
+  scale: 0.2;
+}
+.a-scene .a-gather__link,
+.a-scene .a-gather__friend {
+  transition-delay: calc(var(--i) * 0.12s);
+}
+.a-scene .a-gather__link:nth-child(3n + 1) {
+  stroke-dashoffset: 0;
+}
+[data-on] .a-gather__link {
+  stroke-dashoffset: 0;
+}
+[data-on] .a-gather__friend {
+  opacity: 1;
+  scale: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-on] .a-look__pin {
+    animation: a-drop 0.7s cubic-bezier(0.3, 0, 0.3, 1);
+  }
+}
+@keyframes a-drop {
+  from {
+    translate: 0 -70px;
+    opacity: 0;
+  }
+  60% {
+    translate: 0 6px;
+    opacity: 1;
+  }
+}
+
+/* ── The supporter's story (components/asraya/Journey.tsx) ──
+   Stacked by default (phones, reduced motion, no JavaScript); on a wide screen it pins and slides sideways. */
+
+.a-journey__frame {
+  position: relative;
+  padding-block: clamp(4.5rem, 12vh, 8.5rem);
+  overflow: hidden;
+}
+.a-journey__track {
+  display: grid;
+  gap: 3.5rem 2.5rem;
+}
+@media (min-width: 640px) {
+  .a-journey__track {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .a-journey__track {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.a-journey__intro,
+.a-journey__outro {
+  grid-column: 1 / -1;
+  max-width: 44rem;
+}
+.a-journey__step {
+  display: flex;
+  flex-direction: column;
+}
+.a-journey__num {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--a-accent);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+/* A short rule after the number, in marigold once the step is being read. */
+.a-journey__num::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--a-rule);
+  transition: background-color 0.4s ease-out;
+}
+.a-journey__step[data-on] .a-journey__num::after {
+  background: var(--a-marigold);
+}
+.a-journey__art {
+  max-width: 24rem;
+}
+@media (max-width: 639px) {
+  .a-journey__art {
+    max-width: 18rem;
+    margin-inline: auto;
+  }
+}
+.a-journey__road {
+  display: none;
+}
+
+.a-journey[data-mode="slide"] .a-journey__frame {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  padding-block: calc(var(--nav-h) + 1.5rem) 3.5rem;
+}
+.a-journey[data-mode="slide"] .a-journey__track {
+  display: flex;
+  align-items: flex-start;
+  gap: 3.5rem;
+  will-change: transform;
+}
+.a-journey[data-mode="slide"] .a-journey__intro {
+  flex: 0 0 min(30rem, 34vw);
+  align-self: center;
+}
+.a-journey[data-mode="slide"] .a-journey__step {
+  flex: 0 0 clamp(18rem, 21vw, 22rem);
+  opacity: 0.55;
+  transition: opacity 0.4s ease-out;
+}
+.a-journey[data-mode="slide"] .a-journey__step[data-on] {
+  opacity: 1;
+}
+.a-journey[data-mode="slide"] .a-journey__outro {
+  flex: 0 0 min(30rem, 34vw);
+  align-self: center;
+}
+.a-journey[data-mode="slide"] .a-journey__road {
+  display: block;
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: -2rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--a-rule);
+}
+.a-journey__road span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--a-marigold);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
 }

@@ -195,6 +195,14 @@ Full-spectrum creative agency, Hyderabad. Four divisions. Six service pillars.
   the water), six initiative icons. The joined network lights a node's links and neighbours under the pointer. Explore
   cards play their drawing on hover. The wordmark is "Asraya" with its capital A in Cormorant italic (`Wordmark` in kit).
   The cover collage's drift is on the image itself: a moved wrapper isolates it and its multiply blend shows white.
+- Asraya, fifth pass (2026-11-04, owner): the wordmark "Asraya" is set whole in Cormorant bold italic, one colour (teal on
+  ivory, ivory on teal); Fraunces stays for headlines. /asraya tells a supporter's story in place of the funding/reach
+  cards: `Journey.tsx` with eight steps from "Someone hears your name" to "Then they bring others", each with its own
+  drawing (`journey-art.tsx`) and the services behind it as tags ("What makes it happen") — donor engagement told without
+  naming it. Copy in `home.journey` (written for the site from the profile's own lines; no figures; for the owner's read).
+  On wide screens with motion the section pins and slides sideways (it pins an inner `.a-journey__frame`: the bleed
+  section's margins measure wrong once fixed); elsewhere it stacks. The step being read gets `data-on`, and every played
+  drawing state now answers any `[data-on]` ancestor, not only a pressed `<Play>`.
 - Heroes (2026-10-12): the home page and `/aurelius` both use the owner's galloping-horse picture
   (`public/reference/aurelius-horse.webp`) as a full-bleed hero with AURELIUS along its foot; it drifts forward on
   scroll. The crowned figure and the bust are no longer used; the text-behind-subject slide only runs for `cutout` figures.
